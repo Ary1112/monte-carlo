@@ -1,0 +1,3079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApexTrader OS — Pro Trading Terminal & Quant Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* =============================================================
+       1. THEME DESIGN SYSTEM (LIGHT, DARK & TRUE OLED BLACK)
+       ============================================================= */
+    :root {
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* DARK THEME (Standard Dark) */
+    body[data-theme="dark"] {
+      --bg-base: #090d16;
+      --bg-surface: #111827;
+      --bg-surface-hover: #1f293d;
+      --bg-surface-elevated: #1e293b;
+      --border-subtle: #1f293d;
+      --border-strong: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent-primary: #3b82f6;
+      --accent-primary-glow: rgba(59, 130, 246, 0.25);
+      --accent-green: #10b981;
+      --accent-green-bg: rgba(16, 185, 129, 0.12);
+      --accent-red: #f43f5e;
+      --accent-red-bg: rgba(244, 63, 94, 0.12);
+      --accent-amber: #f59e0b;
+      --card-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.45);
+      --badge-bg: #1e293b;
+    }
+
+    /* LIGHT THEME */
+    body[data-theme="light"] {
+      --bg-base: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-hover: #f1f5f9;
+      --bg-surface-elevated: #e2e8f0;
+      --border-subtle: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --accent-primary: #2563eb;
+      --accent-primary-glow: rgba(37, 99, 235, 0.15);
+      --accent-green: #059669;
+      --accent-green-bg: rgba(5, 150, 105, 0.12);
+      --accent-red: #e11d48;
+      --accent-red-bg: rgba(225, 29, 72, 0.12);
+      --accent-amber: #d97706;
+      --card-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.08);
+      --badge-bg: #f1f5f9;
+    }
+
+    /* OLED TRUE BLACK THEME */
+    body[data-theme="black"] {
+      --bg-base: #000000;
+      --bg-surface: #0a0a0a;
+      --bg-surface-hover: #141414;
+      --bg-surface-elevated: #1a1a1a;
+      --border-subtle: #222222;
+      --border-strong: #333333;
+      --text-main: #ffffff;
+      --text-muted: #a3a3a3;
+      --text-dim: #737373;
+      --accent-primary: #00d2ff;
+      --accent-primary-glow: rgba(0, 210, 255, 0.28);
+      --accent-green: #00ff88;
+      --accent-green-bg: rgba(0, 255, 136, 0.12);
+      --accent-red: #ff3366;
+      --accent-red-bg: rgba(255, 51, 102, 0.15);
+      --accent-amber: #ffb703;
+      --card-shadow: 0 0 25px rgba(0, 0, 0, 0.95);
+      --badge-bg: #141414;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.5;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* =============================================================
+       HEADER & NAVIGATION BAR
+       ============================================================= */
+    .app-header {
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+    }
+    .header-container {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+    }
+    .brand-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-green));
+      color: #ffffff;
+    }
+
+    .nav-tabs {
+      display: flex;
+      background-color: var(--bg-base);
+      padding: 0.3rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      gap: 0.35rem;
+    }
+    .tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .tab-btn:hover { color: var(--text-main); background-color: var(--bg-surface-hover); }
+    .tab-btn.active { color: var(--text-main); background-color: var(--bg-surface); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); }
+
+    .header-actions { display: flex; align-items: center; gap: 0.75rem; }
+
+    /* 3-WAY THEME SWITCHER */
+    .theme-switcher {
+      display: flex;
+      background-color: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 0.2rem;
+      gap: 0.2rem;
+    }
+    .theme-opt-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      padding: 0.35rem 0.7rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: var(--transition);
+    }
+    .theme-opt-btn.active {
+      background-color: var(--bg-surface);
+      color: var(--text-main);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    /* =============================================================
+       LAYOUT & CONTAINERS
+       ============================================================= */
+    .main-wrapper {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 1.75rem 1.5rem 4rem 1.5rem;
+    }
+    .tab-section { display: none; }
+    .tab-section.active { display: block; animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    .card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 1.25rem;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      margin-bottom: 1.25rem;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .card-title { font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.1rem;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: var(--transition);
+    }
+    .btn-primary { background: var(--accent-primary); color: #ffffff; }
+    .btn-primary:hover { filter: brightness(1.15); box-shadow: 0 0 14px var(--accent-primary-glow); }
+    .btn-outline { background: transparent; border-color: var(--border-strong); color: var(--text-main); }
+    .btn-outline:hover { background-color: var(--bg-surface-hover); }
+    .btn-sm { padding: 0.35rem 0.65rem; font-size: 0.75rem; }
+
+    .form-group { margin-bottom: 0.95rem; }
+    .form-label {
+      display: block;
+      font-size: 0.775rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .form-input, .form-select {
+      width: 100%;
+      padding: 0.6rem 0.8rem;
+      background-color: var(--bg-base);
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      outline: none;
+      transition: var(--transition);
+    }
+    .form-input:focus, .form-select:focus {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px var(--accent-primary-glow);
+    }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
+    @media (max-width: 1024px) {
+      .grid-5, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .grid-5, .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+      .header-container { flex-direction: column; align-items: stretch; }
+      .nav-tabs { overflow-x: auto; }
+    }
+
+    /* STATS HEADER */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .stat-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .stat-label { font-size: 0.725rem; text-transform: uppercase; font-weight: 700; color: var(--text-dim); letter-spacing: 0.05em; }
+    .stat-value { font-family: var(--font-mono); font-size: 1.45rem; font-weight: 700; color: var(--text-main); }
+    .stat-sub { font-size: 0.75rem; color: var(--text-muted); }
+    .positive { color: var(--accent-green) !important; }
+    .negative { color: var(--accent-red) !important; }
+
+    /* TABLE */
+    .table-container { overflow-x: auto; margin-top: 1rem; border: 1px solid var(--border-subtle); border-radius: 8px; }
+    .trade-table { width: 100%; border-collapse: collapse; font-size: 0.825rem; text-align: left; }
+    .trade-table th {
+      background-color: var(--bg-surface-elevated);
+      color: var(--text-muted);
+      font-weight: 700;
+      padding: 0.75rem 1rem;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .trade-table td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border-subtle); }
+    .trade-table tr:hover td { background-color: var(--bg-surface-hover); }
+
+    .badge { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+    .badge-long { background-color: var(--accent-green-bg); color: var(--accent-green); }
+    .badge-short { background-color: var(--accent-red-bg); color: var(--accent-red); }
+    .badge-session { background-color: var(--badge-bg); color: var(--text-muted); border: 1px solid var(--border-subtle); }
+
+    .canvas-box { width: 100%; height: 280px; position: relative; }
+    canvas { width: 100% !important; height: 100% !important; display: block; }
+
+    /* CALCULATOR HUD */
+    .calc-layout { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 1.5rem; }
+    @media (max-width: 960px) { .calc-layout { grid-template-columns: 1fr; } }
+    .calc-result-box {
+      background: var(--bg-base);
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .result-row { display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.65rem; border-bottom: 1px dashed var(--border-subtle); }
+    .result-label { font-size: 0.825rem; color: var(--text-muted); font-weight: 600; }
+    .result-val { font-family: var(--font-mono); font-size: 1.15rem; font-weight: 700; }
+    .result-highlight {
+      background: var(--accent-primary-glow);
+      border: 1px solid var(--accent-primary);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+    }
+    .result-highlight .big-number { font-family: var(--font-mono); font-size: 2.25rem; font-weight: 800; color: var(--text-main); line-height: 1.1; margin: 0.25rem 0; }
+
+    /* MONTE CARLO LAYOUT */
+    .mc-layout { display: grid; grid-template-columns: 360px 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+    @media (max-width: 1024px) { .mc-layout { grid-template-columns: 1fr; } }
+
+    /* CALENDAR VIEWS (1 Day, 1 Week, 1 Month, Per Trade) */
+    .calendar-container { margin-top: 1rem; }
+    .calendar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem; }
+    .view-switcher-pill {
+      display: flex;
+      background-color: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 0.25rem;
+      gap: 0.25rem;
+    }
+    .view-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      padding: 0.35rem 0.85rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .view-btn.active {
+      background-color: var(--bg-surface);
+      color: var(--text-main);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .calendar-grid-month { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; }
+    .calendar-day-header { text-align: center; font-size: 0.75rem; font-weight: 700; color: var(--text-dim); padding: 0.5rem 0; text-transform: uppercase; }
+    .calendar-cell {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      min-height: 90px;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .calendar-cell:hover { border-color: var(--border-strong); transform: translateY(-2px); background-color: var(--bg-surface-hover); }
+    .calendar-cell.other-month { opacity: 0.25; pointer-events: none; }
+    .calendar-cell.today { border-color: var(--accent-primary); box-shadow: 0 0 0 1px var(--accent-primary); }
+    .calendar-cell .day-num { font-size: 0.75rem; font-weight: 700; color: var(--text-dim); }
+    .calendar-cell .day-pnl { font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; text-align: right; }
+    .calendar-cell .day-count { font-size: 0.65rem; color: var(--text-muted); text-align: right; }
+
+    /* PER-TRADE CALENDAR-LIKE GRID (EACH TRADE AS A CALENDAR DAY CELL 1, 2, 3...) */
+    .calendar-grid-trades {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.6rem;
+      margin-top: 0.75rem;
+    }
+    @media (max-width: 1200px) { .calendar-grid-trades { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 800px) { .calendar-grid-trades { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .calendar-grid-trades { grid-template-columns: 1fr; } }
+
+    .trade-cal-cell {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      min-height: 100px;
+      padding: 0.65rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+    }
+    .trade-cal-cell:hover {
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      background-color: var(--bg-surface-hover);
+    }
+    .trade-cal-cell .trade-cal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.2rem;
+    }
+    .trade-cal-cell .trade-cal-num {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      background: var(--bg-surface-elevated);
+      padding: 0.1rem 0.45rem;
+      border-radius: 4px;
+      border: 1px solid var(--border-subtle);
+    }
+    .trade-cal-cell .trade-cal-date {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+    }
+    .trade-cal-cell .trade-cal-pnl {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      font-weight: 800;
+      text-align: right;
+      margin: 0.35rem 0;
+    }
+    .trade-cal-cell .trade-cal-footer {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px dashed var(--border-subtle);
+      padding-top: 0.35rem;
+    }
+
+    /* WEEK VIEW CARDS */
+    .week-cards-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.75rem; }
+    @media (max-width: 1100px) { .week-cards-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .week-cards-grid { grid-template-columns: 1fr; } }
+    .week-day-card {
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    /* DAY VIEW AGENDA */
+    .day-agenda-box {
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+
+    /* MODALS */
+    .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-backdrop.open { display: flex; }
+    .modal-box { background-color: var(--bg-surface); border: 1px solid var(--border-strong); border-radius: 12px; width: 100%; max-width: 620px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7); max-height: 90vh; overflow-y: auto; }
+    .modal-head { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; }
+    .modal-body { padding: 1.5rem; }
+    .close-btn { background: none; border: none; color: var(--text-muted); font-size: 1.35rem; cursor: pointer; }
+    .close-btn:hover { color: var(--text-main); }
+  </style>
+</head>
+<body data-theme="dark">
+
+  <!-- ============================================================== -->
+  <!-- NAVIGATION HEADER (4 INDEPENDENT SECTIONS)                     -->
+  <!-- ============================================================== -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent-primary)">
+          <path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path>
+        </svg>
+        <span>ApexTrader</span>
+        <span class="brand-badge">PRO QUANT</span>
+      </div>
+
+      <!-- 4 INDEPENDENT PRIMARY TABS -->
+      <nav class="nav-tabs">
+        <button class="tab-btn" data-tab="journal">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path><path d="M6 6h10"></path><path d="M6 10h10"></path></svg>
+          Trading Journal
+        </button>
+        <button class="tab-btn" data-tab="calculator">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="20" x="4" y="2" rx="2"></rect><line x1="8" x2="16" y1="6" y2="6"></line><line x1="16" x2="16" y1="14" y2="18"></line><path d="M16 10h.01"></path><path d="M12 10h.01"></path><path d="M8 10h.01"></path><path d="M12 14h.01"></path><path d="M8 14h.01"></path><path d="M12 18h.01"></path><path d="M8 18h.01"></path></svg>
+          Risk / Reward Sizer
+        </button>
+        <button class="tab-btn active" data-tab="simulator">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="m9 9 6 6m0-6-6 6"></path></svg>
+          Monte Carlo Simulator
+        </button>
+        <button class="tab-btn" data-tab="calendar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+          Trading Calendar
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <!-- 3-WAY THEME SWITCHER -->
+        <div class="theme-switcher">
+          <button class="theme-opt-btn" data-set-theme="light" title="Light Theme">☀️ Light</button>
+          <button class="theme-opt-btn active" data-set-theme="dark" title="Dark Theme">🌙 Dark</button>
+          <button class="theme-opt-btn" data-set-theme="black" title="OLED True Black">🌑 Black</button>
+        </div>
+
+        <button class="btn btn-primary btn-sm" id="openLogModalBtn">+ Log Trade</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================== -->
+  <!-- MAIN WORKSPACE                                                 -->
+  <!-- ============================================================== -->
+  <main class="main-wrapper">
+
+    <!-- ============================================================ -->
+    <!-- 1. ADVANCED TRADING JOURNAL SECTION                          -->
+    <!-- ============================================================ -->
+    <section id="section-journal" class="tab-section">
+      <!-- Top Metrics HUD -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="stat-label">Net Profit / Loss</span>
+          <span class="stat-value" id="stat-net-pnl">$0.00</span>
+          <span class="stat-sub" id="stat-r-multiple">0.0 R Total</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Win Rate</span>
+          <span class="stat-value" id="stat-win-rate">0.0%</span>
+          <span class="stat-sub" id="stat-win-loss-count">0W / 0L</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Profit Factor</span>
+          <span class="stat-value" id="stat-profit-factor">0.00</span>
+          <span class="stat-sub">Gross Win / Gross Loss</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Expectancy / Trade</span>
+          <span class="stat-value" id="stat-expectancy">$0.00</span>
+          <span class="stat-sub" id="stat-expectancy-r">+0.00 R</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Max Drawdown</span>
+          <span class="stat-value negative" id="stat-max-dd">0.0%</span>
+          <span class="stat-sub" id="stat-current-streak">Streak: 0</span>
+        </div>
+      </div>
+
+      <!-- Equity Curve & Distribution -->
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              Equity Curve (Cumulative P&L)
+            </h3>
+            <span class="badge" style="background:var(--accent-primary-glow); color:var(--accent-primary)">Account Growth</span>
+          </div>
+          <div class="canvas-box"><canvas id="equityChartCanvas"></canvas></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 17V9"></path><path d="M15 17V13"></path></svg>
+              Daily / Trade P&L Distribution
+            </h3>
+            <span class="badge" style="background:var(--accent-green-bg); color:var(--accent-green)">Wins vs Losses</span>
+          </div>
+          <div class="canvas-box"><canvas id="distributionChartCanvas"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Trade Log Filters & Table -->
+      <div class="card">
+        <div class="card-header">
+          <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+            <h3 class="card-title">Trade History Ledger</h3>
+            <input type="text" id="tradeSearchInput" class="form-input" placeholder="Search by Pair, Setup..." style="max-width:240px; padding:0.4rem 0.75rem; font-size:0.8rem;">
+            <select id="tradeFilterSession" class="form-select" style="max-width:140px; padding:0.4rem 0.75rem; font-size:0.8rem;">
+              <option value="ALL">All Sessions</option>
+              <option value="London">London</option>
+              <option value="New York">New York</option>
+              <option value="Asian">Asian</option>
+            </select>
+          </div>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <button class="btn btn-outline btn-sm" id="exportDataBtn">Export JSON</button>
+            <button class="btn btn-outline btn-sm" id="resetDemoBtn">Load Sample Trades</button>
+            <button class="btn btn-outline btn-sm" id="clearJournalBtn" style="color:var(--accent-red);">Clear All</button>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="trade-table">
+            <thead>
+              <tr>
+                <th>Date</th><th>Pair</th><th>Type</th><th>Side</th><th>Entry</th><th>Exit</th><th>Size</th><th>P&L ($)</th><th>R-Multiple</th><th>Session</th><th>Setup Tag</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="tradeTableBody"></tbody>
+          </table>
+      <!-- Embedded Journal Trading Calendar -->
+      <div class="card calendar-container" style="margin-top:1.5rem;">
+        <div class="calendar-header">
+          <div>
+            <h3 class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+              Journal Trading Calendar
+            </h3>
+            <p style="font-size:0.8rem; color:var(--text-muted);">Inspect your real logged performance across 1 Day, 1 Week, 1 Month, or Per-Trade views.</p>
+          </div>
+
+          <!-- TIMEFRAME VIEW SWITCHER FOR JOURNAL -->
+          <div class="view-switcher-pill">
+            <button class="view-btn" data-jcal-view="day">1 Day</button>
+            <button class="view-btn" data-jcal-view="week">1 Week</button>
+            <button class="view-btn active" data-jcal-view="month">1 Month</button>
+            <button class="view-btn" data-jcal-view="trade">Per Trade</button>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <button class="btn btn-outline btn-sm" id="jcalPrev">&larr; Prev</button>
+            <span id="jcalTimeframeLabel" style="font-weight:700; font-size:0.95rem; min-width:140px; text-align:center;">October 2026</span>
+            <button class="btn btn-outline btn-sm" id="jcalNext">Next &rarr;</button>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:1rem; margin-bottom:1rem; flex-wrap:wrap; font-size:0.825rem;">
+          <div style="padding:0.4rem 0.8rem; background:var(--bg-surface-elevated); border-radius:6px;">Period Net P&L: <strong id="jcalPeriodTotalPnL" class="positive">$0.00</strong></div>
+          <div style="padding:0.4rem 0.8rem; background:var(--bg-surface-elevated); border-radius:6px;">Win Ratio: <strong id="jcalGreenDaysCount">0 Green / 0 Red</strong></div>
+          <div style="padding:0.4rem 0.8rem; background:var(--bg-surface-elevated); border-radius:6px;">Best Day: <strong id="jcalBestDayPnL" class="positive">$0.00</strong></div>
+          <div style="padding:0.4rem 0.8rem; background:var(--bg-surface-elevated); border-radius:6px;">Period Trades: <strong id="jcalTotalTradesCount">0</strong></div>
+        </div>
+
+        <!-- 1 MONTH VIEW -->
+        <div id="jview-month" class="jcal-view-content">
+          <div class="calendar-grid-month">
+            <div class="calendar-day-header">Sun</div><div class="calendar-day-header">Mon</div><div class="calendar-day-header">Tue</div>
+            <div class="calendar-day-header">Wed</div><div class="calendar-day-header">Thu</div><div class="calendar-day-header">Fri</div><div class="calendar-day-header">Sat</div>
+          </div>
+          <div class="calendar-grid-month" id="jcalendarDaysGrid"></div>
+        </div>
+
+        <!-- 1 WEEK VIEW -->
+        <div id="jview-week" class="jcal-view-content" style="display:none;">
+          <div class="week-cards-grid" id="jweekCardsContainer"></div>
+        </div>
+
+        <!-- 1 DAY VIEW -->
+        <div id="jview-day" class="jcal-view-content" style="display:none;">
+          <div class="day-agenda-box" id="jdayAgendaContainer"></div>
+        </div>
+
+        <!-- PER TRADE VIEW (CALENDAR-LIKE FORMAT) -->
+        <div id="jview-trade" class="jcal-view-content" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
+            <div style="font-size:0.8rem; color:var(--text-muted);">
+              Trades displayed as calendar day blocks (1, 2, 3, 4...). Click any cell to view execution details.
+            </div>
+            <div class="view-switcher-pill" style="margin-bottom:0;">
+              <button class="view-btn active" id="jTradeGridToggleBtn">⊞ Calendar Grid</button>
+              <button class="view-btn" id="jTradeTableToggleBtn">☰ Table View</button>
+            </div>
+          </div>
+          <div class="calendar-grid-trades" id="jcalendarTradesGrid"></div>
+          <div class="table-container" id="jtradeTableWrapper" style="display:none;">
+            <table class="trade-table">
+              <thead><tr><th>#</th><th>Date</th><th>Pair</th><th>Side</th><th>Size</th><th>Entry</th><th>Exit</th><th>P&L ($)</th><th>R-Multiple</th><th>Session</th><th>Setup</th></tr></thead>
+              <tbody id="jcalPerTradeBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 2. MULTI-ASSET RISK:REWARD CALCULATOR                         -->
+    <!-- ============================================================ -->
+    <section id="section-calculator" class="tab-section">
+      <div class="calc-layout">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Multi-Asset Position & Risk Sizer</h3>
+            <span class="badge" style="background:var(--accent-primary-glow); color:var(--accent-primary);">CFD • Futures • Forex</span>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label">Asset Class</label>
+              <select id="calcAssetClass" class="form-select">
+                <option value="futures">Futures (CME / NYMEX / COMEX)</option>
+                <option value="forex">Forex (Currencies)</option>
+                <option value="cfd">CFD / Indices / Commodities</option>
+                <option value="crypto">Crypto / Spot Equities</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Instrument / Pair</label>
+              <select id="calcInstrument" class="form-select"></select>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label">Account Balance ($)</label>
+              <input type="number" id="calcAccountBalance" class="form-input" placeholder="e.g. 50000" step="500">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Risk Budget</label>
+              <div style="display:flex; gap:0.5rem;">
+                <input type="number" id="calcRiskPercent" class="form-input" placeholder="e.g. 1.0" step="0.1">
+                <select id="calcRiskType" class="form-select" style="max-width:95px;">
+                  <option value="percent">% Risk</option>
+                  <option value="cash">$ Fixed</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label">Trade Direction</label>
+              <div style="display:flex; gap:0.5rem;">
+                <button type="button" class="btn btn-outline btn-sm" id="btnSideLong" style="flex:1; border-color:var(--accent-green); color:var(--accent-green); font-weight:700;">▲ LONG</button>
+                <button type="button" class="btn btn-outline btn-sm" id="btnSideShort" style="flex:1;">▼ SHORT</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Entry Price</label>
+              <input type="number" id="calcEntryPrice" class="form-input" placeholder="Entry level" step="any">
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label">Stop Loss Price</label>
+              <input type="number" id="calcStopLoss" class="form-input" placeholder="Stop level" step="any">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Take Profit Target (TP1)</label>
+              <input type="number" id="calcTakeProfit" class="form-input" placeholder="Target level" step="any">
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label">Take Profit 2 (Scale-Out)</label>
+              <input type="number" id="calcTakeProfit2" class="form-input" placeholder="Optional TP2" step="any">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Commission / Fee per Unit ($)</label>
+              <input type="number" id="calcCommission" class="form-input" placeholder="e.g. 2.50" step="0.1">
+            </div>
+          </div>
+          <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
+            <button class="btn btn-primary" id="btnApplyToJournal" style="flex:1;">⚡ Push Setup to Journal</button>
+            <button class="btn btn-outline" id="btnCalcPreset" style="white-space:nowrap;">Load Default Preset</button>
+          </div>
+        </div>
+
+        <!-- Real-Time Calculation HUD -->
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div class="card-header">
+              <h3 class="card-title">Execution Analytics</h3>
+              <span class="badge" id="hudAssetBadge" style="background:var(--accent-primary-glow); color:var(--accent-primary);">Futures (ES)</span>
+            </div>
+            <div class="calc-result-box">
+              <div class="result-highlight">
+                <div style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700;">Recommended Position Size</div>
+                <div class="big-number" id="resPositionSize">--</div>
+                <div style="font-size:0.8rem; color:var(--text-dim);" id="resSizeSub">Enter your price levels to calculate</div>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Dollar Risk Amount:</span>
+                <span class="result-val negative" id="resDollarRisk">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Dollar Reward:</span>
+                <span class="result-val positive" id="resDollarReward">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Risk : Reward Ratio:</span>
+                <span class="result-val" id="resRRRatio" style="color:var(--accent-primary)">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Stop Distance:</span>
+                <span class="result-val" id="resStopDistance">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Breakeven Win Rate Needed:</span>
+                <span class="result-val" id="resBreakevenWinRate">--</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Est. Commissions:</span>
+                <span class="result-val" id="resFees">--</span>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:1rem; padding:0.85rem; border-radius:6px; background:var(--bg-surface-elevated); font-size:0.775rem; color:var(--text-muted);">
+            💡 <strong>Multi-Asset Engine:</strong> Handles CME point & tick multipliers for ES/NQ/CL/GC, 0.01 pip adjustments for JPY Forex pairs, and contract CFD multipliers dynamically.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 3. ADVANCED MONTE CARLO SIMULATOR (INDEPENDENT)              -->
+    <!-- ============================================================ -->
+    <section id="section-simulator" class="tab-section active">
+      <div class="mc-layout">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Monte Carlo Parameters</h3>
+            <span class="badge" style="background:var(--accent-primary-glow); color:var(--accent-primary);">1,000 Iterations</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Starting Capital ($)</label>
+            <input type="number" id="mcCapital" class="form-input" placeholder="e.g. 50000" step="1000">
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label">Simulation Trades Count</label>
+              <input type="number" id="mcTradesCount" class="form-input" placeholder="e.g. 100" min="10" max="1000">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Horizon (Months)</label>
+              <input type="number" id="mcHorizonMonths" class="form-input" placeholder="e.g. 5" min="1" max="60" step="0.5">
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label">Avg Trades / Week</label>
+              <input type="number" id="mcTradesPerWeek" class="form-input" placeholder="e.g. 5" min="1" max="50" step="0.5">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Avg Trades / Month</label>
+              <input type="number" id="mcTradesPerMonth" class="form-input" placeholder="e.g. 21" min="1" max="250" step="1">
+            </div>
+          </div>
+          <div id="mcCadenceHint" style="font-size:0.75rem; color:var(--text-dim); margin-top:-0.35rem; margin-bottom:0.75rem;">
+            ⚡ Auto-calculates trades across weeks & months for realistic calendar mapping.
+          </div>
+          <div class="form-group">
+            <label class="form-label">Win Rate (%)</label>
+            <input type="number" id="mcWinRate" class="form-input" placeholder="e.g. 52.0" step="0.5">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Risk Per Trade (%)</label>
+            <input type="number" id="mcRiskPct" class="form-input" placeholder="e.g. 1.0" step="0.1">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Average Risk-to-Reward Ratio (R:R)</label>
+            <input type="number" id="mcRR" class="form-input" placeholder="e.g. 2.0" step="0.1">
+          </div>
+
+          <div style="display:flex; gap:0.5rem; margin-top:0.75rem;">
+            <button class="btn btn-primary" id="btnRunMonteCarlo" style="flex:1;">🎲 Run Simulation</button>
+            <button class="btn btn-outline" id="btnLoadJournalToMC" title="Pull real stats from Trading Journal">📥 From Journal</button>
+          </div>
+
+          <div style="margin-top:1.25rem; border-top:1px solid var(--border-subtle); padding-top:1rem;">
+            <h4 style="font-size:0.8rem; text-transform:uppercase; color:var(--text-dim); margin-bottom:0.75rem;">Probability of Ruin & Drawdown Risk</h4>
+            <div class="result-row">
+              <span class="result-label">Odds of &gt; 10% Drawdown:</span>
+              <span class="result-val" id="mcRisk10" style="color:var(--accent-amber);">--</span>
+            </div>
+            <div class="result-row">
+              <span class="result-label">Odds of &gt; 20% Drawdown:</span>
+              <span class="result-val" id="mcRisk20" style="color:var(--accent-red);">--</span>
+            </div>
+            <div class="result-row">
+              <span class="result-label">Odds of &gt; 30% Drawdown:</span>
+              <span class="result-val" id="mcRisk30" style="color:var(--accent-red);">--</span>
+            </div>
+            <div class="result-row">
+              <span class="result-label">Account Ruin (&gt; 50% Drawdown):</span>
+              <span class="result-val" id="mcRisk50" style="color:var(--accent-red); font-weight:800;">--</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <!-- Simulated Quant Performance Panel -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Post-Simulation Quantitative Metrics</h3>
+              <span class="badge" style="background:var(--accent-green-bg); color:var(--accent-green)">Stress Tested Results</span>
+            </div>
+
+            <div class="grid-4" style="margin-bottom:1rem;">
+              <div class="stat-card">
+                <span class="stat-label">Simulated Win Rate</span>
+                <span class="stat-value" id="mcResWinRate">--</span>
+                <span class="stat-sub">Across 1,000 runs</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">Simulated Profit Factor</span>
+                <span class="stat-value" id="mcResPF">--</span>
+                <span class="stat-sub">Gross Win / Gross Loss</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">Trade Expectancy</span>
+                <span class="stat-value" id="mcResExpectancy">--</span>
+                <span class="stat-sub" id="mcResExpectancyR">--</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">Max Simulated Loss</span>
+                <span class="stat-value negative" id="mcResMaxLoss">--</span>
+                <span class="stat-sub">Single worst run drop</span>
+              </div>
+            </div>
+
+            <div class="grid-4" style="margin-bottom:1rem;">
+              <div class="stat-card">
+                <span class="stat-label">Max Consecutive Wins</span>
+                <span class="stat-value positive" id="mcResMaxWinStreak">--</span>
+                <span class="stat-sub">Peak winning streak</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">Max Consecutive Losses</span>
+                <span class="stat-value negative" id="mcResMaxLossStreak">--</span>
+                <span class="stat-sub">Stress-test losing streak</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">Median Final Capital</span>
+                <span class="stat-value" id="mcResult50" style="color:var(--accent-primary)">--</span>
+                <span class="stat-sub">50th Percentile</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">P95 Best / P5 Worst</span>
+                <span class="stat-value" id="mcResRange" style="font-size:1.1rem;">--</span>
+                <span class="stat-sub">Confidence range</span>
+              </div>
+            </div>
+
+            <!-- New: Weekly & Monthly Cadence & Income Projections -->
+            <div class="grid-4">
+              <div class="stat-card">
+                <span class="stat-label">Weekly Executions</span>
+                <span class="stat-value" id="mcResWeeklyTrades" style="color:var(--accent-primary)">--</span>
+                <span class="stat-sub" id="mcResMonthlyTrades">-- / month</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">Projected Weekly P&L</span>
+                <span class="stat-value" id="mcResWeeklyPnL">--</span>
+                <span class="stat-sub">Expected weekly run</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">Projected Monthly P&L</span>
+                <span class="stat-value" id="mcResMonthlyPnL">--</span>
+                <span class="stat-sub">Expected monthly run</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">Projected Horizon</span>
+                <span class="stat-value" id="mcResDurationSpan" style="font-size:1.1rem;">--</span>
+                <span class="stat-sub">Total calendar span</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trajectory Chart -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Projected Equity Trajectories & Quantiles</h3>
+              <div style="display:flex; gap:0.5rem; font-size:0.75rem;">
+                <span style="color:#10b981">● 95th Percentile (Best)</span>
+                <span style="color:#3b82f6">● 50th Median</span>
+                <span style="color:#f43f5e">● 5th Worst</span>
+              </div>
+            </div>
+            <div class="canvas-box" style="height:300px;"><canvas id="monteCarloCanvas"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monte Carlo Calendar Projection Component -->
+      <div class="card calendar-container" style="margin-top:1.5rem;">
+        <div class="calendar-header">
+          <div>
+            <h3 class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+              Monte Carlo Calendar Projection
+            </h3>
+            <p style="font-size:0.8rem; color:var(--text-muted);">See how simulated career trajectories play out across actual calendar trading days.</p>
+          </div>
+
+          <!-- Trajectory Pathway Selector -->
+          <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+            <label class="form-label" style="margin-bottom:0;">Project Path:</label>
+            <select id="mcCalPathSelector" class="form-select" style="max-width:210px; padding:0.35rem 0.65rem; font-size:0.8rem;">
+              <option value="p50">50th Percentile (Median Path)</option>
+              <option value="p95">95th Percentile (Best-Case Run)</option>
+              <option value="p5">5th Percentile (Worst Stress Run)</option>
+              <option value="p0">Sample Iteration #1</option>
+            </select>
+          </div>
+
+          <!-- TIMEFRAME VIEW SWITCHER FOR MONTE CARLO -->
+          <div class="view-switcher-pill">
+            <button class="view-btn" data-mccal-view="day">1 Day</button>
+            <button class="view-btn" data-mccal-view="week">1 Week</button>
+            <button class="view-btn active" data-mccal-view="month">1 Month</button>
+            <button class="view-btn" data-mccal-view="trade">Per Trade</button>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <button class="btn btn-outline btn-sm" id="mccalPrev">&larr; Prev</button>
+            <span id="mccalTimeframeLabel" style="font-weight:700; font-size:0.95rem; min-width:140px; text-align:center;">October 2026</span>
+            <button class="btn btn-outline btn-sm" id="mccalNext">Next &rarr;</button>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:1rem; margin-bottom:1rem; flex-wrap:wrap; font-size:0.825rem;">
+          <div style="padding:0.4rem 0.8rem; background:var(--bg-surface-elevated); border-radius:6px;">Projected P&L: <strong id="mccalPeriodTotalPnL" class="positive">$0.00</strong></div>
+          <div style="padding:0.4rem 0.8rem; background:var(--bg-surface-elevated); border-radius:6px;">Simulated Win Days: <strong id="mccalGreenDaysCount">0 Green / 0 Red</strong></div>
+          <div style="padding:0.4rem 0.8rem; background:var(--bg-surface-elevated); border-radius:6px;">Simulated Peak Capital: <strong id="mccalPeakCap" class="positive">$0.00</strong></div>
+          <div style="padding:0.4rem 0.8rem; background:var(--bg-surface-elevated); border-radius:6px;">Projected Trades: <strong id="mccalTotalTradesCount">0</strong></div>
+        </div>
+
+        <!-- 1 MONTH VIEW -->
+        <div id="mcview-month" class="mccal-view-content">
+          <div class="calendar-grid-month">
+            <div class="calendar-day-header">Sun</div><div class="calendar-day-header">Mon</div><div class="calendar-day-header">Tue</div>
+            <div class="calendar-day-header">Wed</div><div class="calendar-day-header">Thu</div><div class="calendar-day-header">Fri</div><div class="calendar-day-header">Sat</div>
+          </div>
+          <div class="calendar-grid-month" id="mccalendarDaysGrid"></div>
+        </div>
+
+        <!-- 1 WEEK VIEW -->
+        <div id="mcview-week" class="mccal-view-content" style="display:none;">
+          <div class="week-cards-grid" id="mcweekCardsContainer"></div>
+        </div>
+
+        <!-- 1 DAY VIEW -->
+        <div id="mcview-day" class="mccal-view-content" style="display:none;">
+          <div class="day-agenda-box" id="mcdayAgendaContainer"></div>
+        </div>
+
+        <!-- PER TRADE VIEW (CALENDAR-LIKE FORMAT) -->
+        <div id="mcview-trade" class="mccal-view-content" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
+            <div style="font-size:0.8rem; color:var(--text-muted);">
+              Simulated sequence projected as calendar day blocks (1, 2, 3, 4...). Click any cell to inspect simulation trade step.
+            </div>
+            <div class="view-switcher-pill" style="margin-bottom:0;">
+              <button class="view-btn active" id="mcTradeGridToggleBtn">⊞ Calendar Grid</button>
+              <button class="view-btn" id="mcTradeTableToggleBtn">☰ Table View</button>
+            </div>
+          </div>
+          <div class="calendar-grid-trades" id="mccalendarTradesGrid"></div>
+          <div class="table-container" id="mctradeTableWrapper" style="display:none;">
+            <table class="trade-table">
+              <thead><tr><th>Sim #</th><th>Projected Date</th><th>Outcome</th><th>Projected P&L ($)</th><th>Simulated Account Balance</th></tr></thead>
+              <tbody id="mccalPerTradeBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 4. ADVANCED TRADING CALENDAR (INDEPENDENT)                   -->
+    <!-- ============================================================ -->
+    <section id="section-calendar" class="tab-section">
+      <div class="card calendar-container">
+        <div class="calendar-header">
+          <div>
+            <h3 class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+              Multi-Timeframe Trading Calendar
+            </h3>
+            <p style="font-size:0.8rem; color:var(--text-muted);">Inspect performance by Day, Week, Month, or Per-Trade breakdown.</p>
+          </div>
+
+          <!-- TIMEFRAME VIEW SWITCHER (1 Day, 1 Week, 1 Month, Per Trade) -->
+          <div class="view-switcher-pill">
+            <button class="view-btn" data-cal-view="day">1 Day</button>
+            <button class="view-btn" data-cal-view="week">1 Week</button>
+            <button class="view-btn active" data-cal-view="month">1 Month</button>
+            <button class="view-btn" data-cal-view="trade">Per Trade</button>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <button class="btn btn-outline btn-sm" id="calPrev">&larr; Prev</button>
+            <span id="calTimeframeLabel" style="font-weight:700; font-size:0.95rem; min-width:140px; text-align:center;">October 2026</span>
+            <button class="btn btn-outline btn-sm" id="calNext">Next &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Monthly & Period Summary Badges -->
+        <div style="display:flex; gap:1rem; margin-bottom:1rem; flex-wrap:wrap; font-size:0.825rem;">
+          <div style="padding:0.4rem 0.8rem; background:var(--bg-surface-elevated); border-radius:6px;">Period Net P&L: <strong id="calPeriodTotalPnL" class="positive">$0.00</strong></div>
+          <div style="padding:0.4rem 0.8rem; background:var(--bg-surface-elevated); border-radius:6px;">Win Ratio: <strong id="calGreenDaysCount">0 Green / 0 Red</strong></div>
+          <div style="padding:0.4rem 0.8rem; background:var(--bg-surface-elevated); border-radius:6px;">Best Day: <strong id="calBestDayPnL" class="positive">$0.00</strong></div>
+          <div style="padding:0.4rem 0.8rem; background:var(--bg-surface-elevated); border-radius:6px;">Total Trades: <strong id="calTotalTradesCount">0</strong></div>
+        </div>
+
+        <!-- VIEW CONTAINER 1: 1 MONTH (Grid View) -->
+        <div id="view-month" class="cal-view-content">
+          <div class="calendar-grid-month">
+            <div class="calendar-day-header">Sun</div><div class="calendar-day-header">Mon</div><div class="calendar-day-header">Tue</div>
+            <div class="calendar-day-header">Wed</div><div class="calendar-day-header">Thu</div><div class="calendar-day-header">Fri</div><div class="calendar-day-header">Sat</div>
+          </div>
+          <div class="calendar-grid-month" id="calendarDaysGrid"></div>
+        </div>
+
+        <!-- VIEW CONTAINER 2: 1 WEEK (Weekly Cards View) -->
+        <div id="view-week" class="cal-view-content" style="display:none;">
+          <div class="week-cards-grid" id="weekCardsContainer"></div>
+        </div>
+
+        <!-- VIEW CONTAINER 3: 1 DAY (Daily In-Depth Agenda View) -->
+        <div id="view-day" class="cal-view-content" style="display:none;">
+          <div class="day-agenda-box" id="dayAgendaContainer"></div>
+        </div>
+
+        <!-- VIEW CONTAINER 4: PER TRADE (CALENDAR-LIKE FORMAT) -->
+        <div id="view-trade" class="cal-view-content" style="display:none;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
+            <div style="font-size:0.8rem; color:var(--text-muted);">
+              All trades presented as interactive calendar tiles (1, 2, 3, 4...). Click any tile to inspect trade details.
+            </div>
+            <div class="view-switcher-pill" style="margin-bottom:0;">
+              <button class="view-btn active" id="tradeGridToggleBtn">⊞ Calendar Grid</button>
+              <button class="view-btn" id="tradeTableToggleBtn">☰ Table View</button>
+            </div>
+          </div>
+          <div class="calendar-grid-trades" id="calendarTradesGrid"></div>
+          <div class="table-container" id="tradeTableWrapper" style="display:none;">
+            <table class="trade-table">
+              <thead>
+                <tr>
+                  <th>#</th><th>Timestamp</th><th>Pair</th><th>Side</th><th>Size</th><th>Entry</th><th>Exit</th><th>P&L ($)</th><th>R-Multiple</th><th>Session</th><th>Strategy</th>
+                </tr>
+              </thead>
+              <tbody id="calPerTradeBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- High-Impact Macro Economic Events Ticker -->
+        <div style="margin-top:1.5rem; border-top:1px solid var(--border-subtle); padding-top:1rem;">
+          <h4 style="font-size:0.85rem; font-weight:700; margin-bottom:0.75rem; display:flex; align-items:center; gap:0.5rem;">
+            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent-red);"></span>
+            High-Impact Macro Economic Events (Live Watchlist)
+          </h4>
+          <div class="grid-4" id="economicEventsList"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: LOG TRADE -->
+  <div class="modal-backdrop" id="tradeModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3 style="font-size:1rem; font-weight:700;">Record Trade Execution</h3>
+        <button class="close-btn" id="closeModalBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="tradeForm">
+          <div class="grid-2">
+            <div class="form-group"><label class="form-label">Date</label><input type="date" id="tradeDate" class="form-input" required></div>
+            <div class="form-group"><label class="form-label">Pair / Ticker</label><input type="text" id="tradePair" class="form-input" placeholder="e.g. NQ1!, EUR/USD, ES1!" required></div>
+          </div>
+          <div class="grid-3">
+            <div class="form-group"><label class="form-label">Direction</label><select id="tradeDirection" class="form-select"><option value="LONG">LONG</option><option value="SHORT">SHORT</option></select></div>
+            <div class="form-group"><label class="form-label">Asset Type</label><select id="tradeAssetType" class="form-select"><option value="Futures">Futures</option><option value="Forex">Forex</option><option value="CFD">CFD</option><option value="Crypto">Crypto</option></select></div>
+            <div class="form-group"><label class="form-label">Size (Lots/Contracts)</label><input type="number" id="tradeSize" class="form-input" placeholder="e.g. 1" step="any" required></div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group"><label class="form-label">Entry Price</label><input type="number" id="tradeEntry" class="form-input" step="any" required></div>
+            <div class="form-group"><label class="form-label">Exit Price</label><input type="number" id="tradeExit" class="form-input" step="any" required></div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group"><label class="form-label">Net P&L ($)</label><input type="number" id="tradePnL" class="form-input" step="any" placeholder="e.g. 450 or -150" required></div>
+            <div class="form-group"><label class="form-label">R-Multiple</label><input type="number" id="tradeR" class="form-input" step="0.01" placeholder="e.g. 2.5"></div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group"><label class="form-label">Session</label><select id="tradeSession" class="form-select"><option value="London">London</option><option value="New York">New York</option><option value="Asian">Asian</option></select></div>
+            <div class="form-group"><label class="form-label">Strategy Tag</label><input type="text" id="tradeStrategy" class="form-input" placeholder="e.g. FVG Reversal"></div>
+          </div>
+          <div class="form-group"><label class="form-label">Notes & Psychology</label><textarea id="tradeNotes" class="form-input" rows="2" placeholder="Disciplined trade, respected SL..."></textarea></div>
+          <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:1rem;">
+            <button type="button" class="btn btn-outline" id="cancelModalBtn">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Trade</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: DAY DETAIL -->
+  <div class="modal-backdrop" id="dayModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3 id="dayModalTitle" style="font-size:1rem; font-weight:700;">Day Overview</h3>
+        <button class="close-btn" id="closeDayModalBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="dayModalContent"></div>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- JAVASCRIPT APPLICATION CORE                                    -->
+  <!-- ============================================================== -->
+  <script>
+    /* =============================================================
+       1. GLOBAL STATE & THEMES
+       ============================================================= */
+    const THEMES = ['light', 'dark', 'black'];
+    let currentTheme = localStorage.getItem('apex_theme') || 'dark';
+    let lastMonteCarloResults = null;
+    let calcSide = 'LONG';
+    let currentCalDate = new Date(2026, 9, 1);
+    let activeCalView = 'month'; // 'day', 'week', 'month', 'trade'
+    let jCalDate = new Date(2026, 9, 1);
+    let jCalView = 'month';
+    let mcCalDate = new Date(2026, 9, 1);
+    let mcCalView = 'month';
+    let mcCalPath = 'p50';
+
+    const DEMO_TRADES = [
+      { id: 1, date: '2026-10-01', pair: 'ES1!', type: 'Futures', side: 'LONG', entry: 5120, exit: 5150, size: 2, pnl: 3000, r: 3.0, session: 'New York', strategy: 'FVG Reversal', notes: 'Waited for 15m sweep, clean runner.' },
+      { id: 2, date: '2026-10-02', pair: 'EUR/USD', type: 'Forex', side: 'SHORT', entry: 1.0850, exit: 1.0820, size: 5, pnl: 1500, r: 2.1, session: 'London', strategy: 'Order Block Sweep', notes: 'Targeted liquidity pool.' },
+      { id: 3, date: '2026-10-03', pair: 'NQ1!', type: 'Futures', side: 'LONG', entry: 18100, exit: 18050, size: 1, pnl: -1000, r: -1.0, session: 'New York', strategy: 'Breakout', notes: 'Failed continuation, accepted SL.' },
+      { id: 4, date: '2026-10-05', pair: 'XAU/USD', type: 'CFD', side: 'LONG', entry: 2320, exit: 2345, size: 2, pnl: 5000, r: 4.2, session: 'London', strategy: 'NY Overlap Momentum', notes: 'Gold broke 4H resistance.' },
+      { id: 5, date: '2026-10-06', pair: 'CL1!', type: 'Futures', side: 'SHORT', entry: 82.50, exit: 81.20, size: 1, pnl: 1300, r: 2.6, session: 'New York', strategy: 'Mean Reversion', notes: 'Oil failed inventory pump.' },
+      { id: 6, date: '2026-10-07', pair: 'GBP/USD', type: 'Forex', side: 'SHORT', entry: 1.2720, exit: 1.2750, size: 3, pnl: -900, r: -1.0, session: 'London', strategy: 'London Open Breakout', notes: 'Choppy CPI aftermath.' },
+      { id: 7, date: '2026-10-08', pair: 'BTC/USD', type: 'Crypto', side: 'LONG', entry: 64200, exit: 66800, size: 0.5, pnl: 1300, r: 2.8, session: 'Asian', strategy: 'Weekend Accumulation', notes: 'Clean retest of $64k support.' },
+      { id: 8, date: '2026-10-09', pair: 'ES1!', type: 'Futures', side: 'LONG', entry: 5180, exit: 5210, size: 2, pnl: 3000, r: 3.0, session: 'New York', strategy: 'FVG Reversal', notes: 'Solid trend day.' }
+    ];
+
+    let trades = JSON.parse(localStorage.getItem('apex_journal_trades')) || DEMO_TRADES;
+
+    /* =============================================================
+       2. TAB NAVIGATION (4 INDEPENDENT SECTIONS)
+       ============================================================= */
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
+      });
+      document.querySelectorAll('.tab-section').forEach(sec => {
+        sec.classList.toggle('active', sec.id === `section-${tabId}`);
+      });
+
+      if (tabId === 'journal') {
+        setTimeout(() => { renderEquityChart(); renderDistributionChart(); renderJournalCalendar(); }, 60);
+      } else if (tabId === 'calculator') {
+        setTimeout(() => { calculateRiskReward(); }, 30);
+      } else if (tabId === 'simulator') {
+        setTimeout(() => {
+          if (lastMonteCarloResults) drawMonteCarloChart(lastMonteCarloResults);
+          renderMCCalendar();
+        }, 60);
+      } else if (tabId === 'calendar') {
+        setTimeout(() => { renderCalendar(); }, 60);
+      }
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const targetBtn = e.currentTarget;
+        const tabId = targetBtn.getAttribute('data-tab');
+        if (tabId) switchTab(tabId);
+      });
+    });
+
+    /* =============================================================
+       3. THEME TOGGLER
+       ============================================================= */
+    function applyTheme(theme) {
+      if (!THEMES.includes(theme)) theme = 'dark';
+      document.body.setAttribute('data-theme', theme);
+      currentTheme = theme;
+      localStorage.setItem('apex_theme', theme);
+
+      document.querySelectorAll('[data-set-theme]').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-set-theme') === theme);
+      });
+
+      renderEquityChart();
+      renderDistributionChart();
+      if (lastMonteCarloResults) drawMonteCarloChart(lastMonteCarloResults);
+    }
+
+    document.querySelectorAll('[data-set-theme]').forEach(btn => {
+      btn.addEventListener('click', () => applyTheme(btn.getAttribute('data-set-theme')));
+    });
+
+    /* =============================================================
+       4. TRADING JOURNAL LOGIC & STATS
+       ============================================================= */
+    function saveTrades() {
+      localStorage.setItem('apex_journal_trades', JSON.stringify(trades));
+      updateJournalUI();
+      renderJournalCalendar();
+      renderCalendar();
+    }
+
+    function calculateStats() {
+      if (trades.length === 0) return { netPnL: 0, totalR: 0, winRate: 0, wins: 0, losses: 0, pf: 0, expectancy: 0, expectancyR: 0, maxDD: 0, streak: 0 };
+      let netPnL = 0, totalR = 0, wins = 0, losses = 0, grossProfit = 0, grossLoss = 0, peak = 0, maxDD = 0, currentEquity = 0;
+      trades.forEach(t => {
+        const pnl = parseFloat(t.pnl) || 0;
+        const r = parseFloat(t.r) || (pnl >= 0 ? 1 : -1);
+        netPnL += pnl; totalR += r; currentEquity += pnl;
+        if (currentEquity > peak) peak = currentEquity;
+        const dd = peak > 0 ? ((peak - currentEquity) / peak) * 100 : 0;
+        if (dd > maxDD) maxDD = dd;
+        if (pnl > 0) { wins++; grossProfit += pnl; }
+        else if (pnl < 0) { losses++; grossLoss += Math.abs(pnl); }
+      });
+      const winRate = trades.length > 0 ? (wins / trades.length) * 100 : 0;
+      const pf = grossLoss > 0 ? grossProfit / grossLoss : (grossProfit > 0 ? 99.9 : 0);
+      const expectancy = trades.length > 0 ? netPnL / trades.length : 0;
+      const expectancyR = trades.length > 0 ? totalR / trades.length : 0;
+      let streak = 0;
+      for (let i = trades.length - 1; i >= 0; i--) {
+        const isWin = trades[i].pnl > 0;
+        if (i === trades.length - 1) streak = isWin ? 1 : -1;
+        else {
+          if ((streak > 0 && isWin) || (streak < 0 && !isWin)) streak += isWin ? 1 : -1;
+          else break;
+        }
+      }
+      return { netPnL, totalR, winRate, wins, losses, pf, expectancy, expectancyR, maxDD, streak };
+    }
+
+    function updateJournalUI() {
+      const stats = calculateStats();
+      const pnlEl = document.getElementById('stat-net-pnl');
+      pnlEl.textContent = `${stats.netPnL >= 0 ? '+' : ''}$${stats.netPnL.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+      pnlEl.className = `stat-value ${stats.netPnL >= 0 ? 'positive' : 'negative'}`;
+      document.getElementById('stat-r-multiple').textContent = `${stats.totalR >= 0 ? '+' : ''}${stats.totalR.toFixed(1)} R Total`;
+      document.getElementById('stat-win-rate').textContent = `${stats.winRate.toFixed(1)}%`;
+      document.getElementById('stat-win-loss-count').textContent = `${stats.wins}W / ${stats.losses}L`;
+      document.getElementById('stat-profit-factor').textContent = stats.pf.toFixed(2);
+      document.getElementById('stat-expectancy').textContent = `${stats.expectancy >= 0 ? '+' : ''}$${stats.expectancy.toFixed(2)}`;
+      document.getElementById('stat-expectancy-r').textContent = `${stats.expectancyR >= 0 ? '+' : ''}${stats.expectancyR.toFixed(2)} R`;
+      document.getElementById('stat-max-dd').textContent = `-${stats.maxDD.toFixed(1)}%`;
+      document.getElementById('stat-current-streak').textContent = `Streak: ${stats.streak > 0 ? stats.streak + 'W' : Math.abs(stats.streak) + 'L'}`;
+
+      const tbody = document.getElementById('tradeTableBody');
+      const searchQuery = (document.getElementById('tradeSearchInput').value || '').toLowerCase();
+      const sessionFilter = document.getElementById('tradeFilterSession').value;
+      tbody.innerHTML = '';
+      const filteredTrades = trades.filter(t => {
+        const matchesSession = (sessionFilter === 'ALL' || t.session === sessionFilter);
+        const matchesSearch = !searchQuery || t.pair.toLowerCase().includes(searchQuery) || (t.strategy && t.strategy.toLowerCase().includes(searchQuery));
+        return matchesSession && matchesSearch;
+      });
+
+      if (filteredTrades.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="12" style="text-align:center; padding:2rem; color:var(--text-dim);">No trades recorded. Click <strong>+ Log Trade</strong> or load sample trades.</td></tr>`;
+      } else {
+        filteredTrades.slice().reverse().forEach(t => {
+          const tr = document.createElement('tr');
+          const isWin = t.pnl >= 0;
+          tr.innerHTML = `
+            <td style="font-family:var(--font-mono); font-size:0.775rem;">${t.date}</td>
+            <td style="font-weight:700;">${t.pair}</td>
+            <td><span class="badge" style="background:var(--badge-bg);">${t.type}</span></td>
+            <td><span class="badge ${t.side === 'LONG' ? 'badge-long' : 'badge-short'}">${t.side}</span></td>
+            <td style="font-family:var(--font-mono);">${parseFloat(t.entry).toFixed(2)}</td>
+            <td style="font-family:var(--font-mono);">${parseFloat(t.exit).toFixed(2)}</td>
+            <td style="font-family:var(--font-mono);">${t.size}</td>
+            <td style="font-family:var(--font-mono); font-weight:700;" class="${isWin ? 'positive' : 'negative'}">
+              ${isWin ? '+' : ''}$${parseFloat(t.pnl).toLocaleString()}
+            </td>
+            <td style="font-family:var(--font-mono);">${t.r ? (t.r > 0 ? '+' : '') + t.r + ' R' : '--'}</td>
+            <td><span class="badge badge-session">${t.session}</span></td>
+            <td><span style="font-size:0.75rem; color:var(--text-muted);">${t.strategy || '--'}</span></td>
+            <td><button class="btn btn-outline btn-sm" onclick="deleteTrade(${t.id})" style="padding:0.2rem 0.5rem; color:var(--accent-red);">&times;</button></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+      renderEquityChart();
+      renderDistributionChart();
+    }
+
+    window.deleteTrade = function(id) {
+      trades = trades.filter(t => t.id !== id);
+      saveTrades();
+    };
+
+    document.getElementById('tradeSearchInput').addEventListener('input', updateJournalUI);
+    document.getElementById('tradeFilterSession').addEventListener('change', updateJournalUI);
+    document.getElementById('resetDemoBtn').addEventListener('click', () => { trades = JSON.parse(JSON.stringify(DEMO_TRADES)); saveTrades(); });
+    document.getElementById('clearJournalBtn').addEventListener('click', () => {
+      if (confirm('Are you sure you want to clear all logged trades?')) {
+        trades = [];
+        saveTrades();
+      }
+    });
+
+    document.getElementById('exportDataBtn').addEventListener('click', () => {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(trades, null, 2));
+      const dlAnchor = document.createElement('a');
+      dlAnchor.setAttribute("href", dataStr);
+      dlAnchor.setAttribute("download", `ApexTrader_Journal.json`);
+      dlAnchor.click();
+    });
+
+    /* =============================================================
+       5. CANVAS RENDERING ENGINE
+       ============================================================= */
+    function getThemeColors() {
+      const isBlack = currentTheme === 'black';
+      const isLight = currentTheme === 'light';
+      return {
+        line: isBlack ? '#00d2ff' : (isLight ? '#2563eb' : '#3b82f6'),
+        fill: isBlack ? 'rgba(0, 210, 255, 0.12)' : (isLight ? 'rgba(37, 99, 235, 0.08)' : 'rgba(59, 130, 246, 0.1)'),
+        grid: isBlack ? '#1c1c1c' : (isLight ? '#e2e8f0' : '#1e293b'),
+        text: isBlack ? '#737373' : (isLight ? '#64748b' : '#94a3b8'),
+        green: isBlack ? '#00ff88' : (isLight ? '#059669' : '#10b981'),
+        red: isBlack ? '#ff3366' : (isLight ? '#e11d48' : '#f43f5e'),
+      };
+    }
+
+    function setupCanvas(canvas) {
+      if (!canvas) return null;
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) return null;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      const ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+      return { ctx, width: rect.width, height: rect.height };
+    }
+
+    function renderEquityChart() {
+      const canvas = document.getElementById('equityChartCanvas');
+      const setup = setupCanvas(canvas);
+      if (!setup) return;
+      const { ctx, width, height } = setup;
+      const cols = getThemeColors();
+      ctx.clearRect(0, 0, width, height);
+
+      let equity = [0], sum = 0;
+      trades.forEach(t => { sum += parseFloat(t.pnl) || 0; equity.push(sum); });
+      if (equity.length === 1) equity = [0, 0];
+      const minVal = Math.min(...equity, 0), maxVal = Math.max(...equity, 100);
+      const range = (maxVal - minVal) || 1;
+      const padX = 45, padY = 25, graphW = width - padX - 15, graphH = height - (padY * 2);
+
+      ctx.strokeStyle = cols.grid; ctx.lineWidth = 1; ctx.fillStyle = cols.text; ctx.font = '10px JetBrains Mono'; ctx.textAlign = 'right';
+      for (let i = 0; i <= 4; i++) {
+        const val = minVal + (range * (i / 4));
+        const y = padY + graphH - (graphH * (i / 4));
+        ctx.beginPath(); ctx.moveTo(padX, y); ctx.lineTo(width - 15, y); ctx.stroke();
+        ctx.fillText(`$${Math.round(val)}`, padX - 6, y + 3);
+      }
+      const points = equity.map((val, idx) => ({
+        x: padX + (idx / (equity.length - 1)) * graphW,
+        y: padY + graphH - (((val - minVal) / range) * graphH)
+      }));
+      const grad = ctx.createLinearGradient(0, padY, 0, height - padY);
+      grad.addColorStop(0, cols.fill); grad.addColorStop(1, 'transparent');
+      ctx.beginPath(); ctx.moveTo(points[0].x, points[0].y);
+      points.forEach(p => ctx.lineTo(p.x, p.y));
+      ctx.lineTo(points[points.length - 1].x, padY + graphH); ctx.lineTo(points[0].x, padY + graphH);
+      ctx.closePath(); ctx.fillStyle = grad; ctx.fill();
+      ctx.beginPath(); ctx.moveTo(points[0].x, points[0].y);
+      points.forEach(p => ctx.lineTo(p.x, p.y));
+      ctx.strokeStyle = cols.line; ctx.lineWidth = 2.5; ctx.stroke();
+    }
+
+    function renderDistributionChart() {
+      const canvas = document.getElementById('distributionChartCanvas');
+      const setup = setupCanvas(canvas);
+      if (!setup) return;
+      const { ctx, width, height } = setup;
+      const cols = getThemeColors();
+      ctx.clearRect(0, 0, width, height);
+      if (trades.length === 0) return;
+
+      const padX = 40, padY = 20, graphW = width - padX - 15, graphH = height - (padY * 2);
+      const pnls = trades.map(t => parseFloat(t.pnl) || 0);
+      const maxAbs = Math.max(...pnls.map(Math.abs), 100);
+      const zeroY = padY + (graphH / 2);
+      ctx.strokeStyle = cols.grid; ctx.beginPath(); ctx.moveTo(padX, zeroY); ctx.lineTo(width - 15, zeroY); ctx.stroke();
+      const barW = Math.max(3, Math.min(22, (graphW / trades.length) - 4));
+      pnls.forEach((pnl, i) => {
+        const x = padX + (i / trades.length) * graphW + 4;
+        const barH = (Math.abs(pnl) / maxAbs) * (graphH / 2);
+        const y = pnl >= 0 ? zeroY - barH : zeroY;
+        ctx.fillStyle = pnl >= 0 ? cols.green : cols.red;
+        ctx.fillRect(x, y, barW, barH);
+      });
+    }
+
+    /* =============================================================
+       6. RISK:REWARD CALCULATOR (CFD, FUTURES, FOREX, CRYPTO)
+       ============================================================= */
+    const ASSET_CATALOG = {
+      futures: [
+        { name: 'ES - E-mini S&P 500', tickSize: 0.25, tickValue: 12.50, unit: 'contract', defaultPrice: 5120 },
+        { name: 'MES - Micro E-mini S&P', tickSize: 0.25, tickValue: 1.25, unit: 'contract', defaultPrice: 5120 },
+        { name: 'NQ - E-mini Nasdaq 100', tickSize: 0.25, tickValue: 5.00, unit: 'contract', defaultPrice: 18200 },
+        { name: 'MNQ - Micro E-mini Nasdaq', tickSize: 0.25, tickValue: 0.50, unit: 'contract', defaultPrice: 18200 },
+        { name: 'YM - E-mini Dow', tickSize: 1.0, tickValue: 5.00, unit: 'contract', defaultPrice: 39500 },
+        { name: 'CL - Crude Oil Futures', tickSize: 0.01, tickValue: 10.00, unit: 'contract', defaultPrice: 82.50 },
+        { name: 'GC - Gold Futures', tickSize: 0.10, tickValue: 10.00, unit: 'contract', defaultPrice: 2350.0 }
+      ],
+      forex: [
+        { name: 'EUR/USD', pip: 0.0001, pipValStd: 10.00, unit: 'lots', defaultPrice: 1.0850 },
+        { name: 'GBP/USD', pip: 0.0001, pipValStd: 10.00, unit: 'lots', defaultPrice: 1.2720 },
+        { name: 'USD/JPY (JPY Pair)', pip: 0.01, pipValStd: 6.80, unit: 'lots', defaultPrice: 154.50 },
+        { name: 'AUD/USD', pip: 0.0001, pipValStd: 10.00, unit: 'lots', defaultPrice: 0.6550 }
+      ],
+      cfd: [
+        { name: 'US30 (Dow CFD)', pointVal: 1.0, unit: 'lots', defaultPrice: 39500 },
+        { name: 'NAS100 (Nasdaq CFD)', pointVal: 1.0, unit: 'lots', defaultPrice: 18200 },
+        { name: 'XAU/USD (Gold CFD)', pointVal: 100.0, unit: 'lots', defaultPrice: 2350.0 }
+      ],
+      crypto: [
+        { name: 'BTC/USD', unit: 'coins', defaultPrice: 65000 },
+        { name: 'ETH/USD', unit: 'coins', defaultPrice: 3450 }
+      ]
+    };
+
+    function populateInstruments() {
+      const assetClass = document.getElementById('calcAssetClass').value;
+      const select = document.getElementById('calcInstrument');
+      select.innerHTML = '';
+      ASSET_CATALOG[assetClass].forEach((item, index) => {
+        const opt = document.createElement('option');
+        opt.value = index; opt.textContent = item.name;
+        select.appendChild(opt);
+      });
+      loadInstrumentDefaults();
+    }
+
+    function loadInstrumentDefaults() {
+      const assetClass = document.getElementById('calcAssetClass').value;
+      const idx = document.getElementById('calcInstrument').value;
+      const inst = ASSET_CATALOG[assetClass][idx];
+      calculateRiskReward();
+    }
+
+    function calculateRiskReward() {
+      const assetClass = document.getElementById('calcAssetClass').value;
+      const instIdx = document.getElementById('calcInstrument').value;
+      const inst = ASSET_CATALOG[assetClass][instIdx];
+      if (!inst) return;
+
+      const balance = parseFloat(document.getElementById('calcAccountBalance').value);
+      const riskType = document.getElementById('calcRiskType').value;
+      const riskVal = parseFloat(document.getElementById('calcRiskPercent').value);
+      const entry = parseFloat(document.getElementById('calcEntryPrice').value);
+      const sl = parseFloat(document.getElementById('calcStopLoss').value);
+      const tp = parseFloat(document.getElementById('calcTakeProfit').value);
+      const commPerLot = parseFloat(document.getElementById('calcCommission').value) || 0;
+
+      // Handle blank/empty inputs gracefully
+      if (isNaN(entry) || isNaN(sl) || isNaN(tp) || isNaN(balance) || isNaN(riskVal)) {
+        document.getElementById('resPositionSize').textContent = '--';
+        document.getElementById('resSizeSub').textContent = 'Fill in Entry, SL, TP, and Balance above';
+        document.getElementById('resDollarRisk').textContent = '--';
+        document.getElementById('resDollarReward').textContent = '--';
+        document.getElementById('resRRRatio').textContent = '--';
+        document.getElementById('resStopDistance').textContent = '--';
+        document.getElementById('resBreakevenWinRate').textContent = '--';
+        document.getElementById('resFees').textContent = '--';
+        return;
+      }
+
+      const dollarRisk = (riskType === 'percent') ? (balance * (riskVal / 100)) : riskVal;
+      const stopDistance = Math.abs(entry - sl);
+      const rewardDistance = Math.abs(tp - entry);
+      if (stopDistance <= 0) return;
+
+      let positionSize = 0, tickOrPipInfo = '', riskPerUnit = 0;
+      if (assetClass === 'futures') {
+        const ticksAtRisk = stopDistance / inst.tickSize;
+        riskPerUnit = ticksAtRisk * inst.tickValue;
+        positionSize = dollarRisk / riskPerUnit;
+        tickOrPipInfo = `${ticksAtRisk.toFixed(1)} Ticks`;
+      } else if (assetClass === 'forex') {
+        const pipsAtRisk = stopDistance / inst.pip;
+        riskPerUnit = pipsAtRisk * inst.pipValStd;
+        positionSize = dollarRisk / riskPerUnit;
+        tickOrPipInfo = `${pipsAtRisk.toFixed(1)} Pips`;
+      } else {
+        riskPerUnit = stopDistance * (inst.pointVal || 1);
+        positionSize = dollarRisk / riskPerUnit;
+        tickOrPipInfo = `${stopDistance.toFixed(2)} pts`;
+      }
+
+      const roundedSize = Math.max(0.01, parseFloat(positionSize.toFixed(2)));
+      const dollarReward = (rewardDistance / stopDistance) * dollarRisk;
+      const rrRatio = stopDistance > 0 ? (rewardDistance / stopDistance) : 0;
+      const breakevenWinRate = rrRatio > 0 ? (1 / (1 + rrRatio)) * 100 : 0;
+      const totalFees = commPerLot * roundedSize * 2;
+
+      document.getElementById('hudAssetBadge').textContent = inst.name;
+      document.getElementById('resPositionSize').textContent = `${roundedSize} ${inst.unit || 'Lots'}`;
+      document.getElementById('resSizeSub').textContent = `Exact: ${positionSize.toFixed(4)} | Distance: ${tickOrPipInfo}`;
+      document.getElementById('resDollarRisk').textContent = `$${dollarRisk.toFixed(2)} (${((dollarRisk / balance) * 100).toFixed(2)}%)`;
+      document.getElementById('resDollarReward').textContent = `+$${dollarReward.toFixed(2)} (+${((dollarReward / balance) * 100).toFixed(2)}%)`;
+      document.getElementById('resRRRatio').textContent = `1 : ${rrRatio.toFixed(2)}`;
+      document.getElementById('resStopDistance').textContent = `${stopDistance.toFixed(2)} (${tickOrPipInfo})`;
+      document.getElementById('resBreakevenWinRate').textContent = `${breakevenWinRate.toFixed(1)}% needed`;
+      document.getElementById('resFees').textContent = `$${totalFees.toFixed(2)} roundturn`;
+    }
+
+    document.getElementById('btnSideLong').addEventListener('click', () => {
+      calcSide = 'LONG';
+      document.getElementById('btnSideLong').style.borderColor = 'var(--accent-green)';
+      document.getElementById('btnSideLong').style.color = 'var(--accent-green)';
+      document.getElementById('btnSideShort').style.borderColor = 'var(--border-strong)';
+      document.getElementById('btnSideShort').style.color = 'var(--text-main)';
+      calculateRiskReward();
+    });
+
+    document.getElementById('btnSideShort').addEventListener('click', () => {
+      calcSide = 'SHORT';
+      document.getElementById('btnSideShort').style.borderColor = 'var(--accent-red)';
+      document.getElementById('btnSideShort').style.color = 'var(--accent-red)';
+      document.getElementById('btnSideLong').style.borderColor = 'var(--border-strong)';
+      document.getElementById('btnSideLong').style.color = 'var(--text-main)';
+      calculateRiskReward();
+    });
+
+    document.getElementById('btnCalcPreset').addEventListener('click', () => {
+      document.getElementById('calcAccountBalance').value = 50000;
+      document.getElementById('calcRiskPercent').value = 1.0;
+      document.getElementById('calcEntryPrice').value = 5120.00;
+      document.getElementById('calcStopLoss').value = 5110.00;
+      document.getElementById('calcTakeProfit').value = 5150.00;
+      document.getElementById('calcCommission').value = 2.50;
+      calculateRiskReward();
+    });
+
+    document.getElementById('calcAssetClass').addEventListener('change', populateInstruments);
+    document.getElementById('calcInstrument').addEventListener('change', loadInstrumentDefaults);
+    ['calcAccountBalance', 'calcRiskPercent', 'calcRiskType', 'calcEntryPrice', 'calcStopLoss', 'calcTakeProfit', 'calcCommission'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', calculateRiskReward);
+        el.addEventListener('change', calculateRiskReward);
+      }
+    });
+
+    document.getElementById('btnApplyToJournal').addEventListener('click', () => {
+      const assetClass = document.getElementById('calcAssetClass').value;
+      const instIdx = document.getElementById('calcInstrument').value;
+      const inst = ASSET_CATALOG[assetClass][instIdx];
+      document.getElementById('tradePair').value = inst ? inst.name.split(' ')[0] : 'ES1!';
+      document.getElementById('tradeDirection').value = calcSide;
+      document.getElementById('tradeEntry').value = document.getElementById('calcEntryPrice').value || 0;
+      document.getElementById('tradeExit').value = document.getElementById('calcTakeProfit').value || 0;
+      document.getElementById('tradeSize').value = parseFloat(document.getElementById('resPositionSize').textContent) || 1;
+      const dollarReward = parseFloat(document.getElementById('resDollarReward').textContent.replace(/[^0-9.]/g, '')) || 0;
+      document.getElementById('tradePnL').value = dollarReward;
+      const rr = parseFloat(document.getElementById('resRRRatio').textContent.replace('1 : ', '')) || 2.0;
+      document.getElementById('tradeR').value = rr;
+      openTradeModal();
+    });
+
+    /* =============================================================
+       7. ADVANCED MONTE CARLO SIMULATOR (STANDALONE ENGINE)
+       ============================================================= */
+    const elTradesCount = document.getElementById('mcTradesCount');
+    const elTradesPerWeek = document.getElementById('mcTradesPerWeek');
+    const elTradesPerMonth = document.getElementById('mcTradesPerMonth');
+    const elHorizonMonths = document.getElementById('mcHorizonMonths');
+    const elCadenceHint = document.getElementById('mcCadenceHint');
+
+    function updateCadenceHint() {
+      const tpw = parseFloat(elTradesPerWeek.value);
+      const tpm = parseFloat(elTradesPerMonth.value);
+      const total = parseInt(elTradesCount.value);
+
+      if (tpw && total) {
+        const weeks = (total / tpw).toFixed(1);
+        const mo = (weeks / 4.333).toFixed(1);
+        elCadenceHint.textContent = `⚡ Cadence: ${tpw}/wk (~${Math.round(tpw * 4.333)}/mo) → ${total} trades spans ~${weeks} weeks (~${mo} months)`;
+        elCadenceHint.style.color = 'var(--accent-primary)';
+      } else if (tpm && total) {
+        const mo = (total / tpm).toFixed(1);
+        elCadenceHint.textContent = `⚡ Cadence: ~${(tpm / 4.333).toFixed(1)}/wk (${tpm}/mo) → ${total} trades spans ~${mo} months`;
+        elCadenceHint.style.color = 'var(--accent-primary)';
+      } else {
+        elCadenceHint.textContent = '⚡ Auto-calculates trades across weeks & months for realistic calendar mapping.';
+        elCadenceHint.style.color = 'var(--text-dim)';
+      }
+    }
+
+    if (elTradesPerWeek) {
+      elTradesPerWeek.addEventListener('input', () => {
+        const tpw = parseFloat(elTradesPerWeek.value);
+        if (!isNaN(tpw) && tpw > 0) {
+          elTradesPerMonth.value = Math.round(tpw * 4.333);
+          const months = parseFloat(elHorizonMonths.value);
+          if (!isNaN(months) && months > 0) {
+            elTradesCount.value = Math.round(tpw * 4.333 * months);
+          } else if (elTradesCount.value) {
+            elHorizonMonths.value = (parseInt(elTradesCount.value) / (tpw * 4.333)).toFixed(1);
+          }
+        }
+        updateCadenceHint();
+      });
+    }
+
+    if (elTradesPerMonth) {
+      elTradesPerMonth.addEventListener('input', () => {
+        const tpm = parseFloat(elTradesPerMonth.value);
+        if (!isNaN(tpm) && tpm > 0) {
+          elTradesPerWeek.value = (tpm / 4.333).toFixed(1);
+          const months = parseFloat(elHorizonMonths.value);
+          if (!isNaN(months) && months > 0) {
+            elTradesCount.value = Math.round(tpm * months);
+          } else if (elTradesCount.value) {
+            elHorizonMonths.value = (parseInt(elTradesCount.value) / tpm).toFixed(1);
+          }
+        }
+        updateCadenceHint();
+      });
+    }
+
+    if (elHorizonMonths) {
+      elHorizonMonths.addEventListener('input', () => {
+        const months = parseFloat(elHorizonMonths.value);
+        const tpw = parseFloat(elTradesPerWeek.value);
+        const tpm = parseFloat(elTradesPerMonth.value);
+        if (!isNaN(months) && months > 0) {
+          if (!isNaN(tpw) && tpw > 0) {
+            elTradesCount.value = Math.round(tpw * 4.333 * months);
+          } else if (!isNaN(tpm) && tpm > 0) {
+            elTradesCount.value = Math.round(tpm * months);
+          }
+        }
+        updateCadenceHint();
+      });
+    }
+
+    if (elTradesCount) {
+      elTradesCount.addEventListener('input', () => {
+        const total = parseInt(elTradesCount.value);
+        const tpw = parseFloat(elTradesPerWeek.value);
+        const tpm = parseFloat(elTradesPerMonth.value);
+        if (!isNaN(total) && total > 0) {
+          if (!isNaN(tpw) && tpw > 0) {
+            elHorizonMonths.value = (total / (tpw * 4.333)).toFixed(1);
+          } else if (!isNaN(tpm) && tpm > 0) {
+            elHorizonMonths.value = (total / tpm).toFixed(1);
+          }
+        }
+        updateCadenceHint();
+      });
+    }
+
+    document.getElementById('btnLoadJournalToMC').addEventListener('click', () => {
+      let tpw = 5;
+      let tpm = 22;
+      let winRate = 52.0;
+      let rr = 2.0;
+      if (trades.length > 0) {
+        const stats = calculateStats();
+        winRate = parseFloat(stats.winRate.toFixed(1));
+        rr = stats.pf > 0 ? parseFloat(stats.pf.toFixed(2)) : 2.0;
+        const uniqueDates = [...new Set(trades.map(t => t.date))].sort();
+        if (uniqueDates.length >= 2) {
+          const firstDate = new Date(uniqueDates[0]);
+          const lastDate = new Date(uniqueDates[uniqueDates.length - 1]);
+          const diffDays = Math.max(1, (lastDate - firstDate) / (1000 * 60 * 60 * 24));
+          const diffWeeks = Math.max(0.5, diffDays / 7);
+          tpw = Math.max(1, parseFloat((trades.length / diffWeeks).toFixed(1)));
+          tpm = Math.round(tpw * 4.333);
+        }
+      }
+      document.getElementById('mcCapital').value = 50000;
+      document.getElementById('mcTradesCount').value = 100;
+      document.getElementById('mcTradesPerWeek').value = tpw;
+      document.getElementById('mcTradesPerMonth').value = tpm;
+      document.getElementById('mcHorizonMonths').value = (100 / tpm).toFixed(1);
+      document.getElementById('mcWinRate').value = winRate;
+      document.getElementById('mcRiskPct').value = 1.0;
+      document.getElementById('mcRR').value = rr;
+      updateCadenceHint();
+      runMonteCarloSimulation();
+    });
+
+    function runMonteCarloSimulation() {
+      let capital = parseFloat(document.getElementById('mcCapital').value);
+      let tradesCount = parseInt(document.getElementById('mcTradesCount').value);
+      let winRatePct = parseFloat(document.getElementById('mcWinRate').value);
+      let riskPctVal = parseFloat(document.getElementById('mcRiskPct').value);
+      let rrVal = parseFloat(document.getElementById('mcRR').value);
+
+      // If left blank, smoothly auto-populate standard baseline parameters so simulation runs instantly
+      if (isNaN(capital)) { capital = 50000; document.getElementById('mcCapital').value = capital; }
+      if (isNaN(tradesCount)) { tradesCount = 100; document.getElementById('mcTradesCount').value = tradesCount; }
+      if (isNaN(winRatePct)) { winRatePct = 52.0; document.getElementById('mcWinRate').value = winRatePct; }
+      if (isNaN(riskPctVal)) { riskPctVal = 1.0; document.getElementById('mcRiskPct').value = riskPctVal; }
+      if (isNaN(rrVal)) { rrVal = 2.0; document.getElementById('mcRR').value = rrVal; }
+      if (!document.getElementById('mcTradesPerWeek').value) {
+        document.getElementById('mcTradesPerWeek').value = 5;
+        document.getElementById('mcTradesPerMonth').value = 22;
+        document.getElementById('mcHorizonMonths').value = (tradesCount / 22).toFixed(1);
+        updateCadenceHint();
+      }
+
+      const iterations = 1000;
+      const winRate = winRatePct / 100;
+      const riskPct = riskPctVal / 100;
+      const rr = rrVal;
+
+      const paths = [];
+      let dd10Count = 0, dd20Count = 0, dd30Count = 0, dd50Count = 0;
+      const finalBalances = [];
+      let totalWinsCount = 0;
+      let totalGrossWins = 0;
+      let totalGrossLosses = 0;
+      let overallMaxLossStreak = 0;
+      let overallMaxWinStreak = 0;
+      let overallWorstSingleLoss = 0;
+
+      for (let i = 0; i < iterations; i++) {
+        let currentCap = capital, peak = capital, maxDD = 0;
+        let curWinStreak = 0, curLossStreak = 0;
+        let runMaxWinStreak = 0, runMaxLossStreak = 0;
+        const path = [currentCap];
+
+        for (let t = 0; t < tradesCount; t++) {
+          const isWin = Math.random() < winRate;
+          const riskDollar = currentCap * riskPct;
+
+          if (isWin) {
+            const gain = riskDollar * rr;
+            currentCap += gain;
+            totalWinsCount++;
+            totalGrossWins += gain;
+            curWinStreak++;
+            curLossStreak = 0;
+            if (curWinStreak > runMaxWinStreak) runMaxWinStreak = curWinStreak;
+          } else {
+            currentCap -= riskDollar;
+            totalGrossLosses += riskDollar;
+            curLossStreak++;
+            curWinStreak = 0;
+            if (curLossStreak > runMaxLossStreak) runMaxLossStreak = curLossStreak;
+            if (riskDollar > overallWorstSingleLoss) overallWorstSingleLoss = riskDollar;
+          }
+
+          if (currentCap > peak) peak = currentCap;
+          const dd = ((peak - currentCap) / peak) * 100;
+          if (dd > maxDD) maxDD = dd;
+          path.push(currentCap);
+        }
+
+        if (maxDD >= 10) dd10Count++;
+        if (maxDD >= 20) dd20Count++;
+        if (maxDD >= 30) dd30Count++;
+        if (maxDD >= 50) dd50Count++;
+
+        if (runMaxWinStreak > overallMaxWinStreak) overallMaxWinStreak = runMaxWinStreak;
+        if (runMaxLossStreak > overallMaxLossStreak) overallMaxLossStreak = runMaxLossStreak;
+
+        finalBalances.push(currentCap);
+        paths.push(path);
+      }
+
+      finalBalances.sort((a, b) => a - b);
+      const p5 = finalBalances[Math.floor(iterations * 0.05)];
+      const p25 = finalBalances[Math.floor(iterations * 0.25)];
+      const p50 = finalBalances[Math.floor(iterations * 0.50)];
+      const p75 = finalBalances[Math.floor(iterations * 0.75)];
+      const p95 = finalBalances[Math.floor(iterations * 0.95)];
+
+      const totalSimTrades = iterations * tradesCount;
+      const simWinRate = (totalWinsCount / totalSimTrades) * 100;
+      const simPF = totalGrossLosses > 0 ? (totalGrossWins / totalGrossLosses) : 99.9;
+      const simExpectancy = (totalGrossWins - totalGrossLosses) / totalSimTrades;
+
+      lastMonteCarloResults = { paths, tradesCount, capital, p5, p25, p50, p75, p95 };
+
+      // Update Probability of Drawdown
+      document.getElementById('mcRisk10').textContent = `${((dd10Count / iterations) * 100).toFixed(1)}%`;
+      document.getElementById('mcRisk20').textContent = `${((dd20Count / iterations) * 100).toFixed(1)}%`;
+      document.getElementById('mcRisk30').textContent = `${((dd30Count / iterations) * 100).toFixed(1)}%`;
+      document.getElementById('mcRisk50').textContent = `${((dd50Count / iterations) * 100).toFixed(1)}%`;
+
+      // Update Quantitative Performance Cards
+      document.getElementById('mcResWinRate').textContent = `${simWinRate.toFixed(1)}%`;
+      document.getElementById('mcResPF').textContent = simPF.toFixed(2);
+      document.getElementById('mcResExpectancy').textContent = `${simExpectancy >= 0 ? '+' : ''}$${simExpectancy.toFixed(2)}`;
+      document.getElementById('mcResExpectancyR').textContent = `+${((winRate * rr) - (1 - winRate)).toFixed(2)} R/trade`;
+      document.getElementById('mcResMaxLoss').textContent = `-$${Math.round(overallWorstSingleLoss).toLocaleString()}`;
+
+      document.getElementById('mcResMaxWinStreak').textContent = `${overallMaxWinStreak} Wins`;
+      document.getElementById('mcResMaxLossStreak').textContent = `${overallMaxLossStreak} Losses`;
+      document.getElementById('mcResult50').textContent = `$${Math.round(p50).toLocaleString()}`;
+      document.getElementById('mcResRange').textContent = `$${Math.round(p95 / 1000)}k / $${Math.round(p5 / 1000)}k`;
+
+      // Update Cadence & Weekly/Monthly Projected Metrics
+      const tpw = parseFloat(document.getElementById('mcTradesPerWeek').value) || 5;
+      const tpm = parseFloat(document.getElementById('mcTradesPerMonth').value) || Math.round(tpw * 4.333);
+      const weeklyExp = simExpectancy * tpw;
+      const monthlyExp = simExpectancy * tpm;
+      const weeksSpan = (tradesCount / tpw).toFixed(1);
+      const monthsSpan = (tradesCount / tpm).toFixed(1);
+
+      document.getElementById('mcResWeeklyTrades').textContent = `${tpw}/wk`;
+      document.getElementById('mcResMonthlyTrades').textContent = `~${tpm}/mo`;
+      const elWeeklyPnL = document.getElementById('mcResWeeklyPnL');
+      elWeeklyPnL.textContent = `${weeklyExp >= 0 ? '+' : ''}$${Math.round(weeklyExp).toLocaleString()}`;
+      elWeeklyPnL.className = `stat-value ${weeklyExp >= 0 ? 'positive' : 'negative'}`;
+      const elMonthlyPnL = document.getElementById('mcResMonthlyPnL');
+      elMonthlyPnL.textContent = `${monthlyExp >= 0 ? '+' : ''}$${Math.round(monthlyExp).toLocaleString()}`;
+      elMonthlyPnL.className = `stat-value ${monthlyExp >= 0 ? 'positive' : 'negative'}`;
+      document.getElementById('mcResDurationSpan').textContent = `~${monthsSpan} Mos (${weeksSpan} Wks)`;
+
+      drawMonteCarloChart(lastMonteCarloResults);
+      renderMCCalendar();
+    }
+
+    function drawMonteCarloChart(res) {
+      const canvas = document.getElementById('monteCarloCanvas');
+      const setup = setupCanvas(canvas);
+      if (!setup) return;
+      const { ctx, width, height } = setup;
+      const cols = getThemeColors();
+      ctx.clearRect(0, 0, width, height);
+      const padX = 55, padY = 25, graphW = width - padX - 15, graphH = height - (padY * 2);
+      const minVal = Math.min(res.capital * 0.5, res.p5);
+      const maxVal = Math.max(res.capital * 1.5, res.p95 * 1.05);
+      const range = (maxVal - minVal) || 1;
+
+      ctx.strokeStyle = cols.grid; ctx.fillStyle = cols.text; ctx.font = '10px JetBrains Mono'; ctx.textAlign = 'right';
+      for (let i = 0; i <= 4; i++) {
+        const val = minVal + (range * (i / 4));
+        const y = padY + graphH - (graphH * (i / 4));
+        ctx.beginPath(); ctx.moveTo(padX, y); ctx.lineTo(width - 15, y); ctx.stroke();
+        ctx.fillText(`$${Math.round(val / 1000)}k`, padX - 6, y + 3);
+      }
+
+      ctx.lineWidth = 1; ctx.strokeStyle = cols.fill;
+      for (let i = 0; i < 50; i++) {
+        const path = res.paths[i * 20] || res.paths[i];
+        ctx.beginPath();
+        path.forEach((val, step) => {
+          const x = padX + (step / res.tradesCount) * graphW;
+          const y = padY + graphH - (((val - minVal) / range) * graphH);
+          if (step === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+      }
+
+      const sortedPaths = [...res.paths].sort((a, b) => a[a.length - 1] - b[b.length - 1]);
+      function drawQuantile(path, strokeColor, lineWidth) {
+        ctx.strokeStyle = strokeColor; ctx.lineWidth = lineWidth; ctx.beginPath();
+        path.forEach((val, step) => {
+          const x = padX + (step / res.tradesCount) * graphW;
+          const y = padY + graphH - (((val - minVal) / range) * graphH);
+          if (step === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+      }
+      drawQuantile(sortedPaths[Math.floor(sortedPaths.length * 0.95)], cols.green, 2.5);
+      drawQuantile(sortedPaths[Math.floor(sortedPaths.length * 0.50)], cols.line, 3);
+      drawQuantile(sortedPaths[Math.floor(sortedPaths.length * 0.05)], cols.red, 2.5);
+    }
+
+    document.getElementById('btnRunMonteCarlo').addEventListener('click', runMonteCarloSimulation);
+
+    /* =============================================================
+       8. EMBEDDED JOURNAL CALENDAR (INDEPENDENT)
+          Views: 1 Day, 1 Week, 1 Month, Per Trade
+       ============================================================= */
+    document.querySelectorAll('[data-jcal-view]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-jcal-view]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        jCalView = btn.getAttribute('data-jcal-view');
+
+        document.querySelectorAll('.jcal-view-content').forEach(view => view.style.display = 'none');
+        const activeContainer = document.getElementById(`jview-${jCalView}`);
+        if (activeContainer) activeContainer.style.display = 'block';
+
+        renderJournalCalendar();
+      });
+    });
+
+    document.getElementById('jcalPrev').addEventListener('click', () => {
+      if (jCalView === 'month') {
+        jCalDate.setMonth(jCalDate.getMonth() - 1);
+      } else if (jCalView === 'week') {
+        jCalDate.setDate(jCalDate.getDate() - 7);
+      } else if (jCalView === 'day') {
+        jCalDate.setDate(jCalDate.getDate() - 1);
+      }
+      renderJournalCalendar();
+    });
+
+    document.getElementById('jcalNext').addEventListener('click', () => {
+      if (jCalView === 'month') {
+        jCalDate.setMonth(jCalDate.getMonth() + 1);
+      } else if (jCalView === 'week') {
+        jCalDate.setDate(jCalDate.getDate() + 7);
+      } else if (jCalView === 'day') {
+        jCalDate.setDate(jCalDate.getDate() + 1);
+      }
+      renderJournalCalendar();
+    });
+
+    function renderJournalCalendar() {
+      const year = jCalDate.getFullYear();
+      const month = jCalDate.getMonth();
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+      // Update header label
+      if (jCalView === 'month') {
+        document.getElementById('jcalTimeframeLabel').textContent = `${monthNames[month]} ${year}`;
+      } else if (jCalView === 'week') {
+        document.getElementById('jcalTimeframeLabel').textContent = `Week of ${monthNames[month]} ${jCalDate.getDate()}, ${year}`;
+      } else if (jCalView === 'day') {
+        document.getElementById('jcalTimeframeLabel').textContent = `${monthNames[month]} ${jCalDate.getDate()}, ${year}`;
+      } else {
+        document.getElementById('jcalTimeframeLabel').textContent = `All Logged Trades (${trades.length})`;
+      }
+
+      const tradeMap = {};
+      trades.forEach(t => {
+        if (!tradeMap[t.date]) tradeMap[t.date] = [];
+        tradeMap[t.date].push(t);
+      });
+
+      let periodPnL = 0, greenCount = 0, redCount = 0, bestDayPnL = 0, periodTradesCount = 0;
+
+      // 1. MONTH VIEW
+      if (jCalView === 'month') {
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const grid = document.getElementById('jcalendarDaysGrid');
+        grid.innerHTML = '';
+
+        for (let i = 0; i < firstDay; i++) {
+          const cell = document.createElement('div');
+          cell.className = 'calendar-cell other-month';
+          grid.appendChild(cell);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const cell = document.createElement('div');
+          cell.className = 'calendar-cell';
+          const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          const dayTrades = tradeMap[dateStr] || [];
+          let dayPnL = 0;
+          dayTrades.forEach(t => dayPnL += (parseFloat(t.pnl) || 0));
+
+          if (dayTrades.length > 0) {
+            periodPnL += dayPnL;
+            periodTradesCount += dayTrades.length;
+            if (dayPnL > 0) greenCount++; else if (dayPnL < 0) redCount++;
+            if (dayPnL > bestDayPnL) bestDayPnL = dayPnL;
+          }
+
+          cell.innerHTML = `
+            <div class="day-num">${day}</div>
+            ${dayTrades.length > 0 ? `
+              <div>
+                <div class="day-pnl ${dayPnL >= 0 ? 'positive' : 'negative'}">${dayPnL >= 0 ? '+' : ''}$${Math.round(dayPnL)}</div>
+                <div class="day-count">${dayTrades.length} trade${dayTrades.length > 1 ? 's' : ''}</div>
+              </div>
+            ` : '<div style="font-size:0.7rem; color:var(--text-dim); text-align:right;">--</div>'}
+          `;
+
+          cell.addEventListener('click', () => showDayDetails(dateStr, dayTrades, dayPnL));
+          grid.appendChild(cell);
+        }
+      }
+
+      // 2. WEEK VIEW
+      else if (jCalView === 'week') {
+        const weekGrid = document.getElementById('jweekCardsContainer');
+        weekGrid.innerHTML = '';
+        const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+        const startOfWeek = new Date(jCalDate);
+        startOfWeek.setDate(jCalDate.getDate() - jCalDate.getDay());
+
+        for (let i = 0; i < 7; i++) {
+          const dayDate = new Date(startOfWeek);
+          dayDate.setDate(startOfWeek.getDate() + i);
+          const dateStr = `${dayDate.getFullYear()}-${String(dayDate.getMonth() + 1).padStart(2, '0')}-${String(dayDate.getDate()).padStart(2, '0')}`;
+          const dayTrades = tradeMap[dateStr] || [];
+          let dayPnL = 0, winTrades = 0;
+          dayTrades.forEach(t => {
+            const p = parseFloat(t.pnl) || 0;
+            dayPnL += p;
+            if (p > 0) winTrades++;
+          });
+
+          if (dayTrades.length > 0) {
+            periodPnL += dayPnL;
+            periodTradesCount += dayTrades.length;
+            if (dayPnL > 0) greenCount++; else if (dayPnL < 0) redCount++;
+            if (dayPnL > bestDayPnL) bestDayPnL = dayPnL;
+          }
+
+          const card = document.createElement('div');
+          card.className = 'week-day-card';
+          card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:0.4rem;">
+              <span style="font-weight:700; font-size:0.85rem;">${dayNames[i]}</span>
+              <span style="font-size:0.75rem; color:var(--text-dim);">${dayDate.getDate()} ${monthNames[dayDate.getMonth()].slice(0,3)}</span>
+            </div>
+            <div style="font-family:var(--font-mono); font-size:1.15rem; font-weight:700;" class="${dayTrades.length ? (dayPnL >= 0 ? 'positive' : 'negative') : ''}">
+              ${dayTrades.length ? `${dayPnL >= 0 ? '+' : ''}$${Math.round(dayPnL)}` : '$0'}
+            </div>
+            <div style="font-size:0.75rem; color:var(--text-muted); display:flex; justify-content:space-between;">
+              <span>${dayTrades.length} Trades</span>
+              <span>${dayTrades.length ? `${((winTrades / dayTrades.length) * 100).toFixed(0)}% Win` : '--'}</span>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="showDayDetails('${dateStr}', ${JSON.stringify(dayTrades).replace(/"/g, '&quot;')}, ${dayPnL})" style="margin-top:0.35rem; width:100%;">
+              View Details
+            </button>
+          `;
+          weekGrid.appendChild(card);
+        }
+      }
+
+      // 3. DAY VIEW
+      else if (jCalView === 'day') {
+        const dayContainer = document.getElementById('jdayAgendaContainer');
+        const dateStr = `${jCalDate.getFullYear()}-${String(jCalDate.getMonth() + 1).padStart(2, '0')}-${String(jCalDate.getDate()).padStart(2, '0')}`;
+        const dayTrades = tradeMap[dateStr] || [];
+        let dayPnL = 0;
+        dayTrades.forEach(t => dayPnL += (parseFloat(t.pnl) || 0));
+
+        periodPnL = dayPnL;
+        periodTradesCount = dayTrades.length;
+        if (dayPnL > 0) greenCount = 1; else if (dayPnL < 0) redCount = 1;
+
+        if (dayTrades.length === 0) {
+          dayContainer.innerHTML = `
+            <div style="text-align:center; padding:2.5rem; color:var(--text-dim);">
+              <h3>No trades taken on ${dateStr}</h3>
+              <p style="font-size:0.85rem; margin-top:0.5rem;">Use the arrows above to browse other days, or click "+ Log Trade" to record an entry.</p>
+            </div>
+          `;
+        } else {
+          let html = `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:0.5rem;">
+              <div>
+                <h3 style="font-size:1.1rem; font-weight:800;">Journal Day Overview — ${dateStr}</h3>
+                <span style="font-size:0.8rem; color:var(--text-muted);">${dayTrades.length} execution${dayTrades.length > 1 ? 's' : ''} logged</span>
+              </div>
+              <div style="font-family:var(--font-mono); font-size:1.5rem; font-weight:800;" class="${dayPnL >= 0 ? 'positive' : 'negative'}">
+                ${dayPnL >= 0 ? '+' : ''}$${Math.round(dayPnL).toLocaleString()}
+              </div>
+            </div>
+            <table class="trade-table">
+              <thead><tr><th>Pair</th><th>Side</th><th>Size</th><th>Entry</th><th>Exit</th><th>P&L</th><th>R-Multiple</th><th>Session</th><th>Setup</th><th>Notes</th></tr></thead>
+              <tbody>
+          `;
+          dayTrades.forEach(t => {
+            html += `
+              <tr>
+                <td><strong>${t.pair}</strong></td>
+                <td><span class="badge ${t.side === 'LONG' ? 'badge-long' : 'badge-short'}">${t.side}</span></td>
+                <td>${t.size}</td>
+                <td style="font-family:var(--font-mono);">${parseFloat(t.entry).toFixed(2)}</td>
+                <td style="font-family:var(--font-mono);">${parseFloat(t.exit).toFixed(2)}</td>
+                <td style="font-family:var(--font-mono); font-weight:700;" class="${t.pnl >= 0 ? 'positive' : 'negative'}">${t.pnl >= 0 ? '+' : ''}$${t.pnl}</td>
+                <td style="font-family:var(--font-mono);">${t.r ? (t.r > 0 ? '+' : '') + t.r + ' R' : '--'}</td>
+                <td><span class="badge badge-session">${t.session}</span></td>
+                <td>${t.strategy || '--'}</td>
+                <td style="font-size:0.75rem; color:var(--text-muted);">${t.notes || '--'}</td>
+              </tr>
+            `;
+          });
+          html += `</tbody></table>`;
+          dayContainer.innerHTML = html;
+        }
+      }
+
+      // 4. PER TRADE VIEW (CALENDAR-LIKE FORMAT)
+      else if (jCalView === 'trade') {
+        const tradesGrid = document.getElementById('jcalendarTradesGrid');
+        const tradeTableBody = document.getElementById('jcalPerTradeBody');
+        if (tradesGrid) tradesGrid.innerHTML = '';
+        if (tradeTableBody) tradeTableBody.innerHTML = '';
+        periodTradesCount = trades.length;
+
+        if (trades.length === 0) {
+          if (tradesGrid) tradesGrid.innerHTML = `<div style="grid-column:1 / -1; text-align:center; padding:2.5rem; color:var(--text-dim);">No trades recorded in journal.</div>`;
+          if (tradeTableBody) tradeTableBody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding:2rem; color:var(--text-dim);">No trades recorded in journal.</td></tr>`;
+        } else {
+          trades.forEach((t, idx) => {
+            const pnlVal = parseFloat(t.pnl) || 0;
+            periodPnL += pnlVal;
+            if (pnlVal > 0) greenCount++; else if (pnlVal < 0) redCount++;
+            const isWin = pnlVal >= 0;
+
+            // 1. Calendar Day Tile format (1, 2, 3, 4...)
+            if (tradesGrid) {
+              const cell = document.createElement('div');
+              cell.className = 'trade-cal-cell';
+              cell.innerHTML = `
+                <div class="trade-cal-head">
+                  <span class="trade-cal-num">${idx + 1}</span>
+                  <span class="trade-cal-date">${t.date}</span>
+                </div>
+                <div class="trade-cal-pnl ${isWin ? 'positive' : 'negative'}">
+                  ${isWin ? '+' : ''}$${Math.round(pnlVal).toLocaleString()}
+                </div>
+                <div class="trade-cal-footer">
+                  <span><strong>${t.pair}</strong> • ${t.side}</span>
+                  <span>${t.r ? (t.r > 0 ? '+' : '') + t.r + 'R' : (t.session || '--')}</span>
+                </div>
+              `;
+              cell.addEventListener('click', () => showDayDetails(t.date, [t], pnlVal));
+              tradesGrid.appendChild(cell);
+            }
+
+            // 2. Table row format
+            if (tradeTableBody) {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
+                <td><strong>#${idx + 1}</strong></td>
+                <td style="font-family:var(--font-mono); font-size:0.775rem;">${t.date}</td>
+                <td style="font-weight:700;">${t.pair}</td>
+                <td><span class="badge ${t.side === 'LONG' ? 'badge-long' : 'badge-short'}">${t.side}</span></td>
+                <td>${t.size}</td>
+                <td style="font-family:var(--font-mono);">${parseFloat(t.entry).toFixed(2)}</td>
+                <td style="font-family:var(--font-mono);">${parseFloat(t.exit).toFixed(2)}</td>
+                <td style="font-family:var(--font-mono); font-weight:700;" class="${isWin ? 'positive' : 'negative'}">${isWin ? '+' : ''}$${pnlVal}</td>
+                <td style="font-family:var(--font-mono);">${t.r ? (t.r > 0 ? '+' : '') + t.r + ' R' : '--'}</td>
+                <td><span class="badge badge-session">${t.session}</span></td>
+                <td>${t.strategy || '--'}</td>
+              `;
+              tradeTableBody.appendChild(tr);
+            }
+          });
+        }
+      }
+
+      // Update Period KPI Badges
+      const pnlEl = document.getElementById('jcalPeriodTotalPnL');
+      pnlEl.textContent = `${periodPnL >= 0 ? '+' : ''}$${periodPnL.toLocaleString()}`;
+      pnlEl.className = periodPnL >= 0 ? 'positive' : 'negative';
+      document.getElementById('jcalGreenDaysCount').textContent = `${greenCount} Green / ${redCount} Red`;
+      document.getElementById('jcalBestDayPnL').textContent = `+$${bestDayPnL.toLocaleString()}`;
+      document.getElementById('jcalTotalTradesCount').textContent = periodTradesCount;
+    }
+
+    // View toggle listeners for Journal Per Trade
+    const jTradeGridBtn = document.getElementById('jTradeGridToggleBtn');
+    const jTradeTableBtn = document.getElementById('jTradeTableToggleBtn');
+    if (jTradeGridBtn && jTradeTableBtn) {
+      jTradeGridBtn.addEventListener('click', () => {
+        jTradeGridBtn.classList.add('active');
+        jTradeTableBtn.classList.remove('active');
+        document.getElementById('jcalendarTradesGrid').style.display = 'grid';
+        document.getElementById('jtradeTableWrapper').style.display = 'none';
+      });
+      jTradeTableBtn.addEventListener('click', () => {
+        jTradeTableBtn.classList.add('active');
+        jTradeGridBtn.classList.remove('active');
+        document.getElementById('jcalendarTradesGrid').style.display = 'none';
+        document.getElementById('jtradeTableWrapper').style.display = 'block';
+      });
+    }
+
+    /* =============================================================
+       9. ADVANCED MONTE CARLO CALENDAR PROJECTION (INDEPENDENT)
+          Views: 1 Day, 1 Week, 1 Month, Per Trade
+       ============================================================= */
+    document.querySelectorAll('[data-mccal-view]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-mccal-view]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        mcCalView = btn.getAttribute('data-mccal-view');
+
+        document.querySelectorAll('.mccal-view-content').forEach(view => view.style.display = 'none');
+        const activeContainer = document.getElementById(`mcview-${mcCalView}`);
+        if (activeContainer) activeContainer.style.display = 'block';
+
+        renderMCCalendar();
+      });
+    });
+
+    document.getElementById('mccalPrev').addEventListener('click', () => {
+      if (mcCalView === 'month') {
+        mcCalDate.setMonth(mcCalDate.getMonth() - 1);
+      } else if (mcCalView === 'week') {
+        mcCalDate.setDate(mcCalDate.getDate() - 7);
+      } else if (mcCalView === 'day') {
+        mcCalDate.setDate(mcCalDate.getDate() - 1);
+      }
+      renderMCCalendar();
+    });
+
+    document.getElementById('mccalNext').addEventListener('click', () => {
+      if (mcCalView === 'month') {
+        mcCalDate.setMonth(mcCalDate.getMonth() + 1);
+      } else if (mcCalView === 'week') {
+        mcCalDate.setDate(mcCalDate.getDate() + 7);
+      } else if (mcCalView === 'day') {
+        mcCalDate.setDate(mcCalDate.getDate() + 1);
+      }
+      renderMCCalendar();
+    });
+
+    document.getElementById('mcCalPathSelector').addEventListener('change', (e) => {
+      mcCalPath = e.target.value;
+      renderMCCalendar();
+    });
+
+    function getTradingDayDate(baseYear, baseMonth, businessDayIndex) {
+      let cur = new Date(baseYear, baseMonth, 1);
+      let count = 0;
+      while (count < businessDayIndex) {
+        cur.setDate(cur.getDate() + 1);
+        const dow = cur.getDay();
+        if (dow !== 0 && dow !== 6) count++;
+      }
+      return cur;
+    }
+
+    function renderMCCalendar() {
+      const year = mcCalDate.getFullYear();
+      const month = mcCalDate.getMonth();
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+      // Empty state if simulation has not run yet
+      if (!lastMonteCarloResults) {
+        document.getElementById('mccalTimeframeLabel').textContent = `${monthNames[month]} ${year}`;
+        document.getElementById('mccalPeriodTotalPnL').textContent = '$0.00';
+        document.getElementById('mccalPeriodTotalPnL').className = 'positive';
+        document.getElementById('mccalGreenDaysCount').textContent = '0 Green / 0 Red';
+        document.getElementById('mccalPeakCap').textContent = '$0.00';
+        document.getElementById('mccalTotalTradesCount').textContent = '0';
+
+        document.getElementById('mccalendarDaysGrid').innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; color: var(--text-muted); font-size: 0.9rem;">🎲 Run the Monte Carlo Simulation above (or click "📥 From Journal") to project simulated trade runs across calendar trading days.</div>';
+        document.getElementById('mcweekCardsContainer').innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; color: var(--text-muted); font-size: 0.9rem;">Run simulation to project weekly simulated performance.</div>';
+        document.getElementById('mcdayAgendaContainer').innerHTML = '<div style="text-align: center; padding: 2.5rem; color: var(--text-muted); font-size: 0.9rem;">Run simulation to project daily simulated performance.</div>';
+        const mcGridInit = document.getElementById('mccalendarTradesGrid');
+        if (mcGridInit) mcGridInit.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; color: var(--text-muted); font-size: 0.9rem;">🎲 Run the Monte Carlo Simulation above to view projected trades as numbered calendar days.</div>';
+        document.getElementById('mccalPerTradeBody').innerHTML = '<tr><td colspan="5" style="text-align:center; padding:2rem; color:var(--text-dim);">Run simulation to view projected simulated trade sequence.</td></tr>';
+        return;
+      }
+
+      // Trajectory selection
+      const sortedPaths = [...lastMonteCarloResults.paths].sort((a, b) => a[a.length - 1] - b[b.length - 1]);
+      let selectedPath = sortedPaths[Math.floor(sortedPaths.length * 0.50)]; // default p50
+      if (mcCalPath === 'p95') selectedPath = sortedPaths[Math.floor(sortedPaths.length * 0.95)];
+      else if (mcCalPath === 'p5') selectedPath = sortedPaths[Math.floor(sortedPaths.length * 0.05)];
+      else if (mcCalPath === 'p0') selectedPath = lastMonteCarloResults.paths[0];
+
+      // Update header label
+      if (mcCalView === 'month') {
+        document.getElementById('mccalTimeframeLabel').textContent = `${monthNames[month]} ${year} (Simulated)`;
+      } else if (mcCalView === 'week') {
+        document.getElementById('mccalTimeframeLabel').textContent = `Week of ${monthNames[month]} ${mcCalDate.getDate()}, ${year}`;
+      } else if (mcCalView === 'day') {
+        document.getElementById('mccalTimeframeLabel').textContent = `${monthNames[month]} ${mcCalDate.getDate()}, ${year} (Sim Day)`;
+      } else {
+        document.getElementById('mccalTimeframeLabel').textContent = `All Simulated Trades (${lastMonteCarloResults.tradesCount})`;
+      }
+
+      // Map simulated trades to realistic trading days based on cadence (Trades / Week)
+      const tpw = parseFloat(document.getElementById('mcTradesPerWeek')?.value) || 5;
+      const tradesPerBizDay = Math.max(0.1, tpw / 5);
+      const simTrades = [];
+      const simTradeMap = {};
+
+      for (let t = 1; t <= lastMonteCarloResults.tradesCount; t++) {
+        const dayIdx = Math.floor((t - 1) / tradesPerBizDay);
+        const dateObj = getTradingDayDate(2026, 9, dayIdx); // October 2026 anchor
+        const dateStr = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
+        const prevCap = selectedPath[t - 1];
+        const endCap = selectedPath[t];
+        const tradePnL = endCap - prevCap;
+        const outcome = tradePnL >= 0 ? 'WIN' : 'LOSS';
+
+        const tradeObj = {
+          simIndex: t,
+          date: dateStr,
+          dateObj: dateObj,
+          pnl: tradePnL,
+          balance: endCap,
+          outcome: outcome
+        };
+        simTrades.push(tradeObj);
+
+        if (!simTradeMap[dateStr]) simTradeMap[dateStr] = [];
+        simTradeMap[dateStr].push(tradeObj);
+      }
+
+      let periodPnL = 0, greenCount = 0, redCount = 0, periodTradesCount = 0;
+      const peakCap = Math.max(...selectedPath);
+
+      // 1. MONTH VIEW
+      if (mcCalView === 'month') {
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const grid = document.getElementById('mccalendarDaysGrid');
+        grid.innerHTML = '';
+
+        for (let i = 0; i < firstDay; i++) {
+          const cell = document.createElement('div');
+          cell.className = 'calendar-cell other-month';
+          grid.appendChild(cell);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const cell = document.createElement('div');
+          cell.className = 'calendar-cell';
+          const dayDate = new Date(year, month, day);
+          const dow = dayDate.getDay();
+          const isWeekend = (dow === 0 || dow === 6);
+          const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          const daySimTrades = simTradeMap[dateStr] || [];
+
+          let dayPnL = 0;
+          daySimTrades.forEach(t => dayPnL += t.pnl);
+
+          if (daySimTrades.length > 0) {
+            periodPnL += dayPnL;
+            periodTradesCount += daySimTrades.length;
+            if (dayPnL > 0) greenCount++; else if (dayPnL < 0) redCount++;
+          }
+
+          cell.innerHTML = `
+            <div class="day-num">${day}</div>
+            ${isWeekend ? '<div style="font-size:0.65rem; color:var(--text-dim); text-align:right;">Weekend</div>' : `
+              ${daySimTrades.length > 0 ? `
+                <div>
+                  <div class="day-pnl ${dayPnL >= 0 ? 'positive' : 'negative'}">${dayPnL >= 0 ? '+' : ''}$${Math.round(dayPnL)}</div>
+                  <div class="day-count">${daySimTrades.length} sim trade${daySimTrades.length > 1 ? 's' : ''}</div>
+                </div>
+              ` : '<div style="font-size:0.7rem; color:var(--text-dim); text-align:right;">--</div>'}
+            `}
+          `;
+
+          if (daySimTrades.length > 0) {
+            cell.style.cursor = 'pointer';
+            cell.addEventListener('click', () => showMCDayDetails(dateStr, daySimTrades, dayPnL));
+          }
+          grid.appendChild(cell);
+        }
+      }
+
+      // 2. WEEK VIEW
+      else if (mcCalView === 'week') {
+        const weekGrid = document.getElementById('mcweekCardsContainer');
+        weekGrid.innerHTML = '';
+        const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+        const startOfWeek = new Date(mcCalDate);
+        startOfWeek.setDate(mcCalDate.getDate() - mcCalDate.getDay());
+
+        for (let i = 0; i < 7; i++) {
+          const dayDate = new Date(startOfWeek);
+          dayDate.setDate(startOfWeek.getDate() + i);
+          const dateStr = `${dayDate.getFullYear()}-${String(dayDate.getMonth() + 1).padStart(2, '0')}-${String(dayDate.getDate()).padStart(2, '0')}`;
+          const daySimTrades = simTradeMap[dateStr] || [];
+          let dayPnL = 0, winCount = 0;
+          daySimTrades.forEach(t => {
+            dayPnL += t.pnl;
+            if (t.outcome === 'WIN') winCount++;
+          });
+
+          if (daySimTrades.length > 0) {
+            periodPnL += dayPnL;
+            periodTradesCount += daySimTrades.length;
+            if (dayPnL > 0) greenCount++; else if (dayPnL < 0) redCount++;
+          }
+
+          const card = document.createElement('div');
+          card.className = 'week-day-card';
+          card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:0.4rem;">
+              <span style="font-weight:700; font-size:0.85rem;">${dayNames[i]}</span>
+              <span style="font-size:0.75rem; color:var(--text-dim);">${dayDate.getDate()} ${monthNames[dayDate.getMonth()].slice(0,3)}</span>
+            </div>
+            <div style="font-family:var(--font-mono); font-size:1.15rem; font-weight:700;" class="${daySimTrades.length ? (dayPnL >= 0 ? 'positive' : 'negative') : ''}">
+              ${daySimTrades.length ? `${dayPnL >= 0 ? '+' : ''}$${Math.round(dayPnL)}` : '$0'}
+            </div>
+            <div style="font-size:0.75rem; color:var(--text-muted); display:flex; justify-content:space-between;">
+              <span>${daySimTrades.length} Sim Trades</span>
+              <span>${daySimTrades.length ? `${((winCount / daySimTrades.length) * 100).toFixed(0)}% Win` : '--'}</span>
+            </div>
+            ${daySimTrades.length > 0 ? `
+              <button class="btn btn-outline btn-sm" onclick="showMCDayDetails('${dateStr}', ${JSON.stringify(daySimTrades).replace(/"/g, '&quot;')}, ${dayPnL})" style="margin-top:0.35rem; width:100%;">
+                View Sim Details
+              </button>
+            ` : '<div style="font-size:0.75rem; color:var(--text-dim); text-align:center; padding-top:0.35rem;">No Trades</div>'}
+          `;
+          weekGrid.appendChild(card);
+        }
+      }
+
+      // 3. DAY VIEW
+      else if (mcCalView === 'day') {
+        const dayContainer = document.getElementById('mcdayAgendaContainer');
+        const dateStr = `${mcCalDate.getFullYear()}-${String(mcCalDate.getMonth() + 1).padStart(2, '0')}-${String(mcCalDate.getDate()).padStart(2, '0')}`;
+        const daySimTrades = simTradeMap[dateStr] || [];
+        let dayPnL = 0;
+        daySimTrades.forEach(t => dayPnL += t.pnl);
+
+        periodPnL = dayPnL;
+        periodTradesCount = daySimTrades.length;
+        if (dayPnL > 0) greenCount = 1; else if (dayPnL < 0) redCount = 1;
+
+        if (daySimTrades.length === 0) {
+          dayContainer.innerHTML = `
+            <div style="text-align:center; padding:2.5rem; color:var(--text-dim);">
+              <h3>No simulated trades scheduled for ${dateStr}</h3>
+              <p style="font-size:0.85rem; margin-top:0.5rem;">Use the navigation arrows above to view days with projected execution runs.</p>
+            </div>
+          `;
+        } else {
+          let html = `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:0.5rem;">
+              <div>
+                <h3 style="font-size:1.1rem; font-weight:800;">Simulated Daily Agenda — ${dateStr}</h3>
+                <span style="font-size:0.8rem; color:var(--text-muted);">${daySimTrades.length} projected execution${daySimTrades.length > 1 ? 's' : ''}</span>
+              </div>
+              <div style="font-family:var(--font-mono); font-size:1.5rem; font-weight:800;" class="${dayPnL >= 0 ? 'positive' : 'negative'}">
+                ${dayPnL >= 0 ? '+' : ''}$${Math.round(dayPnL).toLocaleString()}
+              </div>
+            </div>
+            <table class="trade-table">
+              <thead><tr><th>Sim #</th><th>Outcome</th><th>Projected P&L ($)</th><th>Simulated Account Balance</th></tr></thead>
+              <tbody>
+          `;
+          daySimTrades.forEach(t => {
+            html += `
+              <tr>
+                <td><strong>Trade #${t.simIndex}</strong></td>
+                <td><span class="badge ${t.outcome === 'WIN' ? 'badge-long' : 'badge-short'}">${t.outcome}</span></td>
+                <td style="font-family:var(--font-mono); font-weight:700;" class="${t.pnl >= 0 ? 'positive' : 'negative'}">${t.pnl >= 0 ? '+' : ''}$${Math.round(t.pnl).toLocaleString()}</td>
+                <td style="font-family:var(--font-mono);">$${Math.round(t.balance).toLocaleString()}</td>
+              </tr>
+            `;
+          });
+          html += `</tbody></table>`;
+          dayContainer.innerHTML = html;
+        }
+      }
+
+      // 4. PER TRADE VIEW (CALENDAR-LIKE FORMAT)
+      else if (mcCalView === 'trade') {
+        const tradesGrid = document.getElementById('mccalendarTradesGrid');
+        const tradeTableBody = document.getElementById('mccalPerTradeBody');
+        if (tradesGrid) tradesGrid.innerHTML = '';
+        if (tradeTableBody) tradeTableBody.innerHTML = '';
+        periodTradesCount = simTrades.length;
+
+        simTrades.forEach(t => {
+          periodPnL += t.pnl;
+          const isWin = t.outcome === 'WIN';
+          if (isWin) greenCount++; else redCount++;
+
+          // 1. Calendar Day Tile format (1, 2, 3, 4...)
+          if (tradesGrid) {
+            const cell = document.createElement('div');
+            cell.className = 'trade-cal-cell';
+            cell.innerHTML = `
+              <div class="trade-cal-head">
+                <span class="trade-cal-num">${t.simIndex}</span>
+                <span class="trade-cal-date">${t.date}</span>
+              </div>
+              <div class="trade-cal-pnl ${isWin ? 'positive' : 'negative'}">
+                ${isWin ? '+' : ''}$${Math.round(t.pnl).toLocaleString()}
+              </div>
+              <div class="trade-cal-footer">
+                <span class="badge ${isWin ? 'badge-long' : 'badge-short'}" style="font-size:0.65rem;">${t.outcome}</span>
+                <span style="font-family:var(--font-mono); font-size:0.75rem;">$${Math.round(t.balance).toLocaleString()}</span>
+              </div>
+            `;
+            cell.addEventListener('click', () => showMCDayDetails(t.date, [t], t.pnl));
+            tradesGrid.appendChild(cell);
+          }
+
+          // 2. Table row format
+          if (tradeTableBody) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td style="font-family:var(--font-mono); font-size:0.775rem;">Trade #${t.simIndex}</td>
+              <td style="font-family:var(--font-mono); font-size:0.775rem;">${t.date}</td>
+              <td><span class="badge ${isWin ? 'badge-long' : 'badge-short'}">${t.outcome}</span></td>
+              <td style="font-family:var(--font-mono); font-weight:700;" class="${isWin ? 'positive' : 'negative'}">${isWin ? '+' : ''}$${Math.round(t.pnl).toLocaleString()}</td>
+              <td style="font-family:var(--font-mono); font-weight:700;">$${Math.round(t.balance).toLocaleString()}</td>
+            `;
+            tradeTableBody.appendChild(tr);
+          }
+        });
+      }
+
+      // Update Period KPI Badges
+      const pnlEl = document.getElementById('mccalPeriodTotalPnL');
+      pnlEl.textContent = `${periodPnL >= 0 ? '+' : ''}$${Math.round(periodPnL).toLocaleString()}`;
+      pnlEl.className = periodPnL >= 0 ? 'positive' : 'negative';
+      document.getElementById('mccalGreenDaysCount').textContent = `${greenCount} Green / ${redCount} Red`;
+      document.getElementById('mccalPeakCap').textContent = `$${Math.round(peakCap).toLocaleString()}`;
+      document.getElementById('mccalTotalTradesCount').textContent = periodTradesCount;
+    }
+
+    function showMCDayDetails(dateStr, daySimTrades, dayPnL) {
+      document.getElementById('dayModalTitle').textContent = `Simulated Projection: ${dateStr}`;
+      const container = document.getElementById('dayModalContent');
+      if (!daySimTrades || daySimTrades.length === 0) {
+        container.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">No simulated executions scheduled on this date.</p>`;
+      } else {
+        let html = `
+          <div style="margin-bottom:1rem; padding:0.85rem; background:var(--bg-surface-elevated); border-radius:6px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;">
+            <div>Simulated Executions: <strong>${daySimTrades.length}</strong></div>
+            <div>Projected Day P&L: <strong class="${dayPnL >= 0 ? 'positive' : 'negative'}">${dayPnL >= 0 ? '+' : ''}$${Math.round(dayPnL).toLocaleString()}</strong></div>
+          </div>
+          <table class="trade-table">
+            <thead><tr><th>Sim #</th><th>Outcome</th><th>Projected P&L ($)</th><th>Simulated Account Balance</th></tr></thead>
+            <tbody>
+        `;
+        daySimTrades.forEach(t => {
+          html += `<tr><td><strong>Trade #${t.simIndex}</strong></td><td><span class="badge ${t.outcome === 'WIN' ? 'badge-long' : 'badge-short'}">${t.outcome}</span></td><td class="${t.pnl >= 0 ? 'positive' : 'negative'}"><strong>${t.pnl >= 0 ? '+' : ''}$${Math.round(t.pnl).toLocaleString()}</strong></td><td style="font-family:var(--font-mono);">$${Math.round(t.balance).toLocaleString()}</td></tr>`;
+        });
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+      }
+      document.getElementById('dayModal').classList.add('open');
+    }
+
+    // View toggle listeners for Monte Carlo Per Trade
+    const mcTradeGridBtn = document.getElementById('mcTradeGridToggleBtn');
+    const mcTradeTableBtn = document.getElementById('mcTradeTableToggleBtn');
+    if (mcTradeGridBtn && mcTradeTableBtn) {
+      mcTradeGridBtn.addEventListener('click', () => {
+        mcTradeGridBtn.classList.add('active');
+        mcTradeTableBtn.classList.remove('active');
+        document.getElementById('mccalendarTradesGrid').style.display = 'grid';
+        document.getElementById('mctradeTableWrapper').style.display = 'none';
+      });
+      mcTradeTableBtn.addEventListener('click', () => {
+        mcTradeTableBtn.classList.add('active');
+        mcTradeGridBtn.classList.remove('active');
+        document.getElementById('mccalendarTradesGrid').style.display = 'none';
+        document.getElementById('mctradeTableWrapper').style.display = 'block';
+      });
+    }
+
+    /* =============================================================
+       10. ADVANCED MULTI-TIMEFRAME TRADING CALENDAR (STANDALONE)
+           Views: 1 Day, 1 Week, 1 Month, Per Trade
+       ============================================================= */
+    document.querySelectorAll('[data-cal-view]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-cal-view]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCalView = btn.getAttribute('data-cal-view');
+
+        document.querySelectorAll('.cal-view-content').forEach(view => view.style.display = 'none');
+        const activeContainer = document.getElementById(`view-${activeCalView}`);
+        if (activeContainer) activeContainer.style.display = 'block';
+
+        renderCalendar();
+      });
+    });
+
+    document.getElementById('calPrev').addEventListener('click', () => {
+      if (activeCalView === 'month') {
+        currentCalDate.setMonth(currentCalDate.getMonth() - 1);
+      } else if (activeCalView === 'week') {
+        currentCalDate.setDate(currentCalDate.getDate() - 7);
+      } else if (activeCalView === 'day') {
+        currentCalDate.setDate(currentCalDate.getDate() - 1);
+      }
+      renderCalendar();
+    });
+
+    document.getElementById('calNext').addEventListener('click', () => {
+      if (activeCalView === 'month') {
+        currentCalDate.setMonth(currentCalDate.getMonth() + 1);
+      } else if (activeCalView === 'week') {
+        currentCalDate.setDate(currentCalDate.getDate() + 7);
+      } else if (activeCalView === 'day') {
+        currentCalDate.setDate(currentCalDate.getDate() + 1);
+      }
+      renderCalendar();
+    });
+
+    function renderCalendar() {
+      const year = currentCalDate.getFullYear();
+      const month = currentCalDate.getMonth();
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+      // Update header label
+      if (activeCalView === 'month') {
+        document.getElementById('calTimeframeLabel').textContent = `${monthNames[month]} ${year}`;
+      } else if (activeCalView === 'week') {
+        document.getElementById('calTimeframeLabel').textContent = `Week of ${monthNames[month]} ${currentCalDate.getDate()}, ${year}`;
+      } else if (activeCalView === 'day') {
+        document.getElementById('calTimeframeLabel').textContent = `${monthNames[month]} ${currentCalDate.getDate()}, ${year}`;
+      } else {
+        document.getElementById('calTimeframeLabel').textContent = `All Logged Trades (${trades.length})`;
+      }
+
+      // Map trades by date string
+      const tradeMap = {};
+      let periodPnL = 0, greenCount = 0, redCount = 0, bestDayPnL = 0;
+      trades.forEach(t => {
+        if (!tradeMap[t.date]) tradeMap[t.date] = [];
+        tradeMap[t.date].push(t);
+      });
+
+      // 1. MONTH VIEW
+      if (activeCalView === 'month') {
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const grid = document.getElementById('calendarDaysGrid');
+        grid.innerHTML = '';
+
+        for (let i = 0; i < firstDay; i++) {
+          const cell = document.createElement('div');
+          cell.className = 'calendar-cell other-month';
+          grid.appendChild(cell);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const cell = document.createElement('div');
+          cell.className = 'calendar-cell';
+          const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          const dayTrades = tradeMap[dateStr] || [];
+          let dayPnL = 0;
+          dayTrades.forEach(t => dayPnL += (parseFloat(t.pnl) || 0));
+
+          if (dayTrades.length > 0) {
+            periodPnL += dayPnL;
+            if (dayPnL > 0) greenCount++; else if (dayPnL < 0) redCount++;
+            if (dayPnL > bestDayPnL) bestDayPnL = dayPnL;
+          }
+
+          cell.innerHTML = `
+            <div class="day-num">${day}</div>
+            ${dayTrades.length > 0 ? `
+              <div>
+                <div class="day-pnl ${dayPnL >= 0 ? 'positive' : 'negative'}">${dayPnL >= 0 ? '+' : ''}$${Math.round(dayPnL)}</div>
+                <div class="day-count">${dayTrades.length} trade${dayTrades.length > 1 ? 's' : ''}</div>
+              </div>
+            ` : '<div style="font-size:0.7rem; color:var(--text-dim); text-align:right;">--</div>'}
+          `;
+
+          cell.addEventListener('click', () => showDayDetails(dateStr, dayTrades, dayPnL));
+          grid.appendChild(cell);
+        }
+      }
+
+      // 2. WEEK VIEW
+      else if (activeCalView === 'week') {
+        const weekGrid = document.getElementById('weekCardsContainer');
+        weekGrid.innerHTML = '';
+        const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+        const startOfWeek = new Date(currentCalDate);
+        startOfWeek.setDate(currentCalDate.getDate() - currentCalDate.getDay());
+
+        for (let i = 0; i < 7; i++) {
+          const dayDate = new Date(startOfWeek);
+          dayDate.setDate(startOfWeek.getDate() + i);
+          const dateStr = `${dayDate.getFullYear()}-${String(dayDate.getMonth() + 1).padStart(2, '0')}-${String(dayDate.getDate()).padStart(2, '0')}`;
+          const dayTrades = tradeMap[dateStr] || [];
+          let dayPnL = 0, winTrades = 0;
+          dayTrades.forEach(t => {
+            const p = parseFloat(t.pnl) || 0;
+            dayPnL += p;
+            if (p > 0) winTrades++;
+          });
+
+          if (dayTrades.length > 0) {
+            periodPnL += dayPnL;
+            if (dayPnL > 0) greenCount++; else if (dayPnL < 0) redCount++;
+            if (dayPnL > bestDayPnL) bestDayPnL = dayPnL;
+          }
+
+          const card = document.createElement('div');
+          card.className = 'week-day-card';
+          card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:0.4rem;">
+              <span style="font-weight:700; font-size:0.85rem;">${dayNames[i]}</span>
+              <span style="font-size:0.75rem; color:var(--text-dim);">${dayDate.getDate()} ${monthNames[dayDate.getMonth()].slice(0,3)}</span>
+            </div>
+            <div style="font-family:var(--font-mono); font-size:1.15rem; font-weight:700;" class="${dayTrades.length ? (dayPnL >= 0 ? 'positive' : 'negative') : ''}">
+              ${dayTrades.length ? `${dayPnL >= 0 ? '+' : ''}$${Math.round(dayPnL)}` : '$0'}
+            </div>
+            <div style="font-size:0.75rem; color:var(--text-muted); display:flex; justify-content:space-between;">
+              <span>${dayTrades.length} Trades</span>
+              <span>${dayTrades.length ? `${((winTrades / dayTrades.length) * 100).toFixed(0)}% Win` : '--'}</span>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="showDayDetails('${dateStr}', ${JSON.stringify(dayTrades).replace(/"/g, '&quot;')}, ${dayPnL})" style="margin-top:0.35rem; width:100%;">
+              View Details
+            </button>
+          `;
+          weekGrid.appendChild(card);
+        }
+      }
+
+      // 3. DAY VIEW (1 Day In-Depth Agenda)
+      else if (activeCalView === 'day') {
+        const dayContainer = document.getElementById('dayAgendaContainer');
+        const dateStr = `${currentCalDate.getFullYear()}-${String(currentCalDate.getMonth() + 1).padStart(2, '0')}-${String(currentCalDate.getDate()).padStart(2, '0')}`;
+        const dayTrades = tradeMap[dateStr] || [];
+        let dayPnL = 0;
+        dayTrades.forEach(t => dayPnL += (parseFloat(t.pnl) || 0));
+
+        periodPnL = dayPnL;
+        if (dayPnL > 0) greenCount = 1; else if (dayPnL < 0) redCount = 1;
+
+        if (dayTrades.length === 0) {
+          dayContainer.innerHTML = `
+            <div style="text-align:center; padding:2.5rem; color:var(--text-dim);">
+              <h3>No trades taken on ${dateStr}</h3>
+              <p style="font-size:0.85rem; margin-top:0.5rem;">Use the date arrows above to inspect active trading sessions, or click "+ Log Trade" to record one.</p>
+            </div>
+          `;
+        } else {
+          let html = `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:0.5rem;">
+              <div>
+                <h3 style="font-size:1.1rem; font-weight:800;">Daily Trading Journal — ${dateStr}</h3>
+                <span style="font-size:0.8rem; color:var(--text-muted);">${dayTrades.length} execution${dayTrades.length > 1 ? 's' : ''} logged</span>
+              </div>
+              <div style="font-family:var(--font-mono); font-size:1.5rem; font-weight:800;" class="${dayPnL >= 0 ? 'positive' : 'negative'}">
+                ${dayPnL >= 0 ? '+' : ''}$${Math.round(dayPnL).toLocaleString()}
+              </div>
+            </div>
+            <table class="trade-table">
+              <thead><tr><th>Pair</th><th>Side</th><th>Size</th><th>Entry</th><th>Exit</th><th>P&L</th><th>R-Multiple</th><th>Session</th><th>Setup Tag</th><th>Notes</th></tr></thead>
+              <tbody>
+          `;
+          dayTrades.forEach(t => {
+            html += `
+              <tr>
+                <td><strong>${t.pair}</strong></td>
+                <td><span class="badge ${t.side === 'LONG' ? 'badge-long' : 'badge-short'}">${t.side}</span></td>
+                <td>${t.size}</td>
+                <td style="font-family:var(--font-mono);">${parseFloat(t.entry).toFixed(2)}</td>
+                <td style="font-family:var(--font-mono);">${parseFloat(t.exit).toFixed(2)}</td>
+                <td style="font-family:var(--font-mono); font-weight:700;" class="${t.pnl >= 0 ? 'positive' : 'negative'}">${t.pnl >= 0 ? '+' : ''}$${t.pnl}</td>
+                <td style="font-family:var(--font-mono);">${t.r ? (t.r > 0 ? '+' : '') + t.r + ' R' : '--'}</td>
+                <td><span class="badge badge-session">${t.session}</span></td>
+                <td>${t.strategy || '--'}</td>
+                <td style="font-size:0.75rem; color:var(--text-muted);">${t.notes || '--'}</td>
+              </tr>
+            `;
+          });
+          html += `</tbody></table>`;
+          dayContainer.innerHTML = html;
+        }
+      }
+
+      // 4. PER TRADE VIEW (CALENDAR-LIKE FORMAT)
+      else if (activeCalView === 'trade') {
+        const tradesGrid = document.getElementById('calendarTradesGrid');
+        const tradeTableBody = document.getElementById('calPerTradeBody');
+        if (tradesGrid) tradesGrid.innerHTML = '';
+        if (tradeTableBody) tradeTableBody.innerHTML = '';
+
+        if (trades.length === 0) {
+          if (tradesGrid) tradesGrid.innerHTML = `<div style="grid-column:1 / -1; text-align:center; padding:2.5rem; color:var(--text-dim);">No trades recorded in journal.</div>`;
+          if (tradeTableBody) tradeTableBody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding:2rem; color:var(--text-dim);">No trades recorded in journal.</td></tr>`;
+        } else {
+          trades.forEach((t, idx) => {
+            const pnlVal = parseFloat(t.pnl) || 0;
+            periodPnL += pnlVal;
+            if (pnlVal > 0) greenCount++; else if (pnlVal < 0) redCount++;
+            const isWin = pnlVal >= 0;
+
+            // 1. Calendar Day Tile format (1, 2, 3, 4...)
+            if (tradesGrid) {
+              const cell = document.createElement('div');
+              cell.className = 'trade-cal-cell';
+              cell.innerHTML = `
+                <div class="trade-cal-head">
+                  <span class="trade-cal-num">${idx + 1}</span>
+                  <span class="trade-cal-date">${t.date}</span>
+                </div>
+                <div class="trade-cal-pnl ${isWin ? 'positive' : 'negative'}">
+                  ${isWin ? '+' : ''}$${Math.round(pnlVal).toLocaleString()}
+                </div>
+                <div class="trade-cal-footer">
+                  <span><strong>${t.pair}</strong> • ${t.side}</span>
+                  <span>${t.r ? (t.r > 0 ? '+' : '') + t.r + 'R' : (t.session || '--')}</span>
+                </div>
+              `;
+              cell.addEventListener('click', () => showDayDetails(t.date, [t], pnlVal));
+              tradesGrid.appendChild(cell);
+            }
+
+            // 2. Table row format
+            if (tradeTableBody) {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
+                <td><strong>#${idx + 1}</strong></td>
+                <td style="font-family:var(--font-mono); font-size:0.775rem;">${t.date}</td>
+                <td style="font-weight:700;">${t.pair}</td>
+                <td><span class="badge ${t.side === 'LONG' ? 'badge-long' : 'badge-short'}">${t.side}</span></td>
+                <td>${t.size}</td>
+                <td style="font-family:var(--font-mono);">${parseFloat(t.entry).toFixed(2)}</td>
+                <td style="font-family:var(--font-mono);">${parseFloat(t.exit).toFixed(2)}</td>
+                <td style="font-family:var(--font-mono); font-weight:700;" class="${isWin ? 'positive' : 'negative'}">${isWin ? '+' : ''}$${pnlVal}</td>
+                <td style="font-family:var(--font-mono);">${t.r ? (t.r > 0 ? '+' : '') + t.r + ' R' : '--'}</td>
+                <td><span class="badge badge-session">${t.session}</span></td>
+                <td>${t.strategy || '--'}</td>
+              `;
+              tradeTableBody.appendChild(tr);
+            }
+          });
+        }
+      }
+
+      // Top Period KPI Badges
+      const pnlEl = document.getElementById('calPeriodTotalPnL');
+      pnlEl.textContent = `${periodPnL >= 0 ? '+' : ''}$${periodPnL.toLocaleString()}`;
+      pnlEl.className = periodPnL >= 0 ? 'positive' : 'negative';
+      document.getElementById('calGreenDaysCount').textContent = `${greenCount} Green / ${redCount} Red`;
+      document.getElementById('calBestDayPnL').textContent = `+$${bestDayPnL.toLocaleString()}`;
+      document.getElementById('calTotalTradesCount').textContent = trades.length;
+    }
+
+    function showDayDetails(dateStr, dayTrades, dayPnL) {
+      document.getElementById('dayModalTitle').textContent = `Performance: ${dateStr}`;
+      const container = document.getElementById('dayModalContent');
+      if (!dayTrades || dayTrades.length === 0) {
+        container.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">No trades recorded on this date.</p>`;
+      } else {
+        let html = `
+          <div style="margin-bottom:1rem; padding:0.85rem; background:var(--bg-surface-elevated); border-radius:6px; display:flex; justify-content:space-between;">
+            <div>Trades: <strong>${dayTrades.length}</strong></div>
+            <div>Net Day P&L: <strong class="${dayPnL >= 0 ? 'positive' : 'negative'}">${dayPnL >= 0 ? '+' : ''}$${dayPnL.toLocaleString()}</strong></div>
+          </div>
+          <table class="trade-table">
+            <thead><tr><th>Pair</th><th>Side</th><th>Size</th><th>P&L</th><th>Setup</th></tr></thead>
+            <tbody>
+        `;
+        dayTrades.forEach(t => {
+          html += `<tr><td><strong>${t.pair}</strong></td><td><span class="badge ${t.side === 'LONG' ? 'badge-long' : 'badge-short'}">${t.side}</span></td><td>${t.size}</td><td class="${t.pnl >= 0 ? 'positive' : 'negative'}"><strong>$${t.pnl}</strong></td><td>${t.strategy || '--'}</td></tr>`;
+        });
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+      }
+      document.getElementById('dayModal').classList.add('open');
+    }
+
+    // View toggle listeners for Standalone Calendar Per Trade
+    const tradeGridBtn = document.getElementById('tradeGridToggleBtn');
+    const tradeTableBtn = document.getElementById('tradeTableToggleBtn');
+    if (tradeGridBtn && tradeTableBtn) {
+      tradeGridBtn.addEventListener('click', () => {
+        tradeGridBtn.classList.add('active');
+        tradeTableBtn.classList.remove('active');
+        document.getElementById('calendarTradesGrid').style.display = 'grid';
+        document.getElementById('tradeTableWrapper').style.display = 'none';
+      });
+      tradeTableBtn.addEventListener('click', () => {
+        tradeTableBtn.classList.add('active');
+        tradeGridBtn.classList.remove('active');
+        document.getElementById('calendarTradesGrid').style.display = 'none';
+        document.getElementById('tradeTableWrapper').style.display = 'block';
+      });
+    }
+
+    const ECONOMIC_EVENTS = [
+      { currency: 'USD', name: 'US CPI Inflation YoY', impact: 'HIGH', time: 'Wed 08:30 EST', note: 'Major index & Gold volatility' },
+      { currency: 'USD', name: 'FOMC Rate Decision', impact: 'HIGH', time: 'Wed 14:00 EST', note: 'Avoid entries 15m prior' },
+      { currency: 'USD', name: 'Non-Farm Payrolls (NFP)', impact: 'HIGH', time: 'Fri 08:30 EST', note: 'High volatility release' },
+      { currency: 'EUR', name: 'ECB Monetary Policy', impact: 'MEDIUM', time: 'Thu 08:15 EST', note: 'EUR/USD & DAX40 impact' }
+    ];
+    const newsList = document.getElementById('economicEventsList');
+    ECONOMIC_EVENTS.forEach(ev => {
+      const card = document.createElement('div');
+      card.style.cssText = 'background:var(--bg-base); border:1px solid var(--border-subtle); border-radius:6px; padding:0.75rem;';
+      card.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;"><span class="badge" style="background:var(--accent-red-bg); color:var(--accent-red); font-weight:800;">${ev.currency} • ${ev.impact}</span><span style="font-size:0.7rem; color:var(--text-dim);">${ev.time}</span></div><div style="font-weight:700; font-size:0.8rem; margin-bottom:0.25rem;">${ev.name}</div><div style="font-size:0.725rem; color:var(--text-muted);">${ev.note}</div>`;
+      newsList.appendChild(card);
+    });
+
+    /* =============================================================
+       11. MODAL CONTROLS & LOG TRADE FORM
+       ============================================================= */
+    const tradeModal = document.getElementById('tradeModal');
+    const dayModal = document.getElementById('dayModal');
+    function openTradeModal() { document.getElementById('tradeDate').value = new Date().toISOString().slice(0, 10); tradeModal.classList.add('open'); }
+    document.getElementById('openLogModalBtn').addEventListener('click', openTradeModal);
+    document.getElementById('closeModalBtn').addEventListener('click', () => tradeModal.classList.remove('open'));
+    document.getElementById('cancelModalBtn').addEventListener('click', () => tradeModal.classList.remove('open'));
+    document.getElementById('closeDayModalBtn').addEventListener('click', () => dayModal.classList.remove('open'));
+
+    document.getElementById('tradeForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const newTrade = {
+        id: Date.now(),
+        date: document.getElementById('tradeDate').value,
+        pair: document.getElementById('tradePair').value.toUpperCase(),
+        side: document.getElementById('tradeDirection').value,
+        type: document.getElementById('tradeAssetType').value,
+        size: parseFloat(document.getElementById('tradeSize').value),
+        entry: parseFloat(document.getElementById('tradeEntry').value),
+        exit: parseFloat(document.getElementById('tradeExit').value),
+        pnl: parseFloat(document.getElementById('tradePnL').value),
+        r: parseFloat(document.getElementById('tradeR').value) || null,
+        session: document.getElementById('tradeSession').value,
+        strategy: document.getElementById('tradeStrategy').value,
+        notes: document.getElementById('tradeNotes').value
+      };
+      trades.push(newTrade);
+      saveTrades();
+      tradeModal.classList.remove('open');
+      document.getElementById('tradeForm').reset();
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === tradeModal) tradeModal.classList.remove('open');
+      if (e.target === dayModal) dayModal.classList.remove('open');
+    });
+
+    /* =============================================================
+       12. APPLICATION INITIALIZATION
+       ============================================================= */
+    populateInstruments();
+    updateJournalUI();
+    renderJournalCalendar();
+    renderMCCalendar();
+    renderCalendar();
+    applyTheme(currentTheme);
+    switchTab('simulator');
+  </script>
+</body>
+</html>
