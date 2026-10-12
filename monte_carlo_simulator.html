@@ -544,7 +544,7 @@
        ============================================================== */
     .strategy-stats-split-grid {
       display: grid;
-      grid-template-columns: minmax(320px, 1.1fr) minmax(290px, 0.9fr);
+      grid-template-columns: minmax(320px, 1fr) minmax(340px, 1.12fr);
       gap: 1.25rem;
       align-items: stretch;
       width: 100%;
@@ -560,6 +560,11 @@
       flex-direction: column;
       height: 100%;
     }
+    .params-panel .panel-header-row,
+    .stats-table-panel .panel-header-row {
+      margin-bottom: 0.85rem;
+      min-height: 44px;
+    }
 
     .stats-table-wrapper {
       overflow-x: auto;
@@ -567,6 +572,10 @@
       scrollbar-width: thin;
       scrollbar-color: var(--border-subtle) transparent;
       flex: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .exec-stats-table {
@@ -676,41 +685,81 @@
       padding-left: 0.25rem !important;
     }
 
-    /* CARDS WRAPPER FOR STATS TOGGLE */
+    /* CARDS WRAPPER FOR STATS TOGGLE - EXACT FIT & ALIGNED WITH STRATEGY PARAMETERS */
     .stats-cards-wrapper {
       width: 100%;
-      overflow-y: auto;
-      max-height: 480px;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border-subtle) transparent;
-      padding: 0.2rem;
+      flex: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
     }
     .stats-cards-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.5rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: repeat(4, 1fr);
+      gap: 0.65rem 0.65rem;
       width: 100%;
+      flex: 1;
+      height: 100%;
     }
     @media (max-width: 600px) {
       .stats-cards-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: auto;
       }
     }
     .stats-cards-grid .hero-card {
-      padding: 0.55rem 0.75rem;
-      min-height: 64px;
-      border-radius: 7px;
+      padding: 0.5rem 0.65rem;
+      min-height: 0;
+      min-width: 0;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      transition: all 0.15s ease;
+      overflow: hidden;
+    }
+    .stats-cards-grid .hero-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
     .stats-cards-grid .hero-label {
+      color: var(--text-muted);
       font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
       letter-spacing: 0.04em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.1;
     }
     .stats-cards-grid .hero-val {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      font-feature-settings: "tnum" 1;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.15;
       margin: 0.15rem 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .stats-cards-grid .hero-sub {
+      color: var(--text-dim);
       font-size: 0.6875rem;
+      font-weight: 500;
+      line-height: 1.1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .risk-mode-pill {
@@ -941,25 +990,35 @@
        ============================================================== */
     .controls-inner-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(4, 1fr);
       gap: 0.65rem 0.85rem;
+      flex: 1;
+      height: 100%;
     }
     @media (max-width: 760px) {
-      .controls-inner-grid { grid-template-columns: 1fr; }
+      .controls-inner-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
     }
     .param-card {
       background: var(--bg-base);
       border: 1px solid var(--border-subtle);
       border-radius: 8px;
-      padding: 0.55rem 0.75rem;
+      padding: 0.5rem 0.75rem;
       display: flex;
       flex-direction: column;
-      gap: 0.3rem;
+      justify-content: space-between;
+      gap: 0.25rem;
+      min-height: 0;
+      min-width: 0;
       transition: all 0.15s ease;
       position: relative;
     }
     .param-card:hover {
       border-color: var(--border-strong);
+      transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
     }
     .param-card-top {
@@ -2221,17 +2280,17 @@
             </div>
             <!-- VIEW TOGGLER: TABLE VS CARDS -->
             <div class="cal-view-pill">
-              <button type="button" class="cal-view-btn active" id="btnStatsLayoutTable" onclick="switchStatsLayout('table')" title="Table View">
+              <button type="button" class="cal-view-btn" id="btnStatsLayoutTable" onclick="switchStatsLayout('table')" title="Table View">
                 <span>📑</span> Table
               </button>
-              <button type="button" class="cal-view-btn" id="btnStatsLayoutCards" onclick="switchStatsLayout('cards')" title="Cards View (Like Before)">
+              <button type="button" class="cal-view-btn active" id="btnStatsLayoutCards" onclick="switchStatsLayout('cards')" title="Cards View (Default)">
                 <span>🎴</span> Cards
               </button>
             </div>
           </div>
 
           <!-- 1. TABLE VIEW -->
-          <div id="statsViewTableWrap" class="stats-table-wrapper" style="display:block;">
+          <div id="statsViewTableWrap" class="stats-table-wrapper" style="display:none;">
             <table class="exec-stats-table">
               <thead>
                 <tr>
@@ -2303,9 +2362,10 @@
             </table>
           </div>
 
-          <!-- 2. CARDS VIEW (JUST LIKE BEFORE) -->
-          <div id="statsViewCardsWrap" class="stats-cards-wrapper" style="display:none;">
+          <!-- 2. CARDS VIEW (DEFAULT - 3x4 GRID ALIGNED WITH STRATEGY PARAMETERS) -->
+          <div id="statsViewCardsWrap" class="stats-cards-wrapper" style="display:flex;">
             <div class="stats-cards-grid">
+              <!-- Row 1: Capital & Profit -->
               <div class="hero-card">
                 <div class="hero-label">Initial Balance</div>
                 <div class="hero-val" id="dispCardInitial">$1,000</div>
@@ -2324,6 +2384,7 @@
                 <div class="hero-sub">Expected Return</div>
               </div>
 
+              <!-- Row 2: Returns & Drawdowns -->
               <div class="hero-card highlight-profit" id="cardTileTotalPnLPct">
                 <div class="hero-label">Return % (Gain)</div>
                 <div class="hero-val val-green" id="dispCardTotalPnLPct">+121.7%</div>
@@ -2337,6 +2398,13 @@
               </div>
 
               <div class="hero-card">
+                <div class="hero-label">Risk of Ruin</div>
+                <div class="hero-val" id="dispCardRuin">0.0%</div>
+                <div class="hero-sub">&gt;50% DD Odds</div>
+              </div>
+
+              <!-- Row 3: Streaks & Win Rate -->
+              <div class="hero-card">
                 <div class="hero-label">Max Loss Streak</div>
                 <div class="hero-val" id="dispCardMaxLossStreak">15</div>
                 <div class="hero-sub">Stress Run</div>
@@ -2349,17 +2417,12 @@
               </div>
 
               <div class="hero-card">
-                <div class="hero-label">Risk of Ruin</div>
-                <div class="hero-val" id="dispCardRuin">0.0%</div>
-                <div class="hero-sub">&gt;50% DD Odds</div>
-              </div>
-
-              <div class="hero-card">
                 <div class="hero-label">Win Trades %</div>
                 <div class="hero-val" id="dispCardWinRate">50.0%</div>
                 <div class="hero-sub">Trade Hit Rate</div>
               </div>
 
+              <!-- Row 4: Edge & Expectancy -->
               <div class="hero-card">
                 <div class="hero-label">Reward-to-Risk</div>
                 <div class="hero-val" id="dispCardAvgRR">1 : 2.0</div>
@@ -2976,7 +3039,7 @@
     renderChart();
   }
 
-  let statsLayoutMode = 'table';
+  let statsLayoutMode = 'cards';
   function switchStatsLayout(mode) {
     statsLayoutMode = mode;
     const btnTable = document.getElementById('btnStatsLayoutTable');
@@ -2986,8 +3049,8 @@
 
     if (btnTable) btnTable.classList.toggle('active', mode === 'table');
     if (btnCards) btnCards.classList.toggle('active', mode === 'cards');
-    if (wrapTable) wrapTable.style.display = (mode === 'table') ? 'block' : 'none';
-    if (wrapCards) wrapCards.style.display = (mode === 'cards') ? 'block' : 'none';
+    if (wrapTable) wrapTable.style.display = (mode === 'table') ? 'flex' : 'none';
+    if (wrapCards) wrapCards.style.display = (mode === 'cards') ? 'flex' : 'none';
   }
   window.switchStatsLayout = switchStatsLayout;
 
