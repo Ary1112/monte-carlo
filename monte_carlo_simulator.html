@@ -566,43 +566,77 @@
       min-height: 44px;
     }
 
+    /* TWIN TABLES LAYOUT FOR STATS VIEW */
     .stats-table-wrapper {
-      overflow-x: auto;
       width: 100%;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border-subtle) transparent;
       flex: 1;
       height: 100%;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+    .stats-twin-tables-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.85rem;
+      width: 100%;
+      flex: 1;
+      height: 100%;
+      align-items: stretch;
+    }
+    @media (max-width: 650px) {
+      .stats-twin-tables-grid {
+        grid-template-columns: 1fr;
+        overflow-y: auto;
+      }
+    }
+    .stats-table-card {
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transition: all 0.15s ease;
+    }
+    .stats-table-card:hover {
+      border-color: var(--border-strong);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     .exec-stats-table {
-      width: auto;
-      min-width: 260px;
-      max-width: 340px;
-      margin: 0 auto;
+      width: 100%;
+      height: 100%;
       border-collapse: collapse;
       font-size: 0.8125rem;
+      display: table;
+    }
+    .exec-stats-table thead {
+      flex-shrink: 0;
     }
     .exec-stats-table th {
-      background: var(--bg-base);
+      background: var(--bg-surface-elevated);
       color: var(--text-muted);
       font-weight: 600;
       font-size: 0.6875rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      padding: 0.4rem 0.65rem;
+      padding: 0.45rem 0.75rem;
       border-bottom: 1px solid var(--border-subtle);
     }
     .exec-stats-table td {
-      padding: 0.38rem 0.65rem;
+      padding: 0.45rem 0.75rem;
       border-bottom: 1px solid var(--border-subtle);
       vertical-align: middle;
     }
     .exec-stats-table tr:last-child td {
       border-bottom: none;
+    }
+    .exec-stats-table tbody tr {
+      height: calc(100% / 6);
     }
 
     .stat-section-divider td {
@@ -2289,77 +2323,85 @@
             </div>
           </div>
 
-          <!-- 1. TABLE VIEW -->
+          <!-- 1. TWIN TABLES VIEW -->
           <div id="statsViewTableWrap" class="stats-table-wrapper" style="display:none;">
-            <table class="exec-stats-table">
-              <thead>
-                <tr>
-                  <th style="text-align:left;">Metric</th>
-                  <th style="text-align:right;">Simulated Value</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="stat-section-divider">
-                  <td colspan="2"><span>Capital & Returns</span></td>
-                </tr>
-                <tr class="stat-table-row">
-                  <td class="stat-name">Initial Balance</td>
-                  <td class="stat-val"><span id="dispTopInitial" class="hero-val">$1,000</span></td>
-                </tr>
-                <tr class="stat-table-row">
-                  <td class="stat-name">Result Balance</td>
-                  <td class="stat-val"><span id="dispTopFinalBal" class="hero-val">$2,217</span></td>
-                </tr>
-                <tr id="cardTopTotalPnL" class="stat-table-row">
-                  <td class="stat-name">Total Net P&L</td>
-                  <td class="stat-val"><span id="dispTopTotalPnL" class="hero-val val-green">+$1,217</span></td>
-                </tr>
-                <tr id="cardTopTotalPnLPct" class="stat-table-row">
-                  <td class="stat-name">Return % (Whole Period)</td>
-                  <td class="stat-val"><span id="dispTopTotalPnLPct" class="hero-val val-green">+121.7%</span></td>
-                </tr>
+            <div class="stats-twin-tables-grid">
+              <!-- Table 1: Capital & Drawdown Dynamics -->
+              <div class="stats-table-card">
+                <table class="exec-stats-table">
+                  <thead>
+                    <tr>
+                      <th style="text-align:left;">Capital & Drawdown</th>
+                      <th style="text-align:right;">Simulated Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="stat-table-row">
+                      <td class="stat-name">Initial Balance</td>
+                      <td class="stat-val"><span id="dispTopInitial" class="hero-val">$1,000</span></td>
+                    </tr>
+                    <tr class="stat-table-row">
+                      <td class="stat-name">Result Balance</td>
+                      <td class="stat-val"><span id="dispTopFinalBal" class="hero-val">$2,217</span></td>
+                    </tr>
+                    <tr id="cardTopTotalPnL" class="stat-table-row">
+                      <td class="stat-name">Total Net P&L</td>
+                      <td class="stat-val"><span id="dispTopTotalPnL" class="hero-val val-green">+$1,217</span></td>
+                    </tr>
+                    <tr id="cardTopTotalPnLPct" class="stat-table-row">
+                      <td class="stat-name">Return % (Gain)</td>
+                      <td class="stat-val"><span id="dispTopTotalPnLPct" class="hero-val val-green">+121.7%</span></td>
+                    </tr>
+                    <tr id="cardTopMedianDD" class="stat-table-row">
+                      <td class="stat-name">Maximum Drawdown</td>
+                      <td class="stat-val"><span id="dispTopMedianDD" class="hero-val">-9.1%</span></td>
+                    </tr>
+                    <tr id="cardTopRuin" class="stat-table-row">
+                      <td class="stat-name">Risk of Ruin (&gt;50% DD)</td>
+                      <td class="stat-val"><span id="dispTopRuin" class="hero-val">0.0%</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
-                <tr class="stat-section-divider">
-                  <td colspan="2"><span>Drawdowns & Streaks</span></td>
-                </tr>
-                <tr id="cardTopMedianDD" class="stat-table-row">
-                  <td class="stat-name">Maximum Drawdown</td>
-                  <td class="stat-val"><span id="dispTopMedianDD" class="hero-val">-9.1%</span></td>
-                </tr>
-                <tr class="stat-table-row">
-                  <td class="stat-name">Max Consecutive Losses</td>
-                  <td class="stat-val"><span id="dispTopMaxLossStreak" class="hero-val">15</span></td>
-                </tr>
-                <tr class="stat-table-row">
-                  <td class="stat-name">Max Consecutive Wins</td>
-                  <td class="stat-val"><span id="dispTopMaxWinStreak" class="hero-val">17</span></td>
-                </tr>
-                <tr id="cardTopRuin" class="stat-table-row">
-                  <td class="stat-name">Risk of Ruin (&gt;50% DD)</td>
-                  <td class="stat-val"><span id="dispTopRuin" class="hero-val">0.0%</span></td>
-                </tr>
-
-                <tr class="stat-section-divider">
-                  <td colspan="2"><span>Edge & Execution</span></td>
-                </tr>
-                <tr class="stat-table-row">
-                  <td class="stat-name">Win Trades Percentage</td>
-                  <td class="stat-val"><span id="dispTopWinRate" class="hero-val">50.0%</span></td>
-                </tr>
-                <tr class="stat-table-row">
-                  <td class="stat-name">Reward-to-Risk (RR)</td>
-                  <td class="stat-val"><span id="dispTopAvgRR" class="hero-val">1 : 2.0</span></td>
-                </tr>
-                <tr id="cardProfitFactor" class="stat-table-row">
-                  <td class="stat-name">Profit Factor</td>
-                  <td class="stat-val"><span id="dispTopPF" class="hero-val">2.00</span></td>
-                </tr>
-                <tr id="cardTopExpectancy" class="stat-table-row">
-                  <td class="stat-name">Trade Expectancy</td>
-                  <td class="stat-val"><span id="dispTopExpectancy" class="hero-val">+1.00%</span></td>
-                </tr>
-              </tbody>
-            </table>
+              <!-- Table 2: Edge & Execution Metrics -->
+              <div class="stats-table-card">
+                <table class="exec-stats-table">
+                  <thead>
+                    <tr>
+                      <th style="text-align:left;">Edge & Execution</th>
+                      <th style="text-align:right;">Simulated Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="stat-table-row">
+                      <td class="stat-name">Win Trades %</td>
+                      <td class="stat-val"><span id="dispTopWinRate" class="hero-val">50.0%</span></td>
+                    </tr>
+                    <tr class="stat-table-row">
+                      <td class="stat-name">Reward-to-Risk (RR)</td>
+                      <td class="stat-val"><span id="dispTopAvgRR" class="hero-val">1 : 2.0</span></td>
+                    </tr>
+                    <tr id="cardProfitFactor" class="stat-table-row">
+                      <td class="stat-name">Profit Factor</td>
+                      <td class="stat-val"><span id="dispTopPF" class="hero-val">2.00</span></td>
+                    </tr>
+                    <tr id="cardTopExpectancy" class="stat-table-row">
+                      <td class="stat-name">Trade Expectancy</td>
+                      <td class="stat-val"><span id="dispTopExpectancy" class="hero-val">+1.00%</span></td>
+                    </tr>
+                    <tr class="stat-table-row">
+                      <td class="stat-name">Max Consecutive Losses</td>
+                      <td class="stat-val"><span id="dispTopMaxLossStreak" class="hero-val">15</span></td>
+                    </tr>
+                    <tr class="stat-table-row">
+                      <td class="stat-name">Max Consecutive Wins</td>
+                      <td class="stat-val"><span id="dispTopMaxWinStreak" class="hero-val">17</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
 
           <!-- 2. CARDS VIEW (DEFAULT - 3x4 GRID ALIGNED WITH STRATEGY PARAMETERS) -->
