@@ -600,22 +600,44 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      color: var(--accent-primary);
+      color: var(--text-muted) !important;
       border-top: 1px solid var(--border-subtle);
       border-bottom: 1px solid var(--border-subtle);
     }
 
     .stat-table-row {
       transition: background-color 0.15s ease;
+      background: transparent !important;
     }
     .stat-table-row:hover {
-      background: var(--bg-surface-hover);
+      background: var(--bg-surface-hover) !important;
     }
-    .stat-table-row.highlight-profit, tr.hero-card.highlight-profit {
-      background: var(--accent-green-bg) !important;
+
+    /* USER SPECIFICATION: NO COLORS IN STATS TABLE ACROSS ALL THEMES */
+    .exec-stats-table .hero-val,
+    .exec-stats-table .stat-val,
+    .exec-stats-table span,
+    html[data-theme] .exec-stats-table .hero-val,
+    html[data-theme] .exec-stats-table .stat-val,
+    html[data-theme] .exec-stats-table .val-green,
+    html[data-theme] .exec-stats-table .val-red,
+    html[data-theme] .exec-stats-table .val-blue,
+    html[data-theme] .exec-stats-table .val-amber,
+    html[data-theme] .exec-stats-table .val-purple,
+    html[data-theme="glass"] .exec-stats-table .val-green,
+    html[data-theme="glass"] .exec-stats-table .val-red,
+    html[data-theme="glass"] .exec-stats-table .val-blue,
+    html[data-theme="glass"] .exec-stats-table .val-amber {
+      color: var(--text-main) !important;
+      text-shadow: none !important;
+      filter: none !important;
     }
-    .stat-table-row.highlight-loss, tr.hero-card.highlight-loss {
-      background: var(--accent-red-bg) !important;
+
+    html[data-theme] .exec-stats-table .stat-table-row.highlight-profit,
+    html[data-theme] .exec-stats-table .stat-table-row.highlight-loss,
+    html[data-theme] .exec-stats-table tr.highlight-profit,
+    html[data-theme] .exec-stats-table tr.highlight-loss {
+      background: transparent !important;
     }
 
     .stat-name {
@@ -2164,58 +2186,68 @@
                   <td class="stat-val"><span id="dispTopInitial" class="hero-val">$1,000</span></td>
                   <td class="stat-sub"><span class="stat-sub-text">Starting Capital</span></td>
                 </tr>
+                <tr class="stat-table-row">
+                  <td class="stat-name">Result Balance</td>
+                  <td class="stat-val"><span id="dispTopFinalBal" class="hero-val">$2,217</span></td>
+                  <td class="stat-sub"><span id="dispTopSubFinalBal" class="stat-sub-text">Expected Capital</span></td>
+                </tr>
                 <tr id="cardTopTotalPnL" class="stat-table-row">
                   <td class="stat-name">Total Net P&L</td>
-                  <td class="stat-val"><span id="dispTopTotalPnL" class="hero-val val-green">+$1,217</span></td>
+                  <td class="stat-val"><span id="dispTopTotalPnL" class="hero-val">+$1,217</span></td>
                   <td class="stat-sub"><span id="dispTopSubTotalPnL" class="stat-sub-text">Expected Return</span></td>
                 </tr>
                 <tr id="cardTopTotalPnLPct" class="stat-table-row">
-                  <td class="stat-name">Total Return %</td>
-                  <td class="stat-val"><span id="dispTopTotalPnLPct" class="hero-val val-green">+121.7%</span></td>
+                  <td class="stat-name">Return % (Whole Period)</td>
+                  <td class="stat-val"><span id="dispTopTotalPnLPct" class="hero-val">+121.7%</span></td>
                   <td class="stat-sub"><span id="dispTopSubPnLPct" class="stat-sub-text">ROI on Capital</span></td>
-                </tr>
-                <tr class="stat-table-row">
-                  <td class="stat-name">Final Capital</td>
-                  <td class="stat-val"><span id="dispTopFinalBal" class="hero-val val-blue">$2,217</span></td>
-                  <td class="stat-sub"><span id="dispTopSubFinalBal" class="stat-sub-text">Expected Capital</span></td>
-                </tr>
-
-                <tr class="stat-section-divider">
-                  <td colspan="3"><span>Edge & Mechanics</span></td>
-                </tr>
-                <tr class="stat-table-row">
-                  <td class="stat-name">Win Rate</td>
-                  <td class="stat-val"><span id="dispTopWinRate" class="hero-val val-blue">50.0%</span></td>
-                  <td class="stat-sub"><span id="dispTopSubWinRate" class="stat-sub-text">Trade Hit Rate</span></td>
-                </tr>
-                <tr class="stat-table-row">
-                  <td class="stat-name">Reward-to-Risk (RR)</td>
-                  <td class="stat-val"><span id="dispTopAvgRR" class="hero-val val-amber">1 : 2.0</span></td>
-                  <td class="stat-sub"><span class="stat-sub-text">Avg Target Multiplier</span></td>
-                </tr>
-                <tr id="cardProfitFactor" class="stat-table-row">
-                  <td class="stat-name">Profit Factor</td>
-                  <td class="stat-val"><span id="dispTopPF" class="hero-val val-green">2.00</span></td>
-                  <td class="stat-sub"><span id="dispTopSubPF" class="stat-sub-text">Gross Win / Loss</span></td>
-                </tr>
-                <tr id="cardTopExpectancy" class="stat-table-row">
-                  <td class="stat-name">Trade Expectancy</td>
-                  <td class="stat-val"><span id="dispTopExpectancy" class="hero-val val-green">+1.00%</span></td>
-                  <td class="stat-sub"><span id="dispTopSubExpectancy" class="stat-sub-text">+0.50R / trade EV</span></td>
                 </tr>
 
                 <tr class="stat-section-divider">
                   <td colspan="3"><span>Risk & Drawdowns</span></td>
                 </tr>
                 <tr id="cardTopMedianDD" class="stat-table-row">
-                  <td class="stat-name">Max Drawdown</td>
-                  <td class="stat-val"><span id="dispTopMedianDD" class="hero-val val-amber">9.1%</span></td>
-                  <td class="stat-sub"><span id="dispTopSubWorstDD" class="stat-sub-text">Worst Run: 18.7%</span></td>
+                  <td class="stat-name">Maximum Drawdown</td>
+                  <td class="stat-val"><span id="dispTopMedianDD" class="hero-val">-9.1%</span></td>
+                  <td class="stat-sub"><span id="dispTopSubWorstDD" class="stat-sub-text">Worst: -18.7%</span></td>
+                </tr>
+                <tr class="stat-table-row">
+                  <td class="stat-name">Max Consecutive Losses</td>
+                  <td class="stat-val"><span id="dispTopMaxLossStreak" class="hero-val">15</span></td>
+                  <td class="stat-sub"><span class="stat-sub-text">Stress Run</span></td>
+                </tr>
+                <tr class="stat-table-row">
+                  <td class="stat-name">Max Consecutive Wins</td>
+                  <td class="stat-val"><span id="dispTopMaxWinStreak" class="hero-val">17</span></td>
+                  <td class="stat-sub"><span class="stat-sub-text">Peak Win Run</span></td>
                 </tr>
                 <tr id="cardTopRuin" class="stat-table-row">
                   <td class="stat-name">Risk of Ruin</td>
-                  <td class="stat-val"><span id="dispTopRuin" class="hero-val val-green">0.0%</span></td>
-                  <td class="stat-sub"><span id="dispTopSubLossStreak" class="stat-sub-text">Max Loss Streak: 15L</span></td>
+                  <td class="stat-val"><span id="dispTopRuin" class="hero-val">0.0%</span></td>
+                  <td class="stat-sub"><span id="dispTopSubLossStreak" class="stat-sub-text">&gt;50% DD Odds</span></td>
+                </tr>
+
+                <tr class="stat-section-divider">
+                  <td colspan="3"><span>Edge & Hit Rate</span></td>
+                </tr>
+                <tr class="stat-table-row">
+                  <td class="stat-name">Win Trades Percentage</td>
+                  <td class="stat-val"><span id="dispTopWinRate" class="hero-val">50.0%</span></td>
+                  <td class="stat-sub"><span id="dispTopSubWinRate" class="stat-sub-text">Trade Hit Rate</span></td>
+                </tr>
+                <tr class="stat-table-row">
+                  <td class="stat-name">Reward-to-Risk (RR)</td>
+                  <td class="stat-val"><span id="dispTopAvgRR" class="hero-val">1 : 2.0</span></td>
+                  <td class="stat-sub"><span class="stat-sub-text">Avg Target Multiplier</span></td>
+                </tr>
+                <tr id="cardProfitFactor" class="stat-table-row">
+                  <td class="stat-name">Profit Factor</td>
+                  <td class="stat-val"><span id="dispTopPF" class="hero-val">2.00</span></td>
+                  <td class="stat-sub"><span id="dispTopSubPF" class="stat-sub-text">Gross Win / Loss</span></td>
+                </tr>
+                <tr id="cardTopExpectancy" class="stat-table-row">
+                  <td class="stat-name">Trade Expectancy</td>
+                  <td class="stat-val"><span id="dispTopExpectancy" class="hero-val">+1.00%</span></td>
+                  <td class="stat-sub"><span id="dispTopSubExpectancy" class="stat-sub-text">+0.50R / trade EV</span></td>
                 </tr>
               </tbody>
             </table>
@@ -3075,8 +3107,8 @@
     worstEl.className = 'chip-value ' + (worstNet >= 0 ? 'val-green' : 'val-red');
     document.getElementById('statWorstBal').textContent = `Final: $${Math.round(p5).toLocaleString()}`;
 
-    document.getElementById('statMedianDD').textContent = `${medianDD.toFixed(1)}%`;
-    document.getElementById('statWorstDD').textContent = `Worst: ${worstDD.toFixed(1)}%`;
+    document.getElementById('statMedianDD').textContent = `-${medianDD.toFixed(1)}%`;
+    document.getElementById('statWorstDD').textContent = `Worst: -${worstDD.toFixed(1)}%`;
 
     document.getElementById('statMaxLossStreak').textContent = `${totalMaxLossStreak} Losses`;
     document.getElementById('statMaxWinStreak').textContent = `${totalMaxWinStreak} Wins`;
@@ -3087,24 +3119,26 @@
 
     document.getElementById('statProbDD20').textContent = `${lastSimResults.dd20Rate.toFixed(1)}%`;
 
-    // Update Top Deck 9 (Median Max DD) and 10 (Risk of Ruin)
+    // Update Top Deck (Max Drawdown with minus sign, Streaks, Risk of Ruin)
     const topMedianDDEl = document.getElementById('dispTopMedianDD');
     const topWorstDDEl = document.getElementById('dispTopSubWorstDD');
     if (topMedianDDEl) {
-      topMedianDDEl.textContent = `${medianDD.toFixed(1)}%`;
-      if (medianDD <= 12) topMedianDDEl.className = 'hero-val val-green';
-      else if (medianDD <= 25) topMedianDDEl.className = 'hero-val val-amber';
-      else topMedianDDEl.className = 'hero-val val-red';
+      topMedianDDEl.textContent = `-${medianDD.toFixed(1)}%`;
     }
-    if (topWorstDDEl) topWorstDDEl.textContent = `Worst Run: ${worstDD.toFixed(1)}%`;
+    if (topWorstDDEl) topWorstDDEl.textContent = `Worst: -${worstDD.toFixed(1)}%`;
+
+    const topLossStreakEl = document.getElementById('dispTopMaxLossStreak');
+    if (topLossStreakEl) topLossStreakEl.textContent = totalMaxLossStreak;
+
+    const topWinStreakEl = document.getElementById('dispTopMaxWinStreak');
+    if (topWinStreakEl) topWinStreakEl.textContent = totalMaxWinStreak;
 
     const topRuinEl = document.getElementById('dispTopRuin');
     const topSubLossStreakEl = document.getElementById('dispTopSubLossStreak');
     if (topRuinEl) {
       topRuinEl.textContent = `${lastSimResults.ruinRate.toFixed(1)}%`;
-      topRuinEl.className = `hero-val ${lastSimResults.ruinRate === 0 ? 'val-green' : (lastSimResults.ruinRate <= 5 ? 'val-amber' : 'val-red')}`;
     }
-    if (topSubLossStreakEl) topSubLossStreakEl.textContent = `Max Loss Streak: ${totalMaxLossStreak}L`;
+    if (topSubLossStreakEl) topSubLossStreakEl.textContent = `>50% DD Odds`;
   }
 
   /* ================================================================
