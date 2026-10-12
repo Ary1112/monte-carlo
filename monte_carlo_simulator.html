@@ -570,7 +570,10 @@
     }
 
     .exec-stats-table {
-      width: 100%;
+      width: auto;
+      min-width: 260px;
+      max-width: 340px;
+      margin: 0 auto;
       border-collapse: collapse;
       font-size: 0.8125rem;
     }
@@ -581,11 +584,11 @@
       font-size: 0.6875rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      padding: 0.45rem 0.75rem;
+      padding: 0.4rem 0.65rem;
       border-bottom: 1px solid var(--border-subtle);
     }
     .exec-stats-table td {
-      padding: 0.44rem 0.75rem;
+      padding: 0.38rem 0.65rem;
       border-bottom: 1px solid var(--border-subtle);
       vertical-align: middle;
     }
@@ -595,7 +598,7 @@
 
     .stat-section-divider td {
       background: var(--bg-surface-elevated);
-      padding: 0.32rem 0.75rem;
+      padding: 0.28rem 0.65rem;
       font-size: 0.625rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -613,7 +616,7 @@
       background: var(--bg-surface-hover) !important;
     }
 
-    /* USER SPECIFICATION: NO COLORS IN STATS TABLE ACROSS ALL THEMES */
+    /* ALL STATS ARE NEUTRAL BY DEFAULT */
     .exec-stats-table .hero-val,
     .exec-stats-table .stat-val,
     .exec-stats-table span,
@@ -623,21 +626,40 @@
     html[data-theme] .exec-stats-table .val-red,
     html[data-theme] .exec-stats-table .val-blue,
     html[data-theme] .exec-stats-table .val-amber,
-    html[data-theme] .exec-stats-table .val-purple,
-    html[data-theme="glass"] .exec-stats-table .val-green,
-    html[data-theme="glass"] .exec-stats-table .val-red,
-    html[data-theme="glass"] .exec-stats-table .val-blue,
-    html[data-theme="glass"] .exec-stats-table .val-amber {
-      color: var(--text-main) !important;
+    html[data-theme] .exec-stats-table .val-purple {
+      color: var(--text-main);
       text-shadow: none !important;
       filter: none !important;
     }
 
-    html[data-theme] .exec-stats-table .stat-table-row.highlight-profit,
-    html[data-theme] .exec-stats-table .stat-table-row.highlight-loss,
-    html[data-theme] .exec-stats-table tr.highlight-profit,
-    html[data-theme] .exec-stats-table tr.highlight-loss {
-      background: transparent !important;
+    /* USER SPECIFICATION: ONLY HIGHLIGHT TOTAL P&L AND GAIN % */
+    .exec-stats-table #dispTopTotalPnL.val-green,
+    .exec-stats-table #dispTopTotalPnLPct.val-green,
+    html[data-theme] .exec-stats-table #dispTopTotalPnL.val-green,
+    html[data-theme] .exec-stats-table #dispTopTotalPnLPct.val-green,
+    #dispCardTotalPnL.val-green,
+    #dispCardTotalPnLPct.val-green {
+      color: var(--accent-green) !important;
+      font-weight: 700;
+    }
+    .exec-stats-table #dispTopTotalPnL.val-red,
+    .exec-stats-table #dispTopTotalPnLPct.val-red,
+    html[data-theme] .exec-stats-table #dispTopTotalPnL.val-red,
+    html[data-theme] .exec-stats-table #dispTopTotalPnLPct.val-red,
+    #dispCardTotalPnL.val-red,
+    #dispCardTotalPnLPct.val-red {
+      color: var(--accent-red) !important;
+      font-weight: 700;
+    }
+
+    /* Subtle row highlight ONLY for Total PnL and Gain % */
+    .exec-stats-table tr#cardTopTotalPnL.highlight-profit,
+    .exec-stats-table tr#cardTopTotalPnLPct.highlight-profit {
+      background: var(--accent-green-bg) !important;
+    }
+    .exec-stats-table tr#cardTopTotalPnL.highlight-loss,
+    .exec-stats-table tr#cardTopTotalPnLPct.highlight-loss {
+      background: var(--accent-red-bg) !important;
     }
 
     .stat-name {
@@ -646,10 +668,49 @@
       font-size: 0.8125rem;
       white-space: nowrap;
       text-align: left;
+      padding-right: 1.25rem !important; /* CLOSE GAP BETWEEN TOPIC AND VALUE */
     }
     .stat-val {
       text-align: right;
       white-space: nowrap;
+      padding-left: 0.25rem !important;
+    }
+
+    /* CARDS WRAPPER FOR STATS TOGGLE */
+    .stats-cards-wrapper {
+      width: 100%;
+      overflow-y: auto;
+      max-height: 480px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-subtle) transparent;
+      padding: 0.2rem;
+    }
+    .stats-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      width: 100%;
+    }
+    @media (max-width: 600px) {
+      .stats-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .stats-cards-grid .hero-card {
+      padding: 0.55rem 0.75rem;
+      min-height: 64px;
+      border-radius: 7px;
+    }
+    .stats-cards-grid .hero-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.04em;
+    }
+    .stats-cards-grid .hero-val {
+      font-size: 1.1rem;
+      margin: 0.15rem 0;
+    }
+    .stats-cards-grid .hero-sub {
+      font-size: 0.6875rem;
     }
 
     .risk-mode-pill {
@@ -2151,17 +2212,26 @@
         </div>
       </div>
 
-        <!-- 2. STRATEGY STATS TABLE (RIGHT) -->
+        <!-- 2. STRATEGY STATS PANEL (RIGHT): TOGGLEABLE TABLE / CARDS -->
         <div class="panel-card stats-table-panel">
           <div class="panel-header-row">
             <div>
               <span class="panel-header-title">📊 Executive Performance Stats</span>
               <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.15rem;">Simulated Edge & Outcome Metrics</div>
             </div>
-            <span class="badge" style="font-size:0.7rem;">P50 Median</span>
+            <!-- VIEW TOGGLER: TABLE VS CARDS -->
+            <div class="cal-view-pill">
+              <button type="button" class="cal-view-btn active" id="btnStatsLayoutTable" onclick="switchStatsLayout('table')" title="Table View">
+                <span>📑</span> Table
+              </button>
+              <button type="button" class="cal-view-btn" id="btnStatsLayoutCards" onclick="switchStatsLayout('cards')" title="Cards View (Like Before)">
+                <span>🎴</span> Cards
+              </button>
+            </div>
           </div>
 
-          <div class="stats-table-wrapper">
+          <!-- 1. TABLE VIEW -->
+          <div id="statsViewTableWrap" class="stats-table-wrapper" style="display:block;">
             <table class="exec-stats-table">
               <thead>
                 <tr>
@@ -2183,11 +2253,11 @@
                 </tr>
                 <tr id="cardTopTotalPnL" class="stat-table-row">
                   <td class="stat-name">Total Net P&L</td>
-                  <td class="stat-val"><span id="dispTopTotalPnL" class="hero-val">+$1,217</span></td>
+                  <td class="stat-val"><span id="dispTopTotalPnL" class="hero-val val-green">+$1,217</span></td>
                 </tr>
                 <tr id="cardTopTotalPnLPct" class="stat-table-row">
                   <td class="stat-name">Return % (Whole Period)</td>
-                  <td class="stat-val"><span id="dispTopTotalPnLPct" class="hero-val">+121.7%</span></td>
+                  <td class="stat-val"><span id="dispTopTotalPnLPct" class="hero-val val-green">+121.7%</span></td>
                 </tr>
 
                 <tr class="stat-section-divider">
@@ -2231,6 +2301,83 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+
+          <!-- 2. CARDS VIEW (JUST LIKE BEFORE) -->
+          <div id="statsViewCardsWrap" class="stats-cards-wrapper" style="display:none;">
+            <div class="stats-cards-grid">
+              <div class="hero-card">
+                <div class="hero-label">Initial Balance</div>
+                <div class="hero-val" id="dispCardInitial">$1,000</div>
+                <div class="hero-sub">Starting Capital</div>
+              </div>
+
+              <div class="hero-card">
+                <div class="hero-label">Result Balance</div>
+                <div class="hero-val" id="dispCardFinalBal">$2,217</div>
+                <div class="hero-sub">Final Capital</div>
+              </div>
+
+              <div class="hero-card highlight-profit" id="cardTileTotalPnL">
+                <div class="hero-label">Total Net P&L</div>
+                <div class="hero-val val-green" id="dispCardTotalPnL">+$1,217</div>
+                <div class="hero-sub">Expected Return</div>
+              </div>
+
+              <div class="hero-card highlight-profit" id="cardTileTotalPnLPct">
+                <div class="hero-label">Return % (Gain)</div>
+                <div class="hero-val val-green" id="dispCardTotalPnLPct">+121.7%</div>
+                <div class="hero-sub">ROI on Capital</div>
+              </div>
+
+              <div class="hero-card">
+                <div class="hero-label">Max Drawdown</div>
+                <div class="hero-val" id="dispCardMedianDD">-9.1%</div>
+                <div class="hero-sub" id="dispCardSubWorstDD">Worst: -18.7%</div>
+              </div>
+
+              <div class="hero-card">
+                <div class="hero-label">Max Loss Streak</div>
+                <div class="hero-val" id="dispCardMaxLossStreak">15</div>
+                <div class="hero-sub">Stress Run</div>
+              </div>
+
+              <div class="hero-card">
+                <div class="hero-label">Max Win Streak</div>
+                <div class="hero-val" id="dispCardMaxWinStreak">17</div>
+                <div class="hero-sub">Peak Win Run</div>
+              </div>
+
+              <div class="hero-card">
+                <div class="hero-label">Risk of Ruin</div>
+                <div class="hero-val" id="dispCardRuin">0.0%</div>
+                <div class="hero-sub">&gt;50% DD Odds</div>
+              </div>
+
+              <div class="hero-card">
+                <div class="hero-label">Win Trades %</div>
+                <div class="hero-val" id="dispCardWinRate">50.0%</div>
+                <div class="hero-sub">Trade Hit Rate</div>
+              </div>
+
+              <div class="hero-card">
+                <div class="hero-label">Reward-to-Risk</div>
+                <div class="hero-val" id="dispCardAvgRR">1 : 2.0</div>
+                <div class="hero-sub">Average RR</div>
+              </div>
+
+              <div class="hero-card">
+                <div class="hero-label">Profit Factor</div>
+                <div class="hero-val" id="dispCardPF">2.00</div>
+                <div class="hero-sub">Gross Win / Loss</div>
+              </div>
+
+              <div class="hero-card">
+                <div class="hero-label">Trade Expectancy</div>
+                <div class="hero-val" id="dispCardExpectancy">+1.00%</div>
+                <div class="hero-sub">EV / Trade</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -2829,6 +2976,21 @@
     renderChart();
   }
 
+  let statsLayoutMode = 'table';
+  function switchStatsLayout(mode) {
+    statsLayoutMode = mode;
+    const btnTable = document.getElementById('btnStatsLayoutTable');
+    const btnCards = document.getElementById('btnStatsLayoutCards');
+    const wrapTable = document.getElementById('statsViewTableWrap');
+    const wrapCards = document.getElementById('statsViewCardsWrap');
+
+    if (btnTable) btnTable.classList.toggle('active', mode === 'table');
+    if (btnCards) btnCards.classList.toggle('active', mode === 'cards');
+    if (wrapTable) wrapTable.style.display = (mode === 'table') ? 'block' : 'none';
+    if (wrapCards) wrapCards.style.display = (mode === 'cards') ? 'block' : 'none';
+  }
+  window.switchStatsLayout = switchStatsLayout;
+
   /* ================================================================
      5. CALCULATION ENGINE & SIMULATION LOOP
      ================================================================ */
@@ -2869,84 +3031,86 @@
     const totalProfitLoss = expectedFinalBalance - config.initialBalance;
     const totalReturnPct = config.initialBalance > 0 ? ((expectedFinalBalance - config.initialBalance) / config.initialBalance) * 100 : 0;
 
-    // Update Top 10 Hero Display Elements
+    // Update Top Display Elements (Both Table & Cards View)
     // 1. Initial Balance
     const initEl = document.getElementById('dispTopInitial');
     if (initEl) initEl.textContent = '$' + Math.round(config.initialBalance).toLocaleString();
+    const cardInitEl = document.getElementById('dispCardInitial');
+    if (cardInitEl) cardInitEl.textContent = '$' + Math.round(config.initialBalance).toLocaleString();
 
-    // 2. Total P&L
+    // 2. Total P&L (ONLY THIS AND GAIN % ARE HIGHLIGHTED)
     const cardPnL = document.getElementById('cardTopTotalPnL');
     const pnlValEl = document.getElementById('dispTopTotalPnL');
+    const cardTilePnL = document.getElementById('cardTileTotalPnL');
+    const cardPnlValEl = document.getElementById('dispCardTotalPnL');
+    const pnlFormatted = (totalProfitLoss >= 0 ? '+$' : '-$') + Math.round(Math.abs(totalProfitLoss)).toLocaleString();
+
     if (pnlValEl) {
-      if (totalProfitLoss >= 0) {
-        if (cardPnL) cardPnL.className = 'stat-table-row highlight-profit';
-        pnlValEl.className = 'hero-val val-green';
-        pnlValEl.textContent = '+$' + Math.round(totalProfitLoss).toLocaleString();
-      } else {
-        if (cardPnL) cardPnL.className = 'stat-table-row highlight-loss';
-        pnlValEl.className = 'hero-val val-red';
-        pnlValEl.textContent = '-$' + Math.round(Math.abs(totalProfitLoss)).toLocaleString();
-      }
+      pnlValEl.className = 'hero-val ' + (totalProfitLoss >= 0 ? 'val-green' : 'val-red');
+      pnlValEl.textContent = pnlFormatted;
+      if (cardPnL) cardPnL.className = 'stat-table-row ' + (totalProfitLoss >= 0 ? 'highlight-profit' : 'highlight-loss');
+    }
+    if (cardPnlValEl) {
+      cardPnlValEl.className = 'hero-val ' + (totalProfitLoss >= 0 ? 'val-green' : 'val-red');
+      cardPnlValEl.textContent = pnlFormatted;
+      if (cardTilePnL) cardTilePnL.className = 'hero-card ' + (totalProfitLoss >= 0 ? 'highlight-profit' : 'highlight-loss');
     }
 
-    // 3. Total P&L %
+    // 3. Total P&L % / Gain % (ONLY THIS AND TOTAL P&L ARE HIGHLIGHTED)
     const cardPnLPct = document.getElementById('cardTopTotalPnLPct');
     const pnlPctEl = document.getElementById('dispTopTotalPnLPct');
+    const cardTilePnLPct = document.getElementById('cardTileTotalPnLPct');
+    const cardPnlPctValEl = document.getElementById('dispCardTotalPnLPct');
+    const pctFormatted = (totalReturnPct >= 0 ? '+' : '') + totalReturnPct.toFixed(1) + '%';
+
     if (pnlPctEl) {
-      if (totalReturnPct >= 0) {
-        if (cardPnLPct) cardPnLPct.className = 'stat-table-row highlight-profit';
-        pnlPctEl.className = 'hero-val val-green';
-        pnlPctEl.textContent = `+${totalReturnPct.toFixed(1)}%`;
-      } else {
-        if (cardPnLPct) cardPnLPct.className = 'stat-table-row highlight-loss';
-        pnlPctEl.className = 'hero-val val-red';
-        pnlPctEl.textContent = `${totalReturnPct.toFixed(1)}%`;
-      }
+      pnlPctEl.className = 'hero-val ' + (totalReturnPct >= 0 ? 'val-green' : 'val-red');
+      pnlPctEl.textContent = pctFormatted;
+      if (cardPnLPct) cardPnLPct.className = 'stat-table-row ' + (totalReturnPct >= 0 ? 'highlight-profit' : 'highlight-loss');
+    }
+    if (cardPnlPctValEl) {
+      cardPnlPctValEl.className = 'hero-val ' + (totalReturnPct >= 0 ? 'val-green' : 'val-red');
+      cardPnlPctValEl.textContent = pctFormatted;
+      if (cardTilePnLPct) cardTilePnLPct.className = 'hero-card ' + (totalReturnPct >= 0 ? 'highlight-profit' : 'highlight-loss');
     }
 
     // 4. Final Balance
     const finalBalEl = document.getElementById('dispTopFinalBal');
     if (finalBalEl) finalBalEl.textContent = '$' + Math.round(expectedFinalBalance).toLocaleString();
-    const periodUnit = config.cadence === 'week' ? 'w' : 'mo';
-    const subFinalEl = document.getElementById('dispTopSubFinalBal');
-    if (subFinalEl) subFinalEl.textContent = `Over ${totalTrades} Trades (${config.totalPeriods}${periodUnit})`;
+    const cardFinalEl = document.getElementById('dispCardFinalBal');
+    if (cardFinalEl) cardFinalEl.textContent = '$' + Math.round(expectedFinalBalance).toLocaleString();
 
     // 5. Average RR
     const avgRREl = document.getElementById('dispTopAvgRR');
     if (avgRREl) avgRREl.textContent = `1 : ${config.rewardRatio.toFixed(1)}`;
+    const cardAvgRREl = document.getElementById('dispCardAvgRR');
+    if (cardAvgRREl) cardAvgRREl.textContent = `1 : ${config.rewardRatio.toFixed(1)}`;
 
     // 6. Win Rate
     const wrEl = document.getElementById('dispTopWinRate');
     if (wrEl) wrEl.textContent = `${config.winRate.toFixed(1)}%`;
-    const subWrEl = document.getElementById('dispTopSubWinRate');
-    if (subWrEl) subWrEl.textContent = config.breakEvenRate > 0 ? `${config.breakEvenRate}% BE rate` : 'Trade Hit Rate';
+    const cardWrEl = document.getElementById('dispCardWinRate');
+    if (cardWrEl) cardWrEl.textContent = `${config.winRate.toFixed(1)}%`;
 
     // 7. Profit Factor
+    const pfStr = theoreticalPF >= 99 ? '99.9+' : theoreticalPF.toFixed(2);
     const pfEl = document.getElementById('dispTopPF');
-    if (pfEl) {
-      pfEl.textContent = theoreticalPF >= 99 ? '99.9+' : theoreticalPF.toFixed(2);
-      if (theoreticalPF >= 1.5) pfEl.className = 'hero-val val-green';
-      else if (theoreticalPF >= 1.0) pfEl.className = 'hero-val val-blue';
-      else pfEl.className = 'hero-val val-red';
-    }
+    if (pfEl) pfEl.textContent = pfStr;
+    const cardPfEl = document.getElementById('dispCardPF');
+    if (cardPfEl) cardPfEl.textContent = pfStr;
 
     // 8. Expectancy
     const expValEl = document.getElementById('dispTopExpectancy');
-    const subExpEl = document.getElementById('dispTopSubExpectancy');
-    const rExpectancy = (pWin * rr) - pLoss;
-    if (expValEl) {
-      if (isFixedRisk) {
-        const evDollar = (pWin * fixedRiskDollar * rr) - (pLoss * fixedRiskDollar);
-        expValEl.textContent = `${evDollar >= 0 ? '+$' : '-$'}${Math.round(Math.abs(evDollar)).toLocaleString()}`;
-        expValEl.className = `hero-val ${evDollar >= 0 ? 'val-green' : 'val-red'}`;
-      } else {
-        expValEl.textContent = `${edgePct >= 0 ? '+' : ''}${edgePct.toFixed(2)}%`;
-        expValEl.className = `hero-val ${edgePct >= 0 ? 'val-green' : 'val-red'}`;
-      }
+    const cardExpEl = document.getElementById('dispCardExpectancy');
+    let expFormatted = '';
+    if (isFixedRisk) {
+      const evDollar = (pWin * fixedRiskDollar * rr) - (pLoss * fixedRiskDollar);
+      expFormatted = `${evDollar >= 0 ? '+$' : '-$'}${Math.round(Math.abs(evDollar)).toLocaleString()}`;
+    } else {
+      expFormatted = `${edgePct >= 0 ? '+' : ''}${edgePct.toFixed(2)}%`;
     }
-    if (subExpEl) {
-      subExpEl.textContent = `${rExpectancy >= 0 ? '+' : ''}${rExpectancy.toFixed(2)}R / trade EV`;
-    }
+    if (expValEl) expValEl.textContent = expFormatted;
+    if (cardExpEl) cardExpEl.textContent = expFormatted;
 
     // Run Monte Carlo
     runMonteCarloEngine(tradeEVFactor, expectedFinalBalance, pWin, pBE, riskPct, rr, totalTrades, theoreticalPF, isFixedRisk, fixedRiskDollar);
@@ -3099,25 +3263,31 @@
 
     document.getElementById('statProbDD20').textContent = `${lastSimResults.dd20Rate.toFixed(1)}%`;
 
-    // Update Top Deck (Max Drawdown with minus sign, Streaks, Risk of Ruin)
+    // Update Top Deck (Max Drawdown with minus sign, Streaks, Risk of Ruin) - Table & Cards
     const topMedianDDEl = document.getElementById('dispTopMedianDD');
     const topWorstDDEl = document.getElementById('dispTopSubWorstDD');
-    if (topMedianDDEl) {
-      topMedianDDEl.textContent = `-${medianDD.toFixed(1)}%`;
-    }
+    const cardMedianDDEl = document.getElementById('dispCardMedianDD');
+    const cardWorstDDEl = document.getElementById('dispCardSubWorstDD');
+    if (topMedianDDEl) topMedianDDEl.textContent = `-${medianDD.toFixed(1)}%`;
+    if (cardMedianDDEl) cardMedianDDEl.textContent = `-${medianDD.toFixed(1)}%`;
     if (topWorstDDEl) topWorstDDEl.textContent = `Worst: -${worstDD.toFixed(1)}%`;
+    if (cardWorstDDEl) cardWorstDDEl.textContent = `Worst: -${worstDD.toFixed(1)}%`;
 
     const topLossStreakEl = document.getElementById('dispTopMaxLossStreak');
+    const cardLossStreakEl = document.getElementById('dispCardMaxLossStreak');
     if (topLossStreakEl) topLossStreakEl.textContent = totalMaxLossStreak;
+    if (cardLossStreakEl) cardLossStreakEl.textContent = totalMaxLossStreak;
 
     const topWinStreakEl = document.getElementById('dispTopMaxWinStreak');
+    const cardWinStreakEl = document.getElementById('dispCardMaxWinStreak');
     if (topWinStreakEl) topWinStreakEl.textContent = totalMaxWinStreak;
+    if (cardWinStreakEl) cardWinStreakEl.textContent = totalMaxWinStreak;
 
     const topRuinEl = document.getElementById('dispTopRuin');
+    const cardRuinEl = document.getElementById('dispCardRuin');
     const topSubLossStreakEl = document.getElementById('dispTopSubLossStreak');
-    if (topRuinEl) {
-      topRuinEl.textContent = `${lastSimResults.ruinRate.toFixed(1)}%`;
-    }
+    if (topRuinEl) topRuinEl.textContent = `${lastSimResults.ruinRate.toFixed(1)}%`;
+    if (cardRuinEl) cardRuinEl.textContent = `${lastSimResults.ruinRate.toFixed(1)}%`;
     if (topSubLossStreakEl) topSubLossStreakEl.textContent = `>50% DD Odds`;
   }
 
