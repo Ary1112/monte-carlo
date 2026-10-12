@@ -204,16 +204,12 @@
     }
 
     [data-theme="glass"] .header-title h1 {
-      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 40%, #f43f5e 80%, #fb7185 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 2px 14px rgba(56, 189, 248, 0.45));
+      color: var(--text-main);
+      filter: none;
     }
 
     [data-theme="glass"] .panel-header-title {
-      background: linear-gradient(135deg, #38bdf8 0%, #c084fc 60%, #f43f5e 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: var(--text-main);
     }
 
     /* PROFIT & LOSS TEXT & GLOW IN GLASS THEME */
@@ -264,9 +260,7 @@
       box-shadow: 0 4px 24px rgba(244, 63, 94, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.20) !important;
     }
     [data-theme="glass"] .hero-card .hero-label {
-      background: linear-gradient(135deg, #e2e8f0 0%, #38bdf8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: var(--text-muted);
     }
 
     /* CALENDAR CELLS */
@@ -1564,14 +1558,9 @@
       border-left: 2.5px solid var(--border-strong) !important;
       border-color: var(--border-subtle) !important;
     }
-    .no-cal-highlights .day-pnl.val-green,
-    .no-cal-highlights .day-pnl.val-red {
-      color: var(--text-main) !important;
-    }
     .no-cal-highlights .pill-pct.pill-green,
     .no-cal-highlights .pill-pct.pill-red {
       background: var(--bg-surface-elevated) !important;
-      color: var(--text-muted) !important;
     }
     .no-cal-highlights .cal-week-box.week-profitable,
     .no-cal-highlights .cal-week-box.week-losing {
@@ -3242,10 +3231,10 @@
     // Run Monte Carlo
     runMonteCarloEngine(tradeEVFactor, expectedFinalBalance, pWin, pBE, riskPct, rr, totalTrades, theoreticalPF, isFixedRisk, fixedRiskDollar);
 
+    buildActiveCalendarRun();
     renderChart();
     renderCompoundingTable(tradeEVFactor);
     updateMonthJumpSelect();
-    buildActiveCalendarRun();
     renderCalendar();
   }
 
@@ -3637,6 +3626,7 @@
   function changeCalPath(path) {
     calPathMode = path;
     buildActiveCalendarRun();
+    renderChart();
     renderCalendar();
   }
 
@@ -3644,6 +3634,7 @@
     calPathMode = 'random';
     document.getElementById('calPathSelect').value = 'random';
     buildActiveCalendarRun();
+    renderChart();
     renderCalendar();
   }
 
@@ -3870,7 +3861,7 @@
 
           const isGreen = dayPnL > 0;
           const isRed = dayPnL < 0;
-          const pnlColor = !calHighlightsEnabled ? '' : (isGreen ? 'val-green' : (isRed ? 'val-red' : 'text-slate-400'));
+          const pnlColor = isGreen ? 'val-green' : (isRed ? 'val-red' : 'text-slate-400');
           const pnlFormatted = dayTrades.length > 0
             ? `${dayPnL >= 0 ? '+$' : '-$'}${Math.round(Math.abs(dayPnL)).toLocaleString()}`
             : (isWeekend ? '' : '<span style="color:var(--text-dim); font-size:0.875rem;">—</span>');
@@ -3887,9 +3878,9 @@
             </div>
             ${dayTrades.length > 0 ? `
               <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.625rem; color:var(--text-dim); border-top:1px solid rgba(255,255,255,0.06); padding-top:0.15rem;">
-                <span class="${calHighlightsEnabled ? 'val-green' : ''} num-font" style="font-weight:600;">${dayTrades.filter(t => t.outcome === 'WIN').length}W</span>
+                <span class="val-green num-font" style="font-weight:600;">${dayTrades.filter(t => t.outcome === 'WIN').length}W</span>
                 <span style="color:var(--text-dim); font-size:0.55rem;">•</span>
-                <span class="${calHighlightsEnabled ? 'val-red' : ''} num-font" style="font-weight:600;">${dayTrades.filter(t => t.outcome === 'LOSS').length}L</span>
+                <span class="val-red num-font" style="font-weight:600;">${dayTrades.filter(t => t.outcome === 'LOSS').length}L</span>
               </div>
             ` : '<div style="height:2px;"></div>'}
           `;
@@ -3974,29 +3965,29 @@
           </div>
           <div style="margin:0.12rem 0; text-align:center;">
             <div style="display:flex; justify-content:center; align-items:baseline; gap:0.25rem;">
-              <span class="${calHighlightsEnabled ? (weekPnL >= 0 ? 'val-green' : 'val-red') : ''} num-font" style="font-size:0.85rem; font-weight:700;">
+              <span class="${weekPnL >= 0 ? 'val-green' : 'val-red'} num-font" style="font-size:0.85rem; font-weight:700;">
                 ${weekPnL >= 0 ? '+$' : '-$'}${Math.round(Math.abs(weekPnL)).toLocaleString()}
               </span>
-              <span class="pill-pct ${calHighlightsEnabled ? (totalPct >= 0 ? 'pill-green' : 'pill-red') : ''} num-font" style="font-size:0.58rem; padding:0.06rem 0.32rem;">
+              <span class="pill-pct ${totalPct >= 0 ? 'pill-green' : 'pill-red'} num-font" style="font-size:0.58rem; padding:0.06rem 0.32rem;">
                 ${totalPct >= 0 ? '+' : ''}${totalPct.toFixed(1)}%
               </span>
             </div>
             <div style="font-size:0.58rem; color:var(--text-muted); margin-top:0.08rem;">
-              ${totalWeekTrades} trds (<span class="${calHighlightsEnabled ? 'val-green' : ''} num-font" style="font-weight:600;">${winTrades}W</span> / <span class="${calHighlightsEnabled ? 'val-red' : ''} num-font" style="font-weight:600;">${lossTrades}L</span>)
+              ${totalWeekTrades} trds (<span class="val-green num-font" style="font-weight:600;">${winTrades}W</span> / <span class="val-red num-font" style="font-weight:600;">${lossTrades}L</span>)
             </div>
           </div>
           <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:0.1rem; padding-top:0.18rem; border-top:1px solid rgba(255,255,255,0.06); text-align:center; font-size:0.58rem;">
             <div>
               <div style="color:var(--text-dim); font-size:0.52rem; text-transform:uppercase; letter-spacing:0.02em;">WR</div>
-              <div class="${calHighlightsEnabled ? (winRateNum >= 50 ? 'val-green' : 'val-red') : ''} num-font" style="font-weight:600;">${winRateStr}%</div>
+              <div class="${winRateNum >= 50 ? 'val-green' : 'val-red'} num-font" style="font-weight:600;">${winRateStr}%</div>
             </div>
             <div>
               <div style="color:var(--text-dim); font-size:0.52rem; text-transform:uppercase; letter-spacing:0.02em;">PF</div>
-              <div class="${calHighlightsEnabled ? (pfNum >= 1.0 || pfStr === '∞' ? 'val-green' : 'val-red') : ''} num-font" style="font-weight:600;">${pfStr}</div>
+              <div class="${pfNum >= 1.0 || pfStr === '∞' ? 'val-green' : 'val-red'} num-font" style="font-weight:600;">${pfStr}</div>
             </div>
             <div>
               <div style="color:var(--text-dim); font-size:0.52rem; text-transform:uppercase; letter-spacing:0.02em;">RR</div>
-              <div style="${calHighlightsEnabled ? 'color:var(--accent-blue);' : ''} font-weight:600;" class="num-font">${avgRRStr}</div>
+              <div style="color:var(--accent-blue); font-weight:600;" class="num-font">${avgRRStr}</div>
             </div>
           </div>
         `;
@@ -4592,23 +4583,40 @@
     const isFixedRisk = config.riskType === 'fixed';
     const rr = config.rewardRatio;
 
-    // Determine totalSteps based on active chartResolution
-    // 'trade' (default) -> per trade (0..totalTrades)
-    // 'day' -> per day (0..totalDays)
-    // 'week' -> per week (0..totalWeeks)
-    let totalSteps = totalTrades;
-    let unitLabel = 'T';
-    if (chartResolution === 'day') {
-      const daysPerPeriod = config.cadence === 'week' ? (calShowWeekends ? 7 : 5) : (calShowWeekends ? 30 : 22);
-      totalSteps = Math.max(1, periods * daysPerPeriod);
-      unitLabel = 'd';
-    } else if (chartResolution === 'week') {
-      totalSteps = config.cadence === 'week' ? periods : Math.max(1, Math.round(periods * 4.33));
-      unitLabel = 'w';
-    } else {
-      totalSteps = Math.max(1, totalTrades);
-      unitLabel = 'T';
+    // Extract actual simulated equity trajectory from activeSimulatedRun
+    let simPoints = [];
+    if (activeSimulatedRun && activeSimulatedRun.length > 0) {
+      if (chartResolution === 'trade') {
+        simPoints.push(config.initialBalance);
+        activeSimulatedRun.forEach(t => simPoints.push(t.balance));
+      } else if (chartResolution === 'day') {
+        simPoints.push(config.initialBalance);
+        const dayMap = {};
+        const dayDates = [];
+        activeSimulatedRun.forEach(t => {
+          if (!dayMap[t.date]) dayDates.push(t.date);
+          dayMap[t.date] = t.balance;
+        });
+        dayDates.forEach(d => simPoints.push(dayMap[d]));
+      } else {
+        // week
+        simPoints.push(config.initialBalance);
+        const weekMap = {};
+        const weekNums = [];
+        activeSimulatedRun.forEach(t => {
+          const w = t.week || 1;
+          if (!weekMap[w]) weekNums.push(w);
+          weekMap[w] = t.balance;
+        });
+        weekNums.forEach(w => simPoints.push(weekMap[w]));
+      }
     }
+
+    // Determine totalSteps based on active chartResolution
+    let totalSteps = simPoints.length > 1 ? (simPoints.length - 1) : totalTrades;
+    let unitLabel = 'T';
+    if (chartResolution === 'day') unitLabel = 'd';
+    else if (chartResolution === 'week') unitLabel = 'w';
 
     // Helper: Map step index (0..totalSteps) to trade index (0..totalTrades)
     const stepToTradeIdx = (s) => {
@@ -4637,6 +4645,9 @@
     }
 
     let maxVal = Math.max(...evPoints);
+    if (simPoints.length > 0) {
+      maxVal = Math.max(maxVal, ...simPoints);
+    }
     if (chartMode === 'mc' && lastSimResults) {
       if (lastSimResults.tradePercentiles && lastSimResults.tradePercentiles[totalTrades]) {
         maxVal = Math.max(maxVal, lastSimResults.tradePercentiles[totalTrades].p95);
@@ -4711,8 +4722,8 @@
         grad.addColorStop(0.5, 'rgba(124, 58, 237, 0.06)');
         grad.addColorStop(1, 'rgba(250, 250, 249, 0.0)');
       } else if (isGlass) {
-        grad.addColorStop(0, 'rgba(232, 121, 249, 0.35)');
-        grad.addColorStop(0.5, 'rgba(34, 211, 238, 0.18)');
+        grad.addColorStop(0, 'rgba(56, 189, 248, 0.28)');
+        grad.addColorStop(0.5, 'rgba(129, 140, 248, 0.12)');
         grad.addColorStop(1, 'rgba(3, 7, 18, 0.0)');
       } else if (isBlack) {
         grad.addColorStop(0, 'rgba(20, 184, 166, 0.25)');
@@ -4724,10 +4735,12 @@
         grad.addColorStop(1, 'rgba(10, 14, 26, 0.0)');
       }
 
+      // Soft Area Fill under curve
+      const fillPoints = simPoints.length > 0 ? simPoints : evPoints;
       ctx.beginPath();
-      ctx.moveTo(getX(0), getY(evPoints[0]));
+      ctx.moveTo(getX(0), getY(fillPoints[0]));
       for (let s = 1; s <= totalSteps; s++) {
-        ctx.lineTo(getX(s), getY(evPoints[s]));
+        ctx.lineTo(getX(s), getY(fillPoints[s]));
       }
       ctx.lineTo(getX(totalSteps), getY(minVal));
       ctx.lineTo(getX(0), getY(minVal));
@@ -4735,28 +4748,67 @@
       ctx.fillStyle = grad;
       ctx.fill();
 
+      // Theoretical Expected Value Guideline (Dashed)
+      const evStroke = isLight ? '#7c3aed' : (isGlass ? 'rgba(232, 121, 249, 0.70)' : (isBlack ? '#14b8a6' : '#818cf8'));
       ctx.beginPath();
       ctx.moveTo(getX(0), getY(evPoints[0]));
       for (let s = 1; s <= totalSteps; s++) {
         ctx.lineTo(getX(s), getY(evPoints[s]));
       }
-      const evStroke = isLight ? '#7c3aed' : (isGlass ? '#e879f9' : (isBlack ? '#14b8a6' : '#818cf8'));
       ctx.strokeStyle = evStroke;
-      if (isGlass) {
-        ctx.shadowColor = 'rgba(232, 121, 249, 0.65)';
-        ctx.shadowBlur = 12;
-      }
-      ctx.lineWidth = isGlass ? 2.8 : 2.2;
+      ctx.lineWidth = 1.6;
+      ctx.setLineDash([4, 4]);
       ctx.stroke();
-      ctx.shadowBlur = 0;
+      ctx.setLineDash([]);
 
+      // Active Simulated Equity Curve (Solid, High-Frequency Calculation)
       const resLabel = chartResolution === 'trade' ? 'Per-Trade' : (chartResolution === 'day' ? 'Daily' : 'Weekly');
-      document.getElementById('chartLegend').innerHTML = `
-        <div class="legend-tag">
-          <div class="legend-dot" style="background:${evStroke};"></div>
-          <span>Expected Value Progression (${resLabel} Resolution)</span>
-        </div>
-      `;
+      if (simPoints.length > 0) {
+        const lastBal = simPoints[simPoints.length - 1];
+        const isProfitable = lastBal >= config.initialBalance;
+        const simStroke = isProfitable 
+          ? (isLight ? '#16a34a' : (isGlass ? '#38bdf8' : (isBlack ? '#2dd4bf' : '#10b981'))) 
+          : (isLight ? '#dc2626' : (isGlass ? '#f43f5e' : (isBlack ? '#fb7185' : '#ef4444')));
+
+        ctx.beginPath();
+        ctx.moveTo(getX(0), getY(simPoints[0]));
+        for (let s = 1; s <= totalSteps; s++) {
+          ctx.lineTo(getX(s), getY(simPoints[s]));
+        }
+        ctx.strokeStyle = simStroke;
+        ctx.lineWidth = isGlass ? 2.8 : 2.4;
+        if (isGlass) {
+          ctx.shadowColor = isProfitable ? 'rgba(56, 189, 248, 0.65)' : 'rgba(244, 63, 94, 0.65)';
+          ctx.shadowBlur = 10;
+        }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        document.getElementById('chartLegend').innerHTML = `
+          <div class="legend-tag">
+            <div class="legend-dot" style="background:${simStroke};"></div>
+            <span>Simulated Equity Curve (${resLabel} • $${Math.round(lastBal).toLocaleString()})</span>
+          </div>
+          <div class="legend-tag">
+            <div class="legend-dot" style="background:${evStroke}; border:1px dashed ${evStroke};"></div>
+            <span>Expected Value Target ($${Math.round(evPoints[evPoints.length - 1]).toLocaleString()})</span>
+          </div>
+        `;
+      } else {
+        ctx.beginPath();
+        ctx.moveTo(getX(0), getY(evPoints[0]));
+        for (let s = 1; s <= totalSteps; s++) ctx.lineTo(getX(s), getY(evPoints[s]));
+        ctx.strokeStyle = evStroke;
+        ctx.lineWidth = 2.2;
+        ctx.stroke();
+
+        document.getElementById('chartLegend').innerHTML = `
+          <div class="legend-tag">
+            <div class="legend-dot" style="background:${evStroke};"></div>
+            <span>Expected Value Progression (${resLabel} Resolution)</span>
+          </div>
+        `;
+      }
 
     } else if (chartMode === 'mc' && lastSimResults) {
       const hasTradePct = !!(lastSimResults.tradePercentiles && lastSimResults.tradePercentiles.length);
@@ -4866,11 +4918,29 @@
       ctx.stroke();
       ctx.shadowBlur = 0;
 
+      // Overlay Active Simulated Path
+      if (simPoints.length > 0) {
+        const lastBal = simPoints[simPoints.length - 1];
+        const isProfitable = lastBal >= config.initialBalance;
+        const simStroke = isProfitable 
+          ? (isLight ? '#16a34a' : (isGlass ? '#38bdf8' : (isBlack ? '#2dd4bf' : '#10b981'))) 
+          : (isLight ? '#dc2626' : (isGlass ? '#f43f5e' : (isBlack ? '#fb7185' : '#ef4444')));
+
+        ctx.beginPath();
+        ctx.moveTo(getX(0), getY(simPoints[0]));
+        for (let s = 1; s <= totalSteps; s++) ctx.lineTo(getX(s), getY(simPoints[s]));
+        ctx.strokeStyle = simStroke;
+        ctx.lineWidth = 2.4;
+        ctx.stroke();
+      }
+
       const resLabel = chartResolution === 'trade' ? 'Per-Trade' : (chartResolution === 'day' ? 'Daily' : 'Weekly');
+      const lastBal = simPoints.length > 0 ? simPoints[simPoints.length - 1] : config.initialBalance;
       document.getElementById('chartLegend').innerHTML = `
         <div class="legend-tag"><div class="legend-dot" style="background:${p95Color};"></div><span>P95 Best (${resLabel})</span></div>
         <div class="legend-tag"><div class="legend-dot" style="background:${p50Color};"></div><span>P50 Median</span></div>
         <div class="legend-tag"><div class="legend-dot" style="background:${p5Color};"></div><span>P5 Worst</span></div>
+        <div class="legend-tag"><div class="legend-dot" style="background:${isLight ? '#16a34a' : '#38bdf8'};"></div><span>Active Path ($${Math.round(lastBal).toLocaleString()})</span></div>
       `;
     }
   }
