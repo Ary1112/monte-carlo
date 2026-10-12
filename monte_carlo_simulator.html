@@ -6,7 +6,7 @@
   <title>Monte Carlo Trading Simulator — Quant Suite</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -34,7 +34,7 @@
           },
           fontFamily: {
             sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-            mono: ['"Geist Mono"', 'ui-monospace', 'monospace']
+            mono: ['"JetBrains Mono"', '"Geist Mono"', 'ui-monospace', 'monospace']
           }
         }
       }
@@ -42,90 +42,365 @@
   </script>
   <style>
     /* ==============================================================
-       1. THEME DESIGN SYSTEM (SHADCN/UI & VERCEL SLATE-950 AESTHETIC)
+       1. THEME DESIGN SYSTEM — COMPLETE COLOR REDESIGN
        ============================================================== */
+
+    /* ── DARK: Cool Navy Professional (Vercel / Linear aesthetic) ── */
     :root, [data-theme="dark"] {
-      --bg-base: #020617;       /* slate-950 */
-      --bg-surface: #0f172a;    /* slate-900 */
-      --bg-surface-elevated: #1e293b; /* slate-800 */
-      --bg-surface-hover: #1e293b;
-      --bg-card: #0f172a;
-      --border-subtle: #1e293b; /* slate-800 */
-      --border-strong: #334155; /* slate-700 */
-      --border-focus: #3b82f6;  /* blue-500 */
-      --text-main: #f8fafc;     /* slate-50 high contrast */
-      --text-muted: #94a3b8;    /* slate-400 secondary */
-      --text-dim: #64748b;      /* slate-500 tertiary */
-      --accent-primary: #3b82f6;
-      --accent-green: #34d399;  /* emerald-400 pastel */
-      --accent-green-bg: rgba(16, 185, 129, 0.10);
-      --accent-green-border: rgba(16, 185, 129, 0.20);
-      --accent-red: #fb7185;    /* rose-400 pastel */
-      --accent-red-bg: rgba(244, 63, 94, 0.10);
-      --accent-red-border: rgba(244, 63, 94, 0.20);
-      --accent-blue: #38bdf8;   /* sky-400 pastel */
-      --accent-blue-bg: rgba(56, 189, 248, 0.10);
-      --accent-amber: #fbbf24;  /* amber-400 pastel */
-      --accent-purple: #c084fc;
-      --input-bg: #020617;      /* slate-950 */
-      --chart-grid: #1e293b;
-      --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+      --bg-base: #0a0e1a;
+      --bg-surface: #111827;
+      --bg-surface-elevated: #1f2937;
+      --bg-surface-hover: #283548;
+      --bg-card: #111827;
+      --border-subtle: #1f2937;
+      --border-strong: #374151;
+      --border-focus: #6366f1;
+      --text-main: #f1f5f9;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+      --accent-primary: #6366f1;
+      --accent-green: #6ee7b7;
+      --accent-green-bg: rgba(110, 231, 183, 0.08);
+      --accent-green-border: rgba(110, 231, 183, 0.18);
+      --accent-red: #fca5a5;
+      --accent-red-bg: rgba(252, 165, 165, 0.08);
+      --accent-red-border: rgba(252, 165, 165, 0.18);
+      --accent-blue: #93c5fd;
+      --accent-blue-bg: rgba(147, 197, 253, 0.08);
+      --accent-amber: #fcd34d;
+      --accent-purple: #c4b5fd;
+      --input-bg: #0a0e1a;
+      --chart-grid: #1f2937;
+      --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.35);
     }
 
+    /* ── BLACK: Pure OLED Minimal (Zinc / Teal accents) ──────────── */
     [data-theme="black"] {
       --bg-base: #000000;
-      --bg-surface: #09090b;    /* zinc-950 */
-      --bg-surface-elevated: #18181b; /* zinc-900 */
-      --bg-surface-hover: #27272a;
-      --bg-card: #09090b;
-      --border-subtle: #27272a; /* zinc-800 */
-      --border-strong: #3f3f46; /* zinc-700 */
-      --border-focus: #3b82f6;
-      --text-main: #ffffff;
-      --text-muted: #a1a1aa;    /* zinc-400 */
-      --text-dim: #71717a;
-      --accent-primary: #3b82f6;
-      --accent-green: #34d399;
-      --accent-green-bg: rgba(16, 185, 129, 0.10);
-      --accent-green-border: rgba(16, 185, 129, 0.20);
-      --accent-red: #fb7185;
-      --accent-red-bg: rgba(244, 63, 94, 0.10);
-      --accent-red-border: rgba(244, 63, 94, 0.20);
-      --accent-blue: #38bdf8;
-      --accent-blue-bg: rgba(56, 189, 248, 0.10);
-      --accent-amber: #fbbf24;
-      --accent-purple: #c084fc;
+      --bg-surface: #0a0a0a;
+      --bg-surface-elevated: #141414;
+      --bg-surface-hover: #1c1c1c;
+      --bg-card: #0a0a0a;
+      --border-subtle: #1a1a1a;
+      --border-strong: #2a2a2a;
+      --border-focus: #14b8a6;
+      --text-main: #e4e4e7;
+      --text-muted: #a1a1aa;
+      --text-dim: #52525b;
+      --accent-primary: #14b8a6;
+      --accent-green: #5eead4;
+      --accent-green-bg: rgba(94, 234, 212, 0.07);
+      --accent-green-border: rgba(94, 234, 212, 0.16);
+      --accent-red: #f9a8d4;
+      --accent-red-bg: rgba(249, 168, 212, 0.07);
+      --accent-red-border: rgba(249, 168, 212, 0.16);
+      --accent-blue: #67e8f9;
+      --accent-blue-bg: rgba(103, 232, 249, 0.07);
+      --accent-amber: #fde68a;
+      --accent-purple: #d8b4fe;
       --input-bg: #000000;
-      --chart-grid: #18181b;
-      --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
+      --chart-grid: #141414;
+      --card-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.6);
     }
 
+    /* ── LIGHT: Warm Neutral (Stone / Sand, Notion aesthetic) ─────── */
     [data-theme="light"] {
-      --bg-base: #f8fafc;       /* slate-50 */
+      --bg-base: #fafaf9;
       --bg-surface: #ffffff;
-      --bg-surface-elevated: #f1f5f9; /* slate-100 */
-      --bg-surface-hover: #e2e8f0;
+      --bg-surface-elevated: #f5f5f4;
+      --bg-surface-hover: #e7e5e4;
       --bg-card: #ffffff;
-      --border-subtle: #e2e8f0; /* slate-200 */
-      --border-strong: #cbd5e1; /* slate-300 */
-      --border-focus: #2563eb;
-      --text-main: #0f172a;     /* slate-900 */
-      --text-muted: #64748b;    /* slate-500 */
-      --text-dim: #94a3b8;
-      --accent-primary: #2563eb;
-      --accent-green: #059669;  /* emerald-600 */
-      --accent-green-bg: rgba(5, 150, 105, 0.08);
-      --accent-green-border: rgba(5, 150, 105, 0.20);
-      --accent-red: #e11d48;    /* rose-600 */
-      --accent-red-bg: rgba(225, 29, 72, 0.08);
-      --accent-red-border: rgba(225, 29, 72, 0.20);
-      --accent-blue: #0284c7;
-      --accent-blue-bg: rgba(2, 132, 199, 0.08);
-      --accent-amber: #d97706;
+      --border-subtle: #e7e5e4;
+      --border-strong: #d6d3d1;
+      --border-focus: #7c3aed;
+      --text-main: #1c1917;
+      --text-muted: #78716c;
+      --text-dim: #a8a29e;
+      --accent-primary: #7c3aed;
+      --accent-green: #15803d;
+      --accent-green-bg: rgba(21, 128, 61, 0.07);
+      --accent-green-border: rgba(21, 128, 61, 0.18);
+      --accent-red: #be123c;
+      --accent-red-bg: rgba(190, 18, 60, 0.06);
+      --accent-red-border: rgba(190, 18, 60, 0.16);
+      --accent-blue: #1d4ed8;
+      --accent-blue-bg: rgba(29, 78, 216, 0.06);
+      --accent-amber: #b45309;
       --accent-purple: #7c3aed;
-      --input-bg: #f8fafc;
-      --chart-grid: #e2e8f0;
-      --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+      --input-bg: #fafaf9;
+      --chart-grid: #e7e5e4;
+      --card-shadow: 0 1px 3px 0 rgba(28, 25, 23, 0.06);
+    }
+
+    /* ==============================================================
+       GLASS THEME: ULTRA-VIBRANT NEON AURORA (BLUE & DARK PINK THEME) ✦
+       ============================================================== */
+    [data-theme="glass"] {
+      --bg-base: #030712;
+      --bg-surface: rgba(12, 17, 35, 0.55);
+      --bg-surface-elevated: rgba(24, 32, 58, 0.68);
+      --bg-surface-hover: rgba(40, 50, 80, 0.55);
+      --bg-card: rgba(12, 17, 35, 0.55);
+      --border-subtle: rgba(255, 255, 255, 0.10);
+      --border-strong: rgba(244, 63, 94, 0.35);
+      --border-focus: #38bdf8;
+      --text-main: #ffffff;
+      --text-muted: #d4d4d8;
+      --text-dim: #a1a1aa;
+      --accent-primary: #38bdf8;
+      /* PROFIT: ELECTRIC SKY BLUE */
+      --accent-green: #38bdf8;
+      --accent-green-bg: rgba(56, 189, 248, 0.16);
+      --accent-green-border: rgba(56, 189, 248, 0.38);
+      /* LOSS: DEEP DARK PINK / MAGENTA */
+      --accent-red: #f43f5e;
+      --accent-red-bg: rgba(244, 63, 94, 0.18);
+      --accent-red-border: rgba(244, 63, 94, 0.40);
+      --accent-blue: #38bdf8;
+      --accent-blue-bg: rgba(56, 189, 248, 0.16);
+      --accent-amber: #facc15;
+      --accent-purple: #c084fc;
+      --input-bg: rgba(3, 7, 18, 0.70);
+      --chart-grid: rgba(56, 189, 248, 0.12);
+      --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.50);
+    }
+
+    /* GLASS THEME AMBIENT AURORA & GLASSMORPHIC STYLING */
+    html[data-theme="glass"], html[data-theme="glass"] body {
+      background-color: #030712 !important;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.32) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(244, 63, 94, 0.28) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, rgba(192, 132, 252, 0.14) 0px, transparent 55%),
+        radial-gradient(at 100% 100%, rgba(225, 29, 72, 0.22) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(14, 165, 233, 0.24) 0px, transparent 50%) !important;
+      background-attachment: fixed !important;
+    }
+
+    [data-theme="glass"] .panel-card,
+    [data-theme="glass"] .hero-card,
+    [data-theme="glass"] .metric-chip,
+    [data-theme="glass"] .cal-inspector-deck,
+    [data-theme="glass"] .inspector-metric-card,
+    [data-theme="glass"] .week-day-box,
+    [data-theme="glass"] .cal-week-box,
+    [data-theme="glass"] .week-summary-card,
+    [data-theme="glass"] .trade-tile,
+    [data-theme="glass"] .cal-modal-box {
+      background: rgba(12, 17, 35, 0.58) !important;
+      backdrop-filter: blur(18px) saturate(180%) !important;
+      -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.10) !important;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.10) !important;
+    }
+
+    [data-theme="glass"] .panel-card:hover,
+    [data-theme="glass"] .hero-card:hover,
+    [data-theme="glass"] .metric-chip:hover,
+    [data-theme="glass"] .cal-week-box:hover,
+    [data-theme="glass"] .cal-inspector-deck:hover {
+      border-color: rgba(56, 189, 248, 0.50) !important;
+      box-shadow: 0 12px 40px 0 rgba(56, 189, 248, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.20) !important;
+    }
+
+    [data-theme="glass"] .header-title h1 {
+      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 40%, #f43f5e 80%, #fb7185 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 14px rgba(56, 189, 248, 0.45));
+    }
+
+    [data-theme="glass"] .panel-header-title {
+      background: linear-gradient(135deg, #38bdf8 0%, #c084fc 60%, #f43f5e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* PROFIT & LOSS TEXT & GLOW IN GLASS THEME */
+    [data-theme="glass"] .val-green {
+      color: #38bdf8 !important;
+      text-shadow: 0 0 18px rgba(56, 189, 248, 0.65) !important;
+    }
+    [data-theme="glass"] .val-red {
+      color: #f43f5e !important;
+      text-shadow: 0 0 18px rgba(244, 63, 94, 0.65) !important;
+    }
+    [data-theme="glass"] .val-blue {
+      color: #38bdf8 !important;
+      text-shadow: 0 0 16px rgba(56, 189, 248, 0.55) !important;
+    }
+    [data-theme="glass"] .val-amber {
+      color: #facc15 !important;
+      text-shadow: 0 0 16px rgba(250, 204, 21, 0.55) !important;
+    }
+    [data-theme="glass"] .val-purple {
+      color: #c084fc !important;
+      text-shadow: 0 0 16px rgba(192, 132, 252, 0.55) !important;
+    }
+
+    /* PILLS IN GLASS THEME */
+    [data-theme="glass"] .pill-green {
+      background: rgba(56, 189, 248, 0.18) !important;
+      color: #38bdf8 !important;
+      border: 1px solid rgba(56, 189, 248, 0.40) !important;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.25) !important;
+    }
+    [data-theme="glass"] .pill-red {
+      background: rgba(244, 63, 94, 0.18) !important;
+      color: #f43f5e !important;
+      border: 1px solid rgba(244, 63, 94, 0.40) !important;
+      box-shadow: 0 0 12px rgba(244, 63, 94, 0.25) !important;
+    }
+
+    /* HERO STATS PROFIT / LOSS CARDS */
+    [data-theme="glass"] .hero-card.highlight-profit {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.24) 0%, rgba(3, 105, 161, 0.14) 100%) !important;
+      border: 1px solid rgba(56, 189, 248, 0.45) !important;
+      box-shadow: 0 4px 24px rgba(56, 189, 248, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.20) !important;
+    }
+    [data-theme="glass"] .hero-card.highlight-loss {
+      background: linear-gradient(135deg, rgba(244, 63, 94, 0.24) 0%, rgba(159, 18, 57, 0.14) 100%) !important;
+      border: 1px solid rgba(244, 63, 94, 0.45) !important;
+      box-shadow: 0 4px 24px rgba(244, 63, 94, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.20) !important;
+    }
+    [data-theme="glass"] .hero-card .hero-label {
+      background: linear-gradient(135deg, #e2e8f0 0%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* CALENDAR CELLS */
+    [data-theme="glass"] .cal-day-cell {
+      background: rgba(12, 17, 35, 0.50) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+    }
+    [data-theme="glass"] .cal-day-cell:hover {
+      border-color: rgba(56, 189, 248, 0.55) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(56, 189, 248, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+    }
+    [data-theme="glass"] .cal-day-cell.day-green {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.24) 0%, rgba(14, 116, 144, 0.12) 100%) !important;
+      border-color: rgba(56, 189, 248, 0.45) !important;
+      box-shadow: 0 4px 18px rgba(56, 189, 248, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.16) !important;
+    }
+    [data-theme="glass"] .cal-day-cell.day-red {
+      background: linear-gradient(135deg, rgba(244, 63, 94, 0.24) 0%, rgba(159, 18, 57, 0.12) 100%) !important;
+      border-color: rgba(244, 63, 94, 0.45) !important;
+      box-shadow: 0 4px 18px rgba(244, 63, 94, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.16) !important;
+    }
+    [data-theme="glass"] .cal-day-cell.active-selected-day {
+      border-color: #38bdf8 !important;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.25) 0%, rgba(12, 17, 35, 0.70) 100%) !important;
+    }
+
+    [data-theme="glass"] .cal-week-summary-cell {
+      background: linear-gradient(135deg, rgba(24, 32, 58, 0.68) 0%, rgba(12, 17, 35, 0.55) 100%) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.10) !important;
+      border-left: 3px solid #38bdf8 !important;
+    }
+    [data-theme="glass"] .cal-week-summary-cell.summary-green {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.24) 0%, rgba(14, 116, 144, 0.12) 100%) !important;
+      border-left: 3px solid #38bdf8 !important;
+      border-color: rgba(56, 189, 248, 0.45) !important;
+      box-shadow: 0 4px 18px rgba(56, 189, 248, 0.20) !important;
+    }
+    [data-theme="glass"] .cal-week-summary-cell.summary-red {
+      background: linear-gradient(135deg, rgba(244, 63, 94, 0.24) 0%, rgba(159, 18, 57, 0.12) 100%) !important;
+      border-left: 3px solid #f43f5e !important;
+      border-color: rgba(244, 63, 94, 0.45) !important;
+      box-shadow: 0 4px 18px rgba(244, 63, 94, 0.20) !important;
+    }
+
+    /* WEEK BOXES IN WEEKLY CALENDAR */
+    [data-theme="glass"] .cal-week-box.week-profitable {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.24) 0%, rgba(14, 116, 144, 0.12) 100%) !important;
+      border-left: 4px solid #38bdf8 !important;
+      border-color: rgba(56, 189, 248, 0.45) !important;
+      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+    }
+    [data-theme="glass"] .cal-week-box.week-profitable:hover {
+      border-color: #38bdf8 !important;
+      box-shadow: 0 8px 28px rgba(56, 189, 248, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+    }
+    [data-theme="glass"] .cal-week-box.week-losing {
+      background: linear-gradient(135deg, rgba(244, 63, 94, 0.24) 0%, rgba(159, 18, 57, 0.12) 100%) !important;
+      border-left: 4px solid #f43f5e !important;
+      border-color: rgba(244, 63, 94, 0.45) !important;
+      box-shadow: 0 4px 20px rgba(244, 63, 94, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+    }
+    [data-theme="glass"] .cal-week-box.week-losing:hover {
+      border-color: #f43f5e !important;
+      box-shadow: 0 8px 28px rgba(244, 63, 94, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+    }
+
+    /* RATIO BARS IN GLASS THEME */
+    [data-theme="glass"] .ratio-bar-win {
+      background: #38bdf8 !important;
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.8) !important;
+    }
+    [data-theme="glass"] .ratio-bar-loss {
+      background: #f43f5e !important;
+      box-shadow: 0 0 8px rgba(244, 63, 94, 0.8) !important;
+    }
+
+    [data-theme="glass"] .preset-btn,
+    [data-theme="glass"] .cal-nav-btn,
+    [data-theme="glass"] .control-input,
+    [data-theme="glass"] .cal-path-select,
+    [data-theme="glass"] .theme-switcher-pill,
+    [data-theme="glass"] .cal-controls-strip {
+      background: rgba(12, 17, 35, 0.60) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    }
+    [data-theme="glass"] .preset-btn:hover,
+    [data-theme="glass"] .cal-nav-btn:hover {
+      background: rgba(24, 32, 58, 0.80) !important;
+      border-color: rgba(232, 121, 249, 0.50) !important;
+      box-shadow: 0 0 16px rgba(232, 121, 249, 0.28) !important;
+    }
+    [data-theme="glass"] .theme-btn.active {
+      background: linear-gradient(135deg, rgba(232, 121, 249, 0.35) 0%, rgba(34, 211, 238, 0.35) 100%) !important;
+      border-color: rgba(232, 121, 249, 0.55) !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 18px rgba(232, 121, 249, 0.40) !important;
+    }
+    [data-theme="glass"] input[type=range] {
+      background: linear-gradient(to right, #e879f9 0%, #22d3ee var(--slider-fill, 0%), rgba(255, 255, 255, 0.12) var(--slider-fill, 0%), rgba(255, 255, 255, 0.12) 100%) !important;
+      box-shadow: 0 0 10px rgba(232, 121, 249, 0.25) !important;
+    }
+    [data-theme="glass"] input[type=range]::-webkit-slider-thumb {
+      background: #ffffff !important;
+      border-color: #e879f9 !important;
+      box-shadow: 0 0 14px rgba(232, 121, 249, 0.90) !important;
+    }
+    [data-theme="glass"] .param-card {
+      background: rgba(12, 17, 35, 0.52) !important;
+      backdrop-filter: blur(14px) !important;
+      -webkit-backdrop-filter: blur(14px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    }
+    [data-theme="glass"] .param-card:hover {
+      border-color: rgba(232, 121, 249, 0.45) !important;
+      box-shadow: 0 8px 24px rgba(232, 121, 249, 0.18) !important;
+    }
+    [data-theme="glass"] .quick-pill {
+      background: rgba(12, 17, 35, 0.65) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      color: #cbd5e1 !important;
+    }
+    [data-theme="glass"] .quick-pill:hover {
+      border-color: #e879f9 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 10px rgba(232, 121, 249, 0.40) !important;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -142,11 +417,12 @@
       transition: background-color 0.15s ease, color 0.15s ease;
     }
 
-    /* NUMERICAL TYPOGRAPHY (CRISP, FLAT, NO GLOW / BLOOM) */
+    /* NUMERICAL TYPOGRAPHY (CLEAN MODERN TABULAR NUMBERS — NO SLASHED ZEROES) */
     .num-font {
-      font-family: 'Geist Mono', monospace;
-      font-feature-settings: "tnum";
-      font-variant-numeric: tabular-nums;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif !important;
+      font-feature-settings: "tnum" 1, "zero" 0 !important;
+      font-variant-numeric: tabular-nums !important;
+      letter-spacing: -0.015em;
     }
 
     .val-green { color: var(--accent-green) !important; text-shadow: none !important; }
@@ -274,14 +550,45 @@
     }
     .hero-stats-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.75rem;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.65rem;
     }
-    @media (max-width: 1100px) {
+    @media (max-width: 1200px) {
+      .hero-stats-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 800px) {
       .hero-stats-grid { grid-template-columns: repeat(2, 1fr); }
     }
-    @media (max-width: 580px) {
+    @media (max-width: 520px) {
       .hero-stats-grid { grid-template-columns: 1fr; }
+    }
+    .risk-mode-pill {
+      display: inline-flex;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 9999px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .risk-mode-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.12rem 0.42rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      line-height: 1;
+    }
+    .risk-mode-btn:hover {
+      color: var(--text-main);
+    }
+    .risk-mode-btn.active {
+      background: var(--accent-primary);
+      color: #ffffff;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
     }
     .hero-card {
       background: var(--bg-base);
@@ -313,12 +620,12 @@
       letter-spacing: 0.05em;
     }
     .hero-val {
-      font-family: 'Geist Mono', monospace;
-      font-feature-settings: "tnum";
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-feature-settings: "tnum" 1, "zero" 0;
       font-variant-numeric: tabular-nums;
       font-size: 1.35rem;
       font-weight: 700;
-      letter-spacing: -0.025em;
+      letter-spacing: -0.02em;
       line-height: 1.2;
       color: var(--text-main);
       margin: 0.2rem 0;
@@ -341,7 +648,9 @@
       border-radius: 9999px;
       font-size: 0.75rem;
       font-weight: 600;
-      font-family: 'Geist Mono', monospace;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-feature-settings: "tnum" 1, "zero" 0;
+      font-variant-numeric: tabular-nums;
       letter-spacing: -0.01em;
     }
     .pill-green {
@@ -474,94 +783,171 @@
       color: var(--text-main);
     }
 
-    /* STRATEGY PARAMETERS: UNIFORMLY ALIGNED INPUTS */
+    /* ==============================================================
+       STRATEGY PARAMETERS: PROFESSIONAL CARD-BASED MODULES
+       ============================================================== */
     .controls-inner-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.15rem 1.5rem;
+      gap: 0.65rem 0.85rem;
     }
-    @media (max-width: 650px) {
+    @media (max-width: 760px) {
       .controls-inner-grid { grid-template-columns: 1fr; }
     }
-    .control-row {
+    .param-card {
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 0.55rem 0.75rem;
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
+      gap: 0.3rem;
+      transition: all 0.15s ease;
+      position: relative;
     }
-    .control-top {
+    .param-card:hover {
+      border-color: var(--border-strong);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    }
+    .param-card-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.4rem;
     }
-    .control-title {
-      font-size: 0.8125rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      white-space: nowrap;
-      min-width: 130px;
+    .param-card-label {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
     }
-    .control-input {
-      background: var(--input-bg);
-      border: 1px solid var(--border-subtle);
-      border-radius: 6px;
-      padding: 0.35rem 0.6rem;
-      font-family: 'Geist Mono', monospace;
-      font-feature-settings: "tnum";
-      font-variant-numeric: tabular-nums;
+    .param-card-icon {
+      font-size: 0.95rem;
+      line-height: 1;
+    }
+    .param-card-name {
       font-size: 0.8125rem;
       font-weight: 600;
       color: var(--text-main);
+      letter-spacing: -0.01em;
+    }
+    .param-input-wrap {
+      display: flex;
+      align-items: center;
+    }
+    .control-input {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 5px;
+      padding: 0.2rem 0.5rem;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-feature-settings: "tnum" 1;
+      font-variant-numeric: tabular-nums;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--text-main);
       text-align: right;
-      width: 90px;
+      width: 82px;
       outline: none;
-      transition: border-color 0.15s ease;
+      transition: all 0.15s ease;
     }
     .control-input:focus {
       border-color: var(--border-focus);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
     }
 
-    /* SLIDERS: THIN SOLID TRACK & SOLID OPAQUE THUMB */
+    /* SLIDERS: DYNAMIC ACTIVE TRACK FILL & CRISP TACTILE THUMB */
+    .param-slider-wrap {
+      position: relative;
+      padding: 0.05rem 0;
+    }
     input[type=range] {
       -webkit-appearance: none;
       appearance: none;
       width: 100%;
-      height: 4px;
-      background: var(--border-subtle);
+      height: 6px;
+      background: linear-gradient(to right, var(--accent-primary) 0%, var(--accent-primary) var(--slider-fill, 0%), var(--border-strong) var(--slider-fill, 0%), var(--border-strong) 100%);
       border-radius: 9999px;
       outline: none;
       cursor: pointer;
       display: block;
-      margin-top: 0.3rem;
-      transition: background 0.15s ease;
+      margin: 0;
+      transition: background 0.05s ease;
     }
     input[type=range]:hover {
-      background: var(--border-strong);
+      filter: brightness(1.06);
     }
     input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 14px;
-      height: 14px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
       background: #ffffff;
-      border: 2px solid #0f172a;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-      cursor: pointer;
-      transition: transform 0.1s ease;
+      border: 2px solid var(--accent-primary);
+      box-shadow: 0 0 0 2px var(--bg-base), 0 2px 5px rgba(0, 0, 0, 0.4);
+      cursor: grab;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
     }
     input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.22);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35), 0 3px 8px rgba(0, 0, 0, 0.5);
+    }
+    input[type=range]::-webkit-slider-thumb:active {
+      cursor: grabbing;
       transform: scale(1.15);
+      box-shadow: 0 0 0 5px rgba(99, 102, 241, 0.45), 0 3px 8px rgba(0, 0, 0, 0.5);
     }
     input[type=range]::-moz-range-thumb {
-      width: 14px;
-      height: 14px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
       background: #ffffff;
-      border: 2px solid #0f172a;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+      border: 2px solid var(--accent-primary);
+      box-shadow: 0 0 0 2px var(--bg-base), 0 2px 5px rgba(0, 0, 0, 0.4);
+      cursor: grab;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+    input[type=range]::-moz-range-thumb:hover {
+      transform: scale(1.22);
+    }
+
+    /* CARD BOTTOM: SCALE BOUNDS + QUICK PILLS */
+    .param-card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      padding-top: 0.15rem;
+    }
+    .param-scale-limits {
+      display: flex;
+      gap: 0.45rem;
+      font-size: 0.6875rem;
+      color: var(--text-dim);
+      font-family: 'Geist Mono', monospace;
+    }
+    .param-quick-pills {
+      display: flex;
+      gap: 0.25rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .quick-pill {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 0.6875rem;
+      font-family: 'Geist Mono', monospace;
+      padding: 0.12rem 0.45rem;
+      border-radius: 4px;
       cursor: pointer;
-      transition: transform 0.1s ease;
+      transition: all 0.15s ease;
+      line-height: 1.2;
+    }
+    .quick-pill:hover {
+      background: var(--bg-surface-elevated);
+      color: var(--text-main);
+      border-color: var(--border-strong);
     }
 
     /* CAPITAL TRAJECTORY CHART */
@@ -646,8 +1032,8 @@
       letter-spacing: 0.04em;
     }
     .chip-value {
-      font-family: 'Geist Mono', monospace;
-      font-feature-settings: "tnum";
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-feature-settings: "tnum" 1, "zero" 0;
       font-variant-numeric: tabular-nums;
       font-size: 1.25rem;
       font-weight: 700;
@@ -693,14 +1079,14 @@
     td {
       padding: 0.6rem 0.85rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      font-family: 'Geist Mono', monospace;
-      font-feature-settings: "tnum";
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-feature-settings: "tnum" 1, "zero" 0;
       font-variant-numeric: tabular-nums;
       font-weight: 400;
       color: var(--text-main);
     }
     [data-theme="light"] td {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      border-bottom: 1px solid rgba(28, 25, 23, 0.06);
     }
     tr:hover td {
       background: var(--bg-surface-hover);
@@ -746,24 +1132,24 @@
       align-items: center;
       background: var(--bg-base);
       border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      padding: 0.6rem 0.85rem;
-      margin-bottom: 1rem;
+      border-radius: 7px;
+      padding: 0.45rem 0.7rem;
+      margin-bottom: 0.75rem;
       flex-wrap: wrap;
-      gap: 0.65rem;
+      gap: 0.5rem;
     }
     .cal-nav-group {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.4rem;
     }
     .cal-nav-btn {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       color: var(--text-main);
-      padding: 0.35rem 0.75rem;
-      border-radius: 6px;
-      font-size: 0.75rem;
+      padding: 0.28rem 0.6rem;
+      border-radius: 5px;
+      font-size: 0.7rem;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -775,8 +1161,8 @@
     .cal-period-label {
       font-family: 'Inter', sans-serif;
       font-weight: 600;
-      font-size: 0.925rem;
-      min-width: 160px;
+      font-size: 0.825rem;
+      min-width: 130px;
       text-align: center;
       color: var(--text-main);
     }
@@ -784,30 +1170,32 @@
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       color: var(--text-main);
-      padding: 0.35rem 0.65rem;
-      border-radius: 6px;
-      font-size: 0.75rem;
+      padding: 0.28rem 0.55rem;
+      border-radius: 5px;
+      font-size: 0.7rem;
       font-weight: 500;
       outline: none;
     }
 
     .cal-stat-bar {
       display: flex;
-      gap: 0.65rem;
-      margin-bottom: 1.15rem;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
       flex-wrap: wrap;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
     }
     .cal-stat-chip {
       background: var(--bg-base);
       border: 1px solid var(--border-subtle);
-      border-radius: 6px;
-      padding: 0.4rem 0.75rem;
+      border-radius: 5px;
+      padding: 0.3rem 0.6rem;
       color: var(--text-muted);
     }
     .cal-stat-chip strong {
       color: var(--text-main);
-      font-family: 'Geist Mono', monospace;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-feature-settings: "tnum" 1, "zero" 0;
+      font-variant-numeric: tabular-nums;
       font-weight: 600;
     }
 
@@ -817,46 +1205,46 @@
       overflow-x: auto;
       scrollbar-width: thin;
       scrollbar-color: var(--border-subtle) transparent;
-      padding-bottom: 0.5rem;
+      padding-bottom: 0.4rem;
     }
 
-    /* MONTH VIEW GRID (7 DAYS + 1 WEEK SUMMARY) */
+    /* MONTH VIEW GRID (7 DAYS + 1 WEEK SUMMARY) — 20% COMPACT SCALING */
     .cal-days-header-grid {
       display: grid;
-      grid-template-columns: repeat(7, minmax(85px, 1fr)) minmax(170px, 1.4fr);
-      gap: 0.5rem;
-      min-width: 720px;
-      margin-bottom: 0.5rem;
+      grid-template-columns: repeat(7, minmax(68px, 1fr)) minmax(136px, 1.3fr);
+      gap: 0.38rem;
+      min-width: 580px;
+      margin-bottom: 0.38rem;
     }
     .cal-col-name {
       text-align: center;
-      font-size: 0.75rem;
+      font-size: 0.6875rem;
       font-weight: 600;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      padding: 0.35rem 0;
+      padding: 0.25rem 0;
     }
     .cal-col-summary-name {
       color: var(--accent-blue);
       background: var(--accent-blue-bg);
-      border-radius: 6px;
+      border-radius: 5px;
       border: 1px solid rgba(56, 189, 248, 0.2);
     }
     .cal-days-grid {
       display: grid;
-      grid-template-columns: repeat(7, minmax(85px, 1fr)) minmax(170px, 1.4fr);
-      gap: 0.5rem;
-      min-width: 720px;
+      grid-template-columns: repeat(7, minmax(68px, 1fr)) minmax(136px, 1.3fr);
+      gap: 0.38rem;
+      min-width: 580px;
     }
 
-    /* DAY CELLS: NORMAL SPACIOUS CALENDAR PROPORTIONS (MIN-HEIGHT 112PX) */
+    /* DAY CELLS: SCALED 20% SMALLER (MIN-HEIGHT 68PX) */
     .cal-day-cell {
       background: var(--bg-base);
       border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      min-height: 112px;
-      padding: 0.75rem 0.65rem;
+      border-radius: 5px;
+      min-height: 68px;
+      padding: 0.35rem 0.4rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -899,26 +1287,28 @@
       align-items: center;
     }
     .cal-day-cell .day-num {
-      font-size: 0.8125rem;
+      font-size: 0.68rem;
       font-weight: 600;
       color: var(--text-muted);
     }
     .cal-day-cell .day-pnl {
-      font-family: 'Geist Mono', monospace;
-      font-size: 1.18rem;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-feature-settings: "tnum" 1, "zero" 0;
+      font-variant-numeric: tabular-nums;
+      font-size: 0.825rem;
       font-weight: 700;
       text-align: center;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.015em;
     }
 
-    /* WEEK SUMMARY CELL (8TH COLUMN) */
+    /* WEEK SUMMARY CELL (8TH COLUMN) — SCALED 20% SMALLER (MIN-HEIGHT 68PX) */
     .cal-week-summary-cell {
       background: var(--bg-surface-elevated);
       border: 1px solid var(--border-subtle);
       border-left: 3px solid var(--border-strong);
-      border-radius: 8px;
-      min-height: 112px;
-      padding: 0.75rem 0.75rem;
+      border-radius: 5px;
+      min-height: 68px;
+      padding: 0.35rem 0.45rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -951,17 +1341,17 @@
     }
 
     /* ==============================================================
-       CALENDAR INSPECTOR DECK (FILLS VERTICAL SPACE IN RIGHT COLUMN)
+       CALENDAR INSPECTOR DECK — 20% SCALED COMPACT
        ============================================================== */
     .cal-inspector-deck {
-      margin-top: 1rem;
+      margin-top: 0.5rem;
       background: var(--bg-base);
       border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      padding: 1rem 1.15rem;
+      border-radius: 6px;
+      padding: 0.55rem 0.7rem;
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 0.4rem;
       transition: border-color 0.15s ease;
     }
     .cal-inspector-deck:hover {
@@ -972,25 +1362,25 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      padding-bottom: 0.65rem;
+      gap: 0.4rem;
+      padding-bottom: 0.5rem;
       border-bottom: 1px solid var(--border-subtle);
     }
     .cal-inspector-title {
-      font-size: 0.875rem;
+      font-size: 0.78rem;
       font-weight: 600;
       color: var(--text-main);
     }
     .cal-inspector-subtitle {
-      font-size: 0.75rem;
+      font-size: 0.6875rem;
       color: var(--text-muted);
       font-family: 'Inter', sans-serif;
-      margin-top: 0.1rem;
+      margin-top: 0.08rem;
     }
     .inspector-metrics-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 0.65rem;
+      gap: 0.5rem;
     }
     @media (max-width: 900px) {
       .inspector-metrics-grid { grid-template-columns: repeat(2, 1fr); }
@@ -998,107 +1388,289 @@
     .inspector-metric-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
-      border-radius: 6px;
-      padding: 0.55rem 0.75rem;
+      border-radius: 5px;
+      padding: 0.42rem 0.6rem;
       display: flex;
       flex-direction: column;
-      gap: 0.2rem;
+      gap: 0.15rem;
     }
     .inspector-metric-lbl {
-      font-size: 0.6875rem;
+      font-size: 0.625rem;
       font-weight: 600;
       color: var(--text-dim);
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
     .inspector-metric-val {
-      font-family: 'Geist Mono', monospace;
-      font-size: 1rem;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-feature-settings: "tnum" 1, "zero" 0;
+      font-variant-numeric: tabular-nums;
+      font-size: 0.875rem;
       font-weight: 700;
       color: var(--text-main);
     }
     .inspector-table-wrap {
       overflow-x: auto;
-      max-height: 240px;
+      max-height: 200px;
       scrollbar-width: thin;
       scrollbar-color: var(--border-subtle) transparent;
       border: 1px solid var(--border-subtle);
-      border-radius: 6px;
+      border-radius: 5px;
     }
 
-    /* WEEK VIEW */
-    .cal-week-layout {
-      display: grid;
-      grid-template-columns: 1fr minmax(200px, 230px);
-      gap: 0.85rem;
-      align-items: stretch;
-      min-width: 680px;
-    }
-    @media (max-width: 950px) {
-      .cal-week-layout { grid-template-columns: 1fr; }
-    }
-    .cal-week-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0.85rem;
-    }
-    @media (max-width: 700px) {
-      .cal-week-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    .cal-week-summary-sidebar {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-    .week-summary-card {
-      background: var(--bg-surface-elevated);
-      border: 1px solid var(--border-subtle);
-      border-left: 3px solid var(--accent-primary);
-      border-radius: 8px;
-      padding: 1.15rem;
-      box-shadow: var(--card-shadow);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 100%;
-    }
-    .week-day-box {
-      background: var(--bg-base);
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      padding: 0.9rem 1rem;
-      min-height: 135px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: all 0.15s ease;
-    }
-    .week-day-box:hover {
-      border-color: var(--border-strong);
-      transform: translateY(-1px);
-    }
-    .week-day-box.box-green {
-      background: var(--accent-green-bg);
-      border-left: 3px solid var(--accent-green);
-      border-color: var(--accent-green-border);
-    }
-    .week-day-box.box-red {
-      background: var(--accent-red-bg);
-      border-left: 3px solid var(--accent-red);
-      border-color: var(--accent-red-border);
-    }
-    .week-day-head {
+    /* ==============================================================
+       WEEKLY CALENDAR VIEW: 20% SCALED COMPACT PROPORTIONS
+       ============================================================== */
+    .weekly-calendar-header-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 0.45rem;
-      margin-bottom: 0.55rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.65rem;
+      padding: 0.45rem 0.7rem;
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: 7px;
     }
-    .week-pnl-val {
-      font-family: 'Geist Mono', monospace;
-      font-size: 1.25rem;
+    .weekly-filter-pills {
+      display: flex;
+      gap: 0.28rem;
+      flex-wrap: wrap;
+    }
+    .weekly-filter-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      padding: 0.24rem 0.55rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .weekly-filter-btn:hover {
+      background: var(--bg-surface-hover);
+      color: var(--text-main);
+      border-color: var(--border-strong);
+    }
+    .weekly-filter-btn.active {
+      background: var(--accent-primary);
+      color: #ffffff !important;
+      border-color: var(--accent-primary);
+    }
+    .weekly-summary-stats {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+    .weekly-summary-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.28rem;
+    }
+    .weekly-summary-chip strong {
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-feature-settings: "tnum" 1, "zero" 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .cal-weekly-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+      gap: 0.65rem;
+      width: 100%;
+    }
+    @media (max-width: 640px) {
+      .cal-weekly-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* WEEK BOX STYLING — 20% SCALED COMPACT */
+    .cal-week-box {
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: 7px;
+      padding: 0.55rem 0.65rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.35rem;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      position: relative;
+    }
+    .cal-week-box:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    }
+    .cal-week-box.week-profitable {
+      border-left: 3.5px solid var(--accent-green);
+      background: var(--accent-green-bg);
+      border-color: var(--accent-green-border);
+    }
+    .cal-week-box.week-profitable:hover {
+      border-color: var(--accent-green);
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.18);
+    }
+    .cal-week-box.week-losing {
+      border-left: 3.5px solid var(--accent-red);
+      background: var(--accent-red-bg);
+      border-color: var(--accent-red-border);
+    }
+    .cal-week-box.week-losing:hover {
+      border-color: var(--accent-red);
+      box-shadow: 0 4px 16px rgba(244, 63, 94, 0.18);
+    }
+    .cal-week-box.week-neutral {
+      border-left: 3.5px solid var(--border-strong);
+    }
+
+    .week-box-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.35rem;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 0.3rem;
+    }
+    .week-box-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .week-box-badge {
+      font-size: 0.72rem;
       font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .week-box-dates {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-feature-settings: "tnum" 1, "zero" 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .week-box-trades-count {
+      font-size: 0.62rem;
+      color: var(--text-muted);
+      background: var(--bg-surface-elevated);
+      padding: 0.1rem 0.35rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border-subtle);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-feature-settings: "tnum" 1, "zero" 0;
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+    }
+
+    .week-box-pnl-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.35rem;
+      margin: 0.1rem 0;
+    }
+    .week-box-pnl-val {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-feature-settings: "tnum" 1, "zero" 0;
+      font-variant-numeric: tabular-nums;
+      font-size: 1.02rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      line-height: 1.1;
+    }
+    .week-box-pnl-pct {
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 0.1rem 0.42rem;
+      border-radius: 9999px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-feature-settings: "tnum" 1, "zero" 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .week-box-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.28rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 0.32rem 0.4rem;
+      text-align: center;
+    }
+    .week-box-stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.08rem;
+    }
+    .week-box-stat-label {
+      font-size: 0.55rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .week-box-stat-val {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-feature-settings: "tnum" 1, "zero" 0;
+      font-variant-numeric: tabular-nums;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .week-box-stat-sub {
+      font-size: 0.55rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      font-feature-settings: "tnum" 1, "zero" 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .week-box-ratio-bar {
+      width: 100%;
+      height: 3px;
+      border-radius: 9999px;
+      background: var(--border-subtle);
+      overflow: hidden;
+      display: flex;
+    }
+    .ratio-bar-win {
+      height: 100%;
+      background: var(--accent-green);
+    }
+    .ratio-bar-loss {
+      height: 100%;
+      background: var(--accent-red);
+    }
+
+    .week-box-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+      padding-top: 0.32rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .week-box-inspect-hint {
+      font-size: 0.65rem;
+      color: var(--accent-primary);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
     }
 
     /* TURN-BY-TURN TRADES VIEW */
@@ -1243,12 +1815,13 @@
       <div class="preset-group">
         <span class="preset-label">Presets:</span>
         <button class="preset-btn" onclick="applyPreset(1000, 50, 2.0, 2.0, 20, 4, 'week')">Default (50% / 2R / 4w)</button>
+        <button class="preset-btn" onclick="applyPreset(25000, 50, 0.5, 2.0, 20, 4, 'week')">25K Alpha (25k / 2R / 50% / 0.5%)</button>
         <button class="preset-btn" onclick="applyPreset(3000, 54, 1.0, 1.5, 20, 24, 'month')">Reference (54% / 1.5R)</button>
         <button class="preset-btn" onclick="applyPreset(5000, 60, 1.5, 2.0, 25, 12, 'month')">High Growth (60% / 2R)</button>
       </div>
     </div>
 
-    <!-- THEME SWITCHER (Light, Dark, Black) -->
+    <!-- THEME SWITCHER (Light, Dark, Black, Glass) -->
     <div class="theme-switcher-pill">
       <button class="theme-btn" id="btnThemeLight" onclick="setTheme('light')">
         <span>☀️</span> Light
@@ -1258,6 +1831,9 @@
       </button>
       <button class="theme-btn" id="btnThemeBlack" onclick="setTheme('black')">
         <span>⬛</span> Black
+      </button>
+      <button class="theme-btn" id="btnThemeGlass" onclick="setTheme('glass')">
+        <span>🔮</span> Glass
       </button>
     </div>
   </div>
@@ -1327,6 +1903,20 @@
             <div class="hero-val val-green" id="dispTopExpectancy">+1.00%</div>
             <div class="hero-sub" id="dispTopSubExpectancy">+0.50R / trade EV</div>
           </div>
+
+          <!-- 9. Max Drawdown (Median) -->
+          <div class="hero-card" id="cardTopMedianDD">
+            <div class="hero-label">Max Drawdown</div>
+            <div class="hero-val val-amber" id="dispTopMedianDD">9.1%</div>
+            <div class="hero-sub" id="dispTopSubWorstDD">Worst Run: 18.7%</div>
+          </div>
+
+          <!-- 10. Risk of Ruin & Tail Risk -->
+          <div class="hero-card" id="cardTopRuin">
+            <div class="hero-label">Risk of Ruin</div>
+            <div class="hero-val val-green" id="dispTopRuin">0.0%</div>
+            <div class="hero-sub" id="dispTopSubLossStreak">Max Loss Streak: 15L</div>
+          </div>
         </div>
       </div>
 
@@ -1334,85 +1924,206 @@
       <!-- 1. STRATEGY PARAMETERS PANEL -->
       <div class="panel-card">
         <div class="panel-header-row">
-          <span class="panel-header-title">⚙️ Strategy Parameters</span>
-          <!-- CADENCE SWITCHER (MONTHS VS WEEKS) -->
-          <div class="cadence-switcher-pill">
-            <button class="cadence-btn" id="btnCadenceMonth" onclick="setCadence('month')">Months</button>
-            <button class="cadence-btn active" id="btnCadenceWeek" onclick="setCadence('week')">Weeks</button>
+          <div>
+            <span class="panel-header-title">Strategy Parameters</span>
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.15rem;">Calibrate trading edge, capital risk allocation, and compounding horizon</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <!-- CADENCE SWITCHER (MONTHS VS WEEKS) -->
+            <div class="cadence-switcher-pill">
+              <button class="cadence-btn" id="btnCadenceMonth" onclick="setCadence('month')">Months</button>
+              <button class="cadence-btn active" id="btnCadenceWeek" onclick="setCadence('week')">Weeks</button>
+            </div>
+            <button class="preset-btn" style="padding:0.25rem 0.6rem; font-size:0.75rem;" onclick="applyPreset(1000, 50, 2.0, 2.0, 20, 4, 'week')" title="Reset to default preset">Reset</button>
           </div>
         </div>
 
         <div class="controls-inner-grid">
-          <!-- Initial Balance -->
-          <div class="control-row">
-            <div class="control-top">
-              <span class="control-title">Initial Balance ($)</span>
-              <input type="text" id="numInitialBalance" class="control-input" value="$1,000">
+          <!-- 1. Initial Balance -->
+          <div class="param-card">
+            <div class="param-card-top">
+              <div class="param-card-label">
+                <span class="param-card-name">Initial Balance</span>
+              </div>
+              <div class="param-input-wrap">
+                <input type="text" id="numInitialBalance" class="control-input" value="$1,000">
+              </div>
             </div>
-            <input type="range" id="slideInitialBalance" min="500" max="100000" step="500" value="1000">
+            <div class="param-slider-wrap">
+              <input type="range" id="slideInitialBalance" min="500" max="100000" step="500" value="1000" style="--slider-fill: 0.5%;">
+            </div>
+            <div class="param-card-bottom">
+              <div class="param-quick-pills">
+                <button type="button" class="quick-pill" onclick="setParamValue('initialBalance', 1000)">$1k</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('initialBalance', 5000)">$5k</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('initialBalance', 10000)">$10k</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('initialBalance', 25000)">$25k</button>
+              </div>
+            </div>
           </div>
 
-          <!-- Win Rate -->
-          <div class="control-row">
-            <div class="control-top">
-              <span class="control-title">Win Rate (%)</span>
-              <input type="text" id="numWinRate" class="control-input" value="50%">
+          <!-- 2. Win Rate -->
+          <div class="param-card">
+            <div class="param-card-top">
+              <div class="param-card-label">
+                <span class="param-card-name">Win Rate</span>
+              </div>
+              <div class="param-input-wrap">
+                <input type="text" id="numWinRate" class="control-input" value="50%">
+              </div>
             </div>
-            <input type="range" id="slideWinRate" min="10" max="95" step="1" value="50">
+            <div class="param-slider-wrap">
+              <input type="range" id="slideWinRate" min="10" max="95" step="1" value="50" style="--slider-fill: 47.1%;">
+            </div>
+            <div class="param-card-bottom">
+              <div class="param-quick-pills">
+                <button type="button" class="quick-pill" onclick="setParamValue('winRate', 45)">45%</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('winRate', 50)">50%</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('winRate', 55)">55%</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('winRate', 60)">60%</button>
+              </div>
+            </div>
           </div>
 
-          <!-- Risk Per Trade -->
-          <div class="control-row">
-            <div class="control-top">
-              <span class="control-title">Risk / Trade (%)</span>
-              <input type="text" id="numRiskPerTrade" class="control-input" value="2.0%">
+          <!-- 3. Risk Per Trade -->
+          <div class="param-card">
+            <div class="param-card-top">
+              <div class="param-card-label" style="display:flex; align-items:center; gap:0.4rem;">
+                <span class="param-card-name" id="lblRiskPerTrade">Risk / Trade</span>
+                <div class="risk-mode-pill">
+                  <button type="button" class="risk-mode-btn active" id="btnRiskModePct" onclick="setRiskType('pct')">%</button>
+                  <button type="button" class="risk-mode-btn" id="btnRiskModeFixed" onclick="setRiskType('fixed')">$</button>
+                </div>
+              </div>
+              <div class="param-input-wrap">
+                <input type="text" id="numRiskPerTrade" class="control-input" value="2.0%">
+              </div>
             </div>
-            <input type="range" id="slideRiskPerTrade" min="0.1" max="10.0" step="0.1" value="2.0">
+            <div class="param-slider-wrap">
+              <input type="range" id="slideRiskPerTrade" min="0.1" max="10.0" step="0.1" value="2.0" style="--slider-fill: 19.2%;">
+            </div>
+            <div class="param-card-bottom">
+              <div class="param-quick-pills" id="wrapRiskQuickPills">
+                <button type="button" class="quick-pill" onclick="setParamValue('riskPerTrade', 0.5)">0.5%</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('riskPerTrade', 1.0)">1.0%</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('riskPerTrade', 1.5)">1.5%</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('riskPerTrade', 2.0)">2.0%</button>
+              </div>
+            </div>
           </div>
 
-          <!-- Reward Ratio -->
-          <div class="control-row">
-            <div class="control-top">
-              <span class="control-title">Reward Ratio (R:R)</span>
-              <input type="text" id="numRewardRatio" class="control-input" value="2.0">
+          <!-- 4. Reward Ratio -->
+          <div class="param-card">
+            <div class="param-card-top">
+              <div class="param-card-label">
+                <span class="param-card-name">Reward Ratio (R:R)</span>
+              </div>
+              <div class="param-input-wrap">
+                <input type="text" id="numRewardRatio" class="control-input" value="2.0">
+              </div>
             </div>
-            <input type="range" id="slideRewardRatio" min="0.5" max="5.0" step="0.1" value="2.0">
+            <div class="param-slider-wrap">
+              <input type="range" id="slideRewardRatio" min="0.5" max="5.0" step="0.1" value="2.0" style="--slider-fill: 33.3%;">
+            </div>
+            <div class="param-card-bottom">
+              <div class="param-quick-pills">
+                <button type="button" class="quick-pill" onclick="setParamValue('rewardRatio', 1.5)">1.5R</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('rewardRatio', 2.0)">2.0R</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('rewardRatio', 2.5)">2.5R</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('rewardRatio', 3.0)">3.0R</button>
+              </div>
+            </div>
           </div>
 
-          <!-- Dynamic Trades Per Period (Month or Week) -->
-          <div class="control-row">
-            <div class="control-top">
-              <span class="control-title" id="lblTradesCadence">Trades / Week</span>
-              <input type="text" id="numTradesCadence" class="control-input" value="20">
+          <!-- 5. Dynamic Trades Per Period (Month or Week) -->
+          <div class="param-card">
+            <div class="param-card-top">
+              <div class="param-card-label">
+                <span class="param-card-name" id="lblTradesCadence">Trades / Week</span>
+              </div>
+              <div class="param-input-wrap">
+                <input type="text" id="numTradesCadence" class="control-input" value="20">
+              </div>
             </div>
-            <input type="range" id="slideTradesCadence" min="1" max="50" step="1" value="20">
+            <div class="param-slider-wrap">
+              <input type="range" id="slideTradesCadence" min="1" max="50" step="1" value="20" style="--slider-fill: 38.8%;">
+            </div>
+            <div class="param-card-bottom">
+              <div class="param-quick-pills">
+                <button type="button" class="quick-pill" onclick="setParamValue('tradesPerPeriod', 5)">5</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('tradesPerPeriod', 10)">10</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('tradesPerPeriod', 20)">20</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('tradesPerPeriod', 30)">30</button>
+              </div>
+            </div>
           </div>
 
-          <!-- Dynamic Total Periods (Months or Weeks) -->
-          <div class="control-row">
-            <div class="control-top">
-              <span class="control-title" id="lblHorizonCadence">Horizon (Weeks)</span>
-              <input type="text" id="numHorizonCadence" class="control-input" value="4">
+          <!-- 6. Dynamic Total Periods (Months or Weeks) -->
+          <div class="param-card">
+            <div class="param-card-top">
+              <div class="param-card-label">
+                <span class="param-card-name" id="lblHorizonCadence">Horizon (Weeks)</span>
+              </div>
+              <div class="param-input-wrap">
+                <input type="text" id="numHorizonCadence" class="control-input" value="4">
+              </div>
             </div>
-            <input type="range" id="slideHorizonCadence" min="1" max="52" step="1" value="4">
+            <div class="param-slider-wrap">
+              <input type="range" id="slideHorizonCadence" min="1" max="52" step="1" value="4" style="--slider-fill: 5.9%;">
+            </div>
+            <div class="param-card-bottom">
+              <div class="param-quick-pills">
+                <button type="button" class="quick-pill" onclick="setParamValue('totalPeriods', 4)">4</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('totalPeriods', 12)">12</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('totalPeriods', 24)">24</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('totalPeriods', 52)">52</button>
+              </div>
+            </div>
           </div>
 
-          <!-- Break-Even % -->
-          <div class="control-row">
-            <div class="control-top">
-              <span class="control-title">Break-Even (%)</span>
-              <input type="text" id="numBreakEven" class="control-input" value="0%">
+          <!-- 7. Break-Even % -->
+          <div class="param-card">
+            <div class="param-card-top">
+              <div class="param-card-label">
+                <span class="param-card-name">Break-Even Rate</span>
+              </div>
+              <div class="param-input-wrap">
+                <input type="text" id="numBreakEven" class="control-input" value="0%">
+              </div>
             </div>
-            <input type="range" id="slideBreakEven" min="0" max="30" step="1" value="0">
+            <div class="param-slider-wrap">
+              <input type="range" id="slideBreakEven" min="0" max="30" step="1" value="0" style="--slider-fill: 0%;">
+            </div>
+            <div class="param-card-bottom">
+              <div class="param-quick-pills">
+                <button type="button" class="quick-pill" onclick="setParamValue('breakEvenRate', 0)">0%</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('breakEvenRate', 5)">5%</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('breakEvenRate', 10)">10%</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('breakEvenRate', 15)">15%</button>
+              </div>
+            </div>
           </div>
 
-          <!-- Iterations -->
-          <div class="control-row">
-            <div class="control-top">
-              <span class="control-title">MC Iterations</span>
-              <input type="text" id="numIterations" class="control-input" value="1,000">
+          <!-- 8. MC Iterations -->
+          <div class="param-card">
+            <div class="param-card-top">
+              <div class="param-card-label">
+                <span class="param-card-name">MC Iterations</span>
+              </div>
+              <div class="param-input-wrap">
+                <input type="text" id="numIterations" class="control-input" value="1,000">
+              </div>
             </div>
-            <input type="range" id="slideIterations" min="200" max="2500" step="100" value="1000">
+            <div class="param-slider-wrap">
+              <input type="range" id="slideIterations" min="200" max="2500" step="100" value="1000" style="--slider-fill: 34.8%;">
+            </div>
+            <div class="param-card-bottom">
+              <div class="param-quick-pills">
+                <button type="button" class="quick-pill" onclick="setParamValue('iterations', 500)">500</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('iterations', 1000)">1k</button>
+                <button type="button" class="quick-pill" onclick="setParamValue('iterations', 2000)">2k</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1534,7 +2245,7 @@
               <span>📅</span> Full Month
             </button>
             <button class="cal-view-btn" id="btnCalViewWeek" onclick="switchCalView('week')">
-              <span>📆</span> Week
+              <span>📊</span> Weekly Calendar
             </button>
             <button class="cal-view-btn" id="btnCalViewTrade" onclick="switchCalView('trade')">
               <span>⚡</span> Turn-by-Turn
@@ -1568,11 +2279,11 @@
 
         <!-- SUMMARY STATS BAR -->
         <div class="cal-stat-bar">
-          <div class="cal-stat-chip">Period P&L: <strong id="calStatPnL" class="val-green">+$0.00</strong></div>
-          <div class="cal-stat-chip">Win Rate: <strong id="calStatWinRate">0%</strong></div>
+          <div class="cal-stat-chip">P&L: <strong id="calStatPnL" class="val-green">+$0.00</strong></div>
+          <div class="cal-stat-chip">WR: <strong id="calStatWinRate">0%</strong></div>
           <div class="cal-stat-chip">Days: <strong id="calStatDayRatio">0W / 0L</strong></div>
-          <div class="cal-stat-chip">Trades: <strong id="calStatTradesCount">0</strong></div>
-          <div class="cal-stat-chip">Ending Bal: <strong id="calStatEndingBal">$0.00</strong></div>
+          <div class="cal-stat-chip">Trds: <strong id="calStatTradesCount">0</strong></div>
+          <div class="cal-stat-chip">End Bal: <strong id="calStatEndingBal">$0.00</strong></div>
         </div>
 
         <!-- 1. FULL MONTH VIEW -->
@@ -1609,13 +2320,14 @@
           </div>
         </div>
 
-        <!-- 2. WEEK VIEW -->
+        <!-- 2. WEEKLY CALENDAR VIEW (EACH BOX = 1 WEEK OF DATA) -->
         <div id="calViewWeekWrap" style="display:none;">
-          <div class="cal-scroll-wrapper">
-          <div class="cal-week-layout">
-            <div class="cal-week-grid" id="calWeekDaysGrid"></div>
-            <div class="cal-week-summary-sidebar" id="calWeekSummarySidebar"></div>
+          <div class="weekly-calendar-header-bar">
+            <div class="weekly-filter-pills" id="weeklyFilterPills"></div>
+            <div class="weekly-summary-stats" id="weeklySummaryStats"></div>
           </div>
+          <div class="cal-scroll-wrapper" style="max-height: 650px; overflow-y: auto;">
+            <div class="cal-weekly-grid" id="calWeeklyBoxesGrid"></div>
           </div>
         </div>
 
@@ -1662,7 +2374,8 @@
   let config = {
     initialBalance: 1000,
     winRate: 50, // %
-    riskPerTrade: 2.0, // %
+    riskType: 'pct', // 'pct' or 'fixed'
+    riskPerTrade: 2.0, // % or $ depending on riskType
     rewardRatio: 2.0,
     cadence: 'week', // 'month' or 'week'
     tradesPerPeriod: 20, // 20 / week
@@ -1700,13 +2413,85 @@
     const btnL = document.getElementById('btnThemeLight');
     const btnD = document.getElementById('btnThemeDark');
     const btnB = document.getElementById('btnThemeBlack');
+    const btnG = document.getElementById('btnThemeGlass');
     if (btnL) btnL.classList.toggle('active', theme === 'light');
     if (btnD) btnD.classList.toggle('active', theme === 'dark');
     if (btnB) btnB.classList.toggle('active', theme === 'black');
+    if (btnG) btnG.classList.toggle('active', theme === 'glass');
 
     if (typeof renderChart === 'function' && lastSimResults) {
       renderChart();
     }
+    if (typeof updateAllSliderTracks === 'function') {
+      updateAllSliderTracks();
+    }
+  }
+
+  /* ================================================================
+     3. CADENCE SWITCHER (MONTHS VS WEEKS) & RISK TYPE SWITCHER (% VS $)
+     ================================================================ */
+  function setRiskType(type) {
+    if (config.riskType === type) return;
+    config.riskType = type;
+
+    const btnPct = document.getElementById('btnRiskModePct');
+    const btnFixed = document.getElementById('btnRiskModeFixed');
+    if (btnPct) btnPct.classList.toggle('active', type === 'pct');
+    if (btnFixed) btnFixed.classList.toggle('active', type === 'fixed');
+
+    const lbl = document.getElementById('lblRiskPerTrade');
+    const slide = document.getElementById('slideRiskPerTrade');
+    const num = document.getElementById('numRiskPerTrade');
+    const pillsWrap = document.getElementById('wrapRiskQuickPills');
+
+    if (type === 'fixed') {
+      if (lbl) lbl.textContent = 'Fixed Risk / Trade';
+      // If previous was percent, translate to dollar amount or sensible default
+      const currentDollar = Math.max(10, Math.round(config.initialBalance * (config.riskPerTrade / 100)));
+      config.riskPerTrade = currentDollar;
+      if (slide) {
+        slide.min = 5;
+        slide.max = Math.max(500, Math.round(config.initialBalance * 0.20));
+        slide.step = 5;
+        slide.value = config.riskPerTrade;
+      }
+      if (num) num.value = '$' + Math.round(config.riskPerTrade).toLocaleString();
+      if (pillsWrap) {
+        const p1 = Math.max(10, Math.round(config.initialBalance * 0.005));
+        const p2 = Math.max(20, Math.round(config.initialBalance * 0.01));
+        const p3 = Math.max(50, Math.round(config.initialBalance * 0.02));
+        const p4 = Math.max(100, Math.round(config.initialBalance * 0.05));
+        pillsWrap.innerHTML = `
+          <button type="button" class="quick-pill" onclick="setParamValue('riskPerTrade', ${p1})">$${p1}</button>
+          <button type="button" class="quick-pill" onclick="setParamValue('riskPerTrade', ${p2})">$${p2}</button>
+          <button type="button" class="quick-pill" onclick="setParamValue('riskPerTrade', ${p3})">$${p3}</button>
+          <button type="button" class="quick-pill" onclick="setParamValue('riskPerTrade', ${p4})">$${p4}</button>
+        `;
+      }
+    } else {
+      if (lbl) lbl.textContent = 'Risk / Trade';
+      // If previous was fixed dollar, convert back to approx % or default 2.0%
+      const currentPct = Math.min(10, Math.max(0.1, Number(((config.riskPerTrade / config.initialBalance) * 100).toFixed(1)))) || 2.0;
+      config.riskPerTrade = currentPct;
+      if (slide) {
+        slide.min = 0.1;
+        slide.max = 10.0;
+        slide.step = 0.1;
+        slide.value = config.riskPerTrade;
+      }
+      if (num) num.value = config.riskPerTrade.toFixed(1) + '%';
+      if (pillsWrap) {
+        pillsWrap.innerHTML = `
+          <button type="button" class="quick-pill" onclick="setParamValue('riskPerTrade', 0.5)">0.5%</button>
+          <button type="button" class="quick-pill" onclick="setParamValue('riskPerTrade', 1.0)">1.0%</button>
+          <button type="button" class="quick-pill" onclick="setParamValue('riskPerTrade', 1.5)">1.5%</button>
+          <button type="button" class="quick-pill" onclick="setParamValue('riskPerTrade', 2.0)">2.0%</button>
+        `;
+      }
+    }
+
+    updateSliderTrack('slideRiskPerTrade');
+    recalculateAll();
   }
 
   /* ================================================================
@@ -1758,12 +2543,18 @@
       thCol.textContent = 'Month';
     }
 
+    const scaleMaxTrades = document.getElementById('scaleMaxTrades');
+    const scaleMaxHorizon = document.getElementById('scaleMaxHorizon');
+    if (scaleMaxTrades) scaleMaxTrades.textContent = mode === 'week' ? '50' : '100';
+    if (scaleMaxHorizon) scaleMaxHorizon.textContent = mode === 'week' ? '52w' : '60m';
+
     slideTrades.value = config.tradesPerPeriod;
     numTrades.value = config.tradesPerPeriod.toString();
 
     slideHorizon.value = config.totalPeriods;
     numHorizon.value = config.totalPeriods.toString();
 
+    updateAllSliderTracks();
     recalculateAll();
   }
 
@@ -1782,6 +2573,10 @@
   ];
 
   function formatVal(val, item) {
+    if (item.key === 'riskPerTrade') {
+      if (config.riskType === 'fixed') return '$' + Math.round(val).toLocaleString();
+      return (Number.isInteger(val) ? val : val.toFixed(1)) + '%';
+    }
     if (item.prefix === '$') return '$' + Math.round(val).toLocaleString();
     if (item.suffix === '%') return (Number.isInteger(val) ? val : val.toFixed(1)) + '%';
     return Number.isInteger(val) ? val.toString() : val.toFixed(1);
@@ -1789,6 +2584,42 @@
 
   function parseVal(str) {
     return parseFloat(str.replace(/[^0-9.-]+/g, '')) || 0;
+  }
+
+  function updateSliderTrack(slideId) {
+    const el = document.getElementById(slideId);
+    if (!el) return;
+    const min = parseFloat(el.min) || 0;
+    const max = parseFloat(el.max) || 100;
+    const val = parseFloat(el.value) || min;
+    const pct = Math.max(0, Math.min(100, ((val - min) / (max - min)) * 100));
+    el.style.setProperty('--slider-fill', `${pct}%`);
+    const isGlass = document.documentElement.getAttribute('data-theme') === 'glass';
+    if (isGlass) {
+      el.style.background = `linear-gradient(to right, #e879f9 0%, #22d3ee ${pct}%, rgba(255, 255, 255, 0.12) ${pct}%, rgba(255, 255, 255, 0.12) 100%)`;
+    } else {
+      el.style.background = `linear-gradient(to right, var(--accent-primary) 0%, var(--accent-primary) ${pct}%, var(--border-strong) ${pct}%, var(--border-strong) 100%)`;
+    }
+  }
+
+  function updateAllSliderTracks() {
+    inputs.forEach(item => updateSliderTrack(item.slide));
+  }
+
+  function setParamValue(key, val) {
+    const item = inputs.find(i => i.key === key);
+    if (!item) return;
+    config[key] = val;
+    const slideEl = document.getElementById(item.slide);
+    const numEl = document.getElementById(item.num);
+    if (slideEl) {
+      slideEl.value = val;
+      updateSliderTrack(item.slide);
+    }
+    if (numEl) {
+      numEl.value = formatVal(val, item);
+    }
+    recalculateAll();
   }
 
   inputs.forEach(item => {
@@ -1800,6 +2631,7 @@
       const val = parseFloat(e.target.value);
       config[item.key] = val;
       numEl.value = formatVal(val, item);
+      updateSliderTrack(item.slide);
       recalculateAll();
     });
 
@@ -1810,6 +2642,7 @@
       config[item.key] = val;
       slideEl.value = val;
       numEl.value = formatVal(val, item);
+      updateSliderTrack(item.slide);
       recalculateAll();
     });
   });
@@ -1830,6 +2663,11 @@
     document.getElementById('lblHorizonCadence').textContent = isWeek ? 'Horizon (Weeks)' : 'Horizon (Months)';
     document.getElementById('slideTradesCadence').max = isWeek ? 50 : 100;
     document.getElementById('slideHorizonCadence').max = isWeek ? 52 : 60;
+    const scaleMaxTrades = document.getElementById('scaleMaxTrades');
+    const scaleMaxHorizon = document.getElementById('scaleMaxHorizon');
+    if (scaleMaxTrades) scaleMaxTrades.textContent = isWeek ? '50' : '100';
+    if (scaleMaxHorizon) scaleMaxHorizon.textContent = isWeek ? '52w' : '60m';
+
     document.getElementById('tableMatrixTitle').textContent = isWeek ? '📊 Weekly Compounding Matrix' : '📊 Monthly Compounding Matrix';
     document.getElementById('thPeriodCol').textContent = isWeek ? 'Week' : 'Month';
 
@@ -1842,6 +2680,7 @@
       }
     });
 
+    updateAllSliderTracks();
     recalculateAll();
   }
 
@@ -1859,25 +2698,40 @@
     const pWin = config.winRate / 100;
     const pBE = Math.min(config.breakEvenRate / 100, 1 - pWin);
     const pLoss = Math.max(0, 1 - pWin - pBE);
-    const risk = config.riskPerTrade / 100;
+    const isFixedRisk = config.riskType === 'fixed';
+    const riskPct = config.riskPerTrade / 100;
+    const fixedRiskDollar = config.riskPerTrade;
     const rr = config.rewardRatio;
 
-    // Compound expected multiplier per trade
-    const tradeEVFactor = pWin * (1 + risk * rr) + pBE * 1.0 + pLoss * (1 - risk);
-    const edgePct = (tradeEVFactor - 1.0) * 100;
+    // EV Calculation
+    let tradeEVFactor = 1.0;
+    let edgePct = 0;
+    let expectedFinalBalance = config.initialBalance;
+
+    const totalTrades = config.totalPeriods * config.tradesPerPeriod;
+
+    if (isFixedRisk) {
+      // Fixed Dollar Risk: Net expected gain per trade
+      const evDollarPerTrade = pWin * (fixedRiskDollar * rr) - pLoss * fixedRiskDollar;
+      expectedFinalBalance = Math.max(0, config.initialBalance + (evDollarPerTrade * totalTrades));
+      edgePct = config.initialBalance > 0 ? (evDollarPerTrade / fixedRiskDollar) * 100 : 0;
+      tradeEVFactor = config.initialBalance > 0 ? Math.pow(Math.max(0.01, expectedFinalBalance / config.initialBalance), 1 / Math.max(1, totalTrades)) : 1.0;
+    } else {
+      // Percentage Compounding Risk
+      tradeEVFactor = pWin * (1 + riskPct * rr) + pBE * 1.0 + pLoss * (1 - riskPct);
+      edgePct = (tradeEVFactor - 1.0) * 100;
+      expectedFinalBalance = config.initialBalance * Math.pow(tradeEVFactor, totalTrades);
+    }
 
     // PROFIT FACTOR CALCULATION
     const grossWinRate = pWin * rr;
     const grossLossRate = pLoss * 1.0;
     const theoreticalPF = grossLossRate > 0 ? (grossWinRate / grossLossRate) : 99.9;
 
-    const totalTrades = config.totalPeriods * config.tradesPerPeriod;
-    const expectedFinalBalance = config.initialBalance * Math.pow(tradeEVFactor, totalTrades);
-
     const totalProfitLoss = expectedFinalBalance - config.initialBalance;
-    const totalReturnPct = ((expectedFinalBalance - config.initialBalance) / config.initialBalance) * 100;
+    const totalReturnPct = config.initialBalance > 0 ? ((expectedFinalBalance - config.initialBalance) / config.initialBalance) * 100 : 0;
 
-    // Update Top 8 Hero Display Elements
+    // Update Top 10 Hero Display Elements
     // 1. Initial Balance
     const initEl = document.getElementById('dispTopInitial');
     if (initEl) initEl.textContent = '$' + Math.round(config.initialBalance).toLocaleString();
@@ -1943,15 +2797,21 @@
     const subExpEl = document.getElementById('dispTopSubExpectancy');
     const rExpectancy = (pWin * rr) - pLoss;
     if (expValEl) {
-      expValEl.textContent = `${edgePct >= 0 ? '+' : ''}${edgePct.toFixed(2)}%`;
-      expValEl.className = `hero-val ${edgePct >= 0 ? 'val-green' : 'val-red'}`;
+      if (isFixedRisk) {
+        const evDollar = (pWin * fixedRiskDollar * rr) - (pLoss * fixedRiskDollar);
+        expValEl.textContent = `${evDollar >= 0 ? '+$' : '-$'}${Math.round(Math.abs(evDollar)).toLocaleString()}`;
+        expValEl.className = `hero-val ${evDollar >= 0 ? 'val-green' : 'val-red'}`;
+      } else {
+        expValEl.textContent = `${edgePct >= 0 ? '+' : ''}${edgePct.toFixed(2)}%`;
+        expValEl.className = `hero-val ${edgePct >= 0 ? 'val-green' : 'val-red'}`;
+      }
     }
     if (subExpEl) {
       subExpEl.textContent = `${rExpectancy >= 0 ? '+' : ''}${rExpectancy.toFixed(2)}R / trade EV`;
     }
 
     // Run Monte Carlo
-    runMonteCarloEngine(tradeEVFactor, expectedFinalBalance, pWin, pBE, risk, rr, totalTrades, theoreticalPF);
+    runMonteCarloEngine(tradeEVFactor, expectedFinalBalance, pWin, pBE, riskPct, rr, totalTrades, theoreticalPF, isFixedRisk, fixedRiskDollar);
 
     renderChart();
     renderCompoundingTable(tradeEVFactor);
@@ -1960,7 +2820,7 @@
     renderCalendar();
   }
 
-  function runMonteCarloEngine(tradeEVFactor, expectedFinalBalance, pWin, pBE, risk, rr, totalTrades, theoreticalPF) {
+  function runMonteCarloEngine(tradeEVFactor, expectedFinalBalance, pWin, pBE, riskPct, rr, totalTrades, theoreticalPF, isFixedRisk = false, fixedRiskDollar = 20) {
     const iters = config.iterations;
     const periods = config.totalPeriods;
     const tpp = config.tradesPerPeriod;
@@ -1995,7 +2855,7 @@
           }
 
           const r = Math.random();
-          const riskDollar = bal * risk;
+          const riskDollar = isFixedRisk ? Math.min(bal, fixedRiskDollar) : (bal * riskPct);
           let tradePnL = 0;
           let outcome = 'LOSS';
 
@@ -2011,7 +2871,7 @@
             tradePnL = 0;
           } else {
             tradePnL = -riskDollar;
-            bal += tradePnL;
+            bal = Math.max(0, bal + tradePnL);
             outcome = 'LOSS';
             curLossStreak++;
             curWinStreak = 0;
@@ -2100,6 +2960,25 @@
     ruinEl.className = 'chip-value ' + (lastSimResults.ruinRate > 5 ? 'val-red' : (lastSimResults.ruinRate > 0 ? 'val-amber' : 'val-green'));
 
     document.getElementById('statProbDD20').textContent = `${lastSimResults.dd20Rate.toFixed(1)}%`;
+
+    // Update Top Deck 9 (Median Max DD) and 10 (Risk of Ruin)
+    const topMedianDDEl = document.getElementById('dispTopMedianDD');
+    const topWorstDDEl = document.getElementById('dispTopSubWorstDD');
+    if (topMedianDDEl) {
+      topMedianDDEl.textContent = `${medianDD.toFixed(1)}%`;
+      if (medianDD <= 12) topMedianDDEl.className = 'hero-val val-green';
+      else if (medianDD <= 25) topMedianDDEl.className = 'hero-val val-amber';
+      else topMedianDDEl.className = 'hero-val val-red';
+    }
+    if (topWorstDDEl) topWorstDDEl.textContent = `Worst Run: ${worstDD.toFixed(1)}%`;
+
+    const topRuinEl = document.getElementById('dispTopRuin');
+    const topSubLossStreakEl = document.getElementById('dispTopSubLossStreak');
+    if (topRuinEl) {
+      topRuinEl.textContent = `${lastSimResults.ruinRate.toFixed(1)}%`;
+      topRuinEl.className = `hero-val ${lastSimResults.ruinRate === 0 ? 'val-green' : (lastSimResults.ruinRate <= 5 ? 'val-amber' : 'val-red')}`;
+    }
+    if (topSubLossStreakEl) topSubLossStreakEl.textContent = `Max Loss Streak: ${totalMaxLossStreak}L`;
   }
 
   /* ================================================================
@@ -2119,7 +2998,9 @@
   function generateSingleDetailedRun(targetMode) {
     const pWin = config.winRate / 100;
     const pBE = Math.min(config.breakEvenRate / 100, 1 - pWin);
+    const isFixedRisk = config.riskType === 'fixed';
     const risk = config.riskPerTrade / 100;
+    const fixedRiskDollar = config.riskPerTrade;
     const rr = config.rewardRatio;
 
     let bal = config.initialBalance;
@@ -2168,7 +3049,7 @@
           if (targetMode === 'p95') r = Math.max(0, r - 0.12);
           if (targetMode === 'p5') r = Math.min(0.99, r + 0.12);
 
-          const riskDollar = bal * risk;
+          const riskDollar = isFixedRisk ? Math.min(bal, fixedRiskDollar) : (bal * risk);
           let tradePnL = 0;
           let outcome = 'LOSS';
 
@@ -2183,7 +3064,7 @@
             tradePnL = 0;
           } else {
             tradePnL = -riskDollar;
-            bal += tradePnL;
+            bal = Math.max(0, bal + tradePnL);
             outcome = 'LOSS';
             curLossStreak++;
             curWinStreak = 0;
@@ -2243,7 +3124,7 @@
           if (targetMode === 'p95') r = Math.max(0, r - 0.12);
           if (targetMode === 'p5') r = Math.min(0.99, r + 0.12);
 
-          const riskDollar = bal * risk;
+          const riskDollar = isFixedRisk ? Math.min(bal, fixedRiskDollar) : (bal * risk);
           let tradePnL = 0;
           let outcome = 'LOSS';
 
@@ -2258,7 +3139,7 @@
             tradePnL = 0;
           } else {
             tradePnL = -riskDollar;
-            bal += tradePnL;
+            bal = Math.max(0, bal + tradePnL);
             outcome = 'LOSS';
             curLossStreak++;
             curWinStreak = 0;
@@ -2407,19 +3288,16 @@
     if (calView === 'month') {
       document.getElementById('calPeriodLabel').textContent = `Month ${calMonthIdx} (${monthNames[curMonth]} ${curYear})`;
     } else if (calView === 'week') {
-      const totalWeeks = config.cadence === 'week' ? config.totalPeriods : Math.ceil(config.totalPeriods * 4.333);
-      document.getElementById('calPeriodLabel').textContent = `Week ${calWeekIdx} of ${totalWeeks}w`;
+      const allWeekNums = Array.from(new Set(activeSimulatedRun.map(t => t.week))).sort((a, b) => a - b);
+      document.getElementById('calPeriodLabel').textContent = `Weekly Calendar (${allWeekNums.length} Total Weeks)`;
 
-      const currentWeekTrades = config.cadence === 'week' 
-        ? activeSimulatedRun.filter(t => t.week === calWeekIdx)
-        : activeSimulatedRun.slice((calWeekIdx - 1) * Math.max(3, Math.ceil(config.tradesPerPeriod / 4.333)), calWeekIdx * Math.max(3, Math.ceil(config.tradesPerPeriod / 4.333)));
-
-      let wPnL = 0, wWins = 0;
-      currentWeekTrades.forEach(t => { wPnL += t.pnl; if (t.outcome === 'WIN') wWins++; });
-      const wEndingBal = currentWeekTrades.length > 0 ? currentWeekTrades[currentWeekTrades.length - 1].balance : config.initialBalance;
-
-      periodPnL = wPnL;
-      winCount = wWins;
+      let totalRunPnL = 0, totalRunWins = 0;
+      activeSimulatedRun.forEach(t => {
+        totalRunPnL += t.pnl;
+        if (t.outcome === 'WIN') totalRunWins++;
+      });
+      periodPnL = totalRunPnL;
+      winCount = totalRunWins;
     } else {
       document.getElementById('calPeriodLabel').textContent = `Month ${calMonthIdx} (${monthTrades.length} Trades)`;
     }
@@ -2428,14 +3306,27 @@
     pnlEl.textContent = (periodPnL >= 0 ? '+$' : '-$') + Math.round(Math.abs(periodPnL)).toLocaleString();
     pnlEl.className = periodPnL >= 0 ? 'val-green' : 'val-red';
 
-    const tradesForWinRate = calView === 'week' 
-      ? (config.cadence === 'week' ? activeSimulatedRun.filter(t => t.week === calWeekIdx) : monthTrades)
-      : monthTrades;
+    const tradesForWinRate = calView === 'week' ? activeSimulatedRun : monthTrades;
     const winRateVal = tradesForWinRate.length > 0 ? ((winCount / tradesForWinRate.length) * 100).toFixed(1) : '0.0';
     document.getElementById('calStatWinRate').textContent = `${winRateVal}% (${winCount}W / ${tradesForWinRate.length - winCount}L)`;
-    document.getElementById('calStatDayRatio').textContent = calView === 'week' ? `Week ${calWeekIdx}` : `${greenDays} Green / ${redDays} Red`;
-    document.getElementById('calStatTradesCount').textContent = `${tradesForWinRate.length} Trades`;
-    document.getElementById('calStatEndingBal').textContent = '$' + Math.round(endingBal).toLocaleString();
+
+    if (calView === 'week') {
+      const weekSums = {};
+      activeSimulatedRun.forEach(t => {
+        const w = t.week || 1;
+        weekSums[w] = (weekSums[w] || 0) + t.pnl;
+      });
+      const gWeeks = Object.values(weekSums).filter(v => v > 0).length;
+      const rWeeks = Object.values(weekSums).filter(v => v < 0).length;
+      document.getElementById('calStatDayRatio').textContent = `${gWeeks} Green / ${rWeeks} Red Wks`;
+      document.getElementById('calStatTradesCount').textContent = `${activeSimulatedRun.length} Trades`;
+      const lastTrade = activeSimulatedRun[activeSimulatedRun.length - 1];
+      document.getElementById('calStatEndingBal').textContent = '$' + Math.round(lastTrade ? lastTrade.balance : config.initialBalance).toLocaleString();
+    } else {
+      document.getElementById('calStatDayRatio').textContent = `${greenDays} Green / ${redDays} Red`;
+      document.getElementById('calStatTradesCount').textContent = `${tradesForWinRate.length} Trades`;
+      document.getElementById('calStatEndingBal').textContent = '$' + Math.round(endingBal).toLocaleString();
+    }
 
     if (calView === 'month') renderMonthGridView(curYear, curMonth, tradeMap);
     else if (calView === 'week') renderWeekGridView();
@@ -2503,19 +3394,19 @@
 
           cell.innerHTML = `
             <div class="day-header" style="display:flex; justify-content:space-between; align-items:center;">
-              <span class="day-num" style="font-weight:600; font-size:0.8125rem; color:var(--text-muted);">${day}</span>
-              ${isWeekend ? '<span style="font-size:0.6875rem; color:var(--text-dim); font-weight:500;">Weekend</span>' : (dayTrades.length > 0 ? `<span style="font-size:0.6875rem; color:var(--text-muted); font-weight:500;">${dayTrades.length} trade${dayTrades.length > 1 ? 's' : ''}</span>` : '')}
+              <span class="day-num" style="font-weight:600; font-size:0.68rem; color:var(--text-muted);">${day}</span>
+              ${isWeekend ? '<span style="font-size:0.58rem; color:var(--text-dim); font-weight:500;">Wknd</span>' : (dayTrades.length > 0 ? `<span style="font-size:0.6rem; color:var(--text-muted); font-weight:500;">${dayTrades.length} trds</span>` : '')}
             </div>
-            <div style="margin:auto 0; text-align:center; padding:0.35rem 0;">
-              <div class="day-pnl ${pnlColor}" style="font-family:'Geist Mono', monospace; font-size:1.15rem; font-weight:700;">${pnlFormatted}</div>
+            <div style="margin:auto 0; text-align:center; padding:0.18rem 0;">
+              <div class="day-pnl ${pnlColor} num-font" style="font-size:0.825rem; font-weight:700;">${pnlFormatted}</div>
             </div>
             ${dayTrades.length > 0 ? `
-              <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:var(--text-dim); border-top:1px solid rgba(255,255,255,0.06); padding-top:0.25rem;">
-                <span class="val-green" style="font-weight:600;">${dayTrades.filter(t => t.outcome === 'WIN').length}W</span>
-                <span style="color:var(--text-dim); font-size:0.65rem;">•</span>
-                <span class="val-red" style="font-weight:600;">${dayTrades.filter(t => t.outcome === 'LOSS').length}L</span>
+              <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.625rem; color:var(--text-dim); border-top:1px solid rgba(255,255,255,0.06); padding-top:0.15rem;">
+                <span class="val-green num-font" style="font-weight:600;">${dayTrades.filter(t => t.outcome === 'WIN').length}W</span>
+                <span style="color:var(--text-dim); font-size:0.55rem;">•</span>
+                <span class="val-red num-font" style="font-weight:600;">${dayTrades.filter(t => t.outcome === 'LOSS').length}L</span>
               </div>
-            ` : '<div style="height:4px;"></div>'}
+            ` : '<div style="height:2px;"></div>'}
           `;
 
           if (dayTrades.length > 0) {
@@ -2569,33 +3460,58 @@
       if (totalWeekTrades === 0) {
         sumCell.className = 'cal-week-summary-cell summary-empty';
         sumCell.innerHTML = `
-          <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100%; color:var(--text-dim); font-size:0.75rem; gap:0.25rem;">
-            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500;">${dateRangeStr}</span>
-            <span style="font-size:0.6875rem; color:var(--text-dim); font-style:italic;">No trades</span>
+          <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100%; color:var(--text-dim); font-size:0.68rem; gap:0.2rem;">
+            <span style="font-size:0.68rem; color:var(--text-muted); font-weight:500;">${dateRangeStr}</span>
+            <span style="font-size:0.62rem; color:var(--text-dim); font-style:italic;">0 trds</span>
           </div>
         `;
       } else {
+        const startBal = weekTrades.length > 0 ? (weekTrades[0].balance - weekTrades[0].pnl) : config.initialBalance;
+        const totalPct = startBal > 0 ? ((weekPnL / startBal) * 100) : 0;
+
+        let avgRRStr = '--';
+        if (winTrades > 0 && lossTrades > 0) {
+          const avgWin = grossProfit / winTrades;
+          const avgLoss = grossLoss / lossTrades;
+          avgRRStr = (avgLoss > 0 ? (avgWin / avgLoss) : config.rewardRatio).toFixed(1) + 'R';
+        } else if (winTrades > 0) {
+          avgRRStr = config.rewardRatio.toFixed(1) + 'R';
+        } else {
+          avgRRStr = '0.0R';
+        }
+
         sumCell.className = `cal-week-summary-cell ${weekPnL >= 0 ? 'summary-green' : 'summary-red'}`;
         sumCell.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-size:0.8125rem; font-weight:600; color:var(--text-main);">Week ${displayWeekNum}</span>
-            <span style="font-size:0.75rem; color:var(--text-dim); font-family:'Geist Mono', monospace;">${dateRangeStr}</span>
+            <span style="font-size:0.7rem; font-weight:700; color:var(--text-main);">Wk ${displayWeekNum}</span>
+            <span style="font-size:0.6rem; color:var(--text-dim);" class="num-font">${dateRangeStr}</span>
           </div>
-          <div style="margin:auto 0; text-align:center; padding:0.25rem 0;">
-            <div class="${weekPnL >= 0 ? 'val-green' : 'val-red'}" style="font-size:1.25rem; font-weight:700; font-family:'Geist Mono', monospace;">
-              ${weekPnL >= 0 ? '+$' : '-$'}${Math.round(Math.abs(weekPnL)).toLocaleString()}
+          <div style="margin:0.12rem 0; text-align:center;">
+            <div style="display:flex; justify-content:center; align-items:baseline; gap:0.25rem;">
+              <span class="${weekPnL >= 0 ? 'val-green' : 'val-red'} num-font" style="font-size:0.85rem; font-weight:700;">
+                ${weekPnL >= 0 ? '+$' : '-$'}${Math.round(Math.abs(weekPnL)).toLocaleString()}
+              </span>
+              <span class="pill-pct ${totalPct >= 0 ? 'pill-green' : 'pill-red'} num-font" style="font-size:0.58rem; padding:0.06rem 0.32rem;">
+                ${totalPct >= 0 ? '+' : ''}${totalPct.toFixed(1)}%
+              </span>
             </div>
-            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;">
-              ${totalWeekTrades} trades (<span class="val-green" style="font-weight:600;">${winTrades}W</span> / <span class="val-red" style="font-weight:600;">${lossTrades}L</span>)
+            <div style="font-size:0.58rem; color:var(--text-muted); margin-top:0.08rem;">
+              ${totalWeekTrades} trds (<span class="val-green num-font" style="font-weight:600;">${winTrades}W</span> / <span class="val-red num-font" style="font-weight:600;">${lossTrades}L</span>)
             </div>
           </div>
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:0.35rem; padding-top:0.35rem; border-top:1px solid rgba(255,255,255,0.06);">
-            <span class="pill-pct ${winRateNum >= 50 ? 'pill-green' : 'pill-red'}" style="font-size:0.75rem; padding:0.15rem 0.6rem; font-weight:600;" title="Weekly Win Rate">
-              ${winRateStr}% WR
-            </span>
-            <span class="pill-pct ${pfNum >= 1.0 || pfStr === '∞' ? 'pill-green' : 'pill-red'}" style="font-size:0.75rem; padding:0.15rem 0.6rem; font-weight:600;" title="Weekly Profit Factor">
-              ${pfStr} PF
-            </span>
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:0.1rem; padding-top:0.18rem; border-top:1px solid rgba(255,255,255,0.06); text-align:center; font-size:0.58rem;">
+            <div>
+              <div style="color:var(--text-dim); font-size:0.52rem; text-transform:uppercase; letter-spacing:0.02em;">WR</div>
+              <div class="${winRateNum >= 50 ? 'val-green' : 'val-red'} num-font" style="font-weight:600;">${winRateStr}%</div>
+            </div>
+            <div>
+              <div style="color:var(--text-dim); font-size:0.52rem; text-transform:uppercase; letter-spacing:0.02em;">PF</div>
+              <div class="${pfNum >= 1.0 || pfStr === '∞' ? 'val-green' : 'val-red'} num-font" style="font-weight:600;">${pfStr}</div>
+            </div>
+            <div>
+              <div style="color:var(--text-dim); font-size:0.52rem; text-transform:uppercase; letter-spacing:0.02em;">RR</div>
+              <div style="color:var(--accent-blue); font-weight:600;" class="num-font">${avgRRStr}</div>
+            </div>
           </div>
         `;
 
@@ -2610,93 +3526,65 @@
     renderMonthInspectorSummary(monthTrades, year, month);
   }
 
+  let weeklyCalendarFilter = 'all';
+
+  function filterWeeklyCalendar(filter) {
+    weeklyCalendarFilter = filter;
+    renderWeekGridView();
+  }
+
   function renderWeekGridView() {
-    const grid = document.getElementById('calWeekDaysGrid');
-    const sidebar = document.getElementById('calWeekSummarySidebar');
+    const grid = document.getElementById('calWeeklyBoxesGrid');
+    const pillsContainer = document.getElementById('weeklyFilterPills');
+    const statsContainer = document.getElementById('weeklySummaryStats');
+    if (!grid) return;
     grid.innerHTML = '';
-    if (sidebar) sidebar.innerHTML = '';
+    if (pillsContainer) pillsContainer.innerHTML = '';
+    if (statsContainer) statsContainer.innerHTML = '';
 
-    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-    let weekTrades = [];
-    if (config.cadence === 'week') {
-      weekTrades = activeSimulatedRun.filter(t => t.week === calWeekIdx);
-    } else {
-      const tradesPerWeek = Math.max(3, Math.ceil(config.tradesPerPeriod / 4.333));
-      const startIdx = (calWeekIdx - 1) * tradesPerWeek;
-      weekTrades = activeSimulatedRun.slice(startIdx, startIdx + tradesPerWeek);
-    }
-
-    const weekMap = {};
-    let totalWeekPnL = 0;
-    let winCount = 0, lossCount = 0, beCount = 0;
-    let grossProfit = 0, grossLoss = 0;
-
-    weekTrades.forEach(t => {
-      if (!weekMap[t.date]) weekMap[t.date] = [];
-      weekMap[t.date].push(t);
-      totalWeekPnL += t.pnl;
-      if (t.outcome === 'WIN') {
-        winCount++;
-        grossProfit += t.pnl;
-      } else if (t.outcome === 'LOSS') {
-        lossCount++;
-        grossLoss += Math.abs(t.pnl);
-      } else {
-        beCount++;
-      }
-    });
-
-    const dates = Object.keys(weekMap).sort();
-    if (dates.length === 0) {
-      grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; color: var(--text-dim); font-size: 0.8rem;">No simulated trades recorded for Week ${calWeekIdx}. Use &larr; Prev / Next &rarr; arrows above to navigate.</div>`;
-      if (sidebar) {
-        sidebar.innerHTML = `
-          <div class="week-summary-card">
-            <div style="font-size:0.675rem; font-weight:600; color:var(--text-dim); text-transform:uppercase;">Week ${calWeekIdx} Summary</div>
-            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.4rem;">No trades recorded in this week.</div>
-          </div>
-        `;
-      }
+    if (!activeSimulatedRun || activeSimulatedRun.length === 0) {
+      grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; color: var(--text-dim); font-size: 0.85rem;">No simulated trades available. Run a simulation to populate weekly data.</div>`;
       return;
     }
 
-    dates.forEach(d => {
-      const dTrades = weekMap[d];
-      let pnl = 0, wins = 0;
-      dTrades.forEach(t => {
-        pnl += t.pnl;
-        if (t.outcome === 'WIN') wins++;
-      });
-      const dObj = dTrades[0].dateObj;
-      const dow = dayNames[dObj.getDay()];
+    const monthNamesShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-      const box = document.createElement('div');
-      box.className = `week-day-box ${pnl > 0 ? 'box-green' : (pnl < 0 ? 'box-red' : '')}`;
-      box.innerHTML = `
-        <div>
-          <div class="week-day-head">
-            <span style="font-weight:600; font-size:0.875rem; color:var(--text-main);">${dow}</span>
-            <span style="font-size:0.75rem; color:var(--text-dim); font-family:'Geist Mono', monospace;">${d.slice(5)}</span>
-          </div>
-          <div class="week-pnl-val ${pnl >= 0 ? 'val-green' : 'val-red'}">
-            ${pnl >= 0 ? '+$' : '-$'}${Math.round(Math.abs(pnl)).toLocaleString()}
-          </div>
-          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.35rem;">
-            ${dTrades.length} Trades (<span class="val-green">${wins}W</span> / <span class="val-red">${dTrades.length - wins}L</span>)
-          </div>
-        </div>
-        <button class="cal-nav-btn" style="margin-top:0.65rem; width:100%; font-size:0.75rem;" onclick="openDayModal('${d}', ${JSON.stringify(dTrades).replace(/"/g, '&quot;')}, ${pnl})">
-          View Trades
-        </button>
-      `;
-      grid.appendChild(box);
+    // Group all trades by week
+    const weeksMap = {};
+    activeSimulatedRun.forEach(t => {
+      const w = t.week || 1;
+      if (!weeksMap[w]) weeksMap[w] = [];
+      weeksMap[w].push(t);
     });
 
-    // Populate Week Summary Sidebar
-    if (sidebar) {
-      const totalTradesCount = weekTrades.length;
-      const winRateNum = totalTradesCount > 0 ? ((winCount / totalTradesCount) * 100) : 0;
+    const allWeekNumbers = Object.keys(weeksMap).map(Number).sort((a, b) => a - b);
+    if (allWeekNumbers.length === 0) {
+      grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; color: var(--text-dim); font-size: 0.85rem;">No weekly data recorded.</div>`;
+      return;
+    }
+
+    // Compute detailed statistics for every week
+    const weekStats = allWeekNumbers.map(w => {
+      const trades = weeksMap[w];
+      let totalPnL = 0;
+      let winCount = 0, lossCount = 0, beCount = 0;
+      let grossProfit = 0, grossLoss = 0;
+
+      trades.forEach(t => {
+        totalPnL += t.pnl;
+        if (t.outcome === 'WIN') {
+          winCount++;
+          grossProfit += t.pnl;
+        } else if (t.outcome === 'LOSS') {
+          lossCount++;
+          grossLoss += Math.abs(t.pnl);
+        } else {
+          beCount++;
+        }
+      });
+
+      const totalTrades = trades.length;
+      const winRateNum = totalTrades > 0 ? ((winCount / totalTrades) * 100) : 0;
       const winRateStr = winRateNum.toFixed(1);
 
       let pfStr = '--';
@@ -2709,49 +3597,178 @@
         pfStr = '∞';
       }
 
-      sidebar.innerHTML = `
-        <div class="week-summary-card">
-          <div>
-            <div style="font-size:0.8125rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:0.35rem;">
-              📊 Week ${calWeekIdx} Summary
-            </div>
-            <div class="week-pnl-val ${totalWeekPnL >= 0 ? 'val-green' : 'val-red'}" style="font-size:1.25rem; font-weight:600; line-height:1.15; margin-bottom:0.5rem;">
-              ${totalWeekPnL >= 0 ? '+$' : '-$'}${Math.round(Math.abs(totalWeekPnL)).toLocaleString()}
-            </div>
-            <div style="display:flex; flex-direction:column; gap:0.5rem; font-size:0.75rem;">
-              <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:0.25rem;">
-                <span style="color:var(--text-muted);">Total Trades:</span>
-                <span style="font-family:'Geist Mono', monospace; font-weight:500;">${totalTradesCount} Trades</span>
-              </div>
-              <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:0.25rem;">
-                <span style="color:var(--text-muted);">Profit / Loss:</span>
-                <span>
-                  <span class="val-green" style="font-weight:500;">${winCount}W</span> / <span class="val-red" style="font-weight:500;">${lossCount}L</span>
-                  ${beCount > 0 ? `<span style="color:var(--text-dim);"> (${beCount}BE)</span>` : ''}
-                </span>
-              </div>
-              <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:0.25rem;">
-                <span style="color:var(--text-muted);">Win Rate:</span>
-                <span class="pill-pct ${winRateNum >= 50 ? 'pill-green' : 'pill-red'}">${winRateStr}%</span>
-              </div>
-              <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:0.25rem;">
-                <span style="color:var(--text-muted);">Profit Factor:</span>
-                <span class="pill-pct ${pfNum >= 1.0 || pfStr === '∞' ? 'pill-green' : 'pill-red'}">${pfStr} PF</span>
-              </div>
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="color:var(--text-muted);">Gross P&L:</span>
-                <span style="font-family:'Geist Mono', monospace; font-size:0.75rem;">
-                  <span class="val-green">+$${Math.round(grossProfit).toLocaleString()}</span> / <span class="val-red">-$${Math.round(grossLoss).toLocaleString()}</span>
-                </span>
-              </div>
-            </div>
-          </div>
-          <button class="cal-nav-btn" style="margin-top:0.75rem; width:100%; text-align:center;" onclick="openWeekModal(${calWeekIdx}, 'Week ${calWeekIdx}', ${JSON.stringify(weekTrades).replace(/"/g, '&quot;')}, ${totalWeekPnL}, ${winCount}, ${lossCount}, ${beCount}, '${winRateStr}', '${pfStr}')">
-            View All Week Trades
-          </button>
-        </div>
+      let avgRRStr = '--';
+      if (winCount > 0 && lossCount > 0) {
+        const avgWin = grossProfit / winCount;
+        const avgLoss = grossLoss / lossCount;
+        avgRRStr = (avgLoss > 0 ? (avgWin / avgLoss) : config.rewardRatio).toFixed(2) + 'R';
+      } else if (winCount > 0) {
+        avgRRStr = config.rewardRatio.toFixed(2) + 'R';
+      } else {
+        avgRRStr = '0.00R';
+      }
+
+      const startBal = trades[0].balance - trades[0].pnl;
+      const endBal = trades[trades.length - 1].balance;
+      const totalPct = startBal > 0 ? ((totalPnL / startBal) * 100) : 0;
+
+      // Extract date range
+      const firstTrade = trades[0];
+      const lastTrade = trades[trades.length - 1];
+      const fDate = firstTrade.dateObj || new Date(firstTrade.date);
+      const lDate = lastTrade.dateObj || new Date(lastTrade.date);
+      const dateRangeStr = `${monthNamesShort[fDate.getMonth()]} ${fDate.getDate()} – ${monthNamesShort[lDate.getMonth()]} ${lDate.getDate()}`;
+      const monthIdx = firstTrade.month || 1;
+
+      return {
+        weekNum: w,
+        monthIdx,
+        trades,
+        totalTrades,
+        totalPnL,
+        totalPct,
+        winRateNum,
+        winRateStr,
+        winCount,
+        lossCount,
+        beCount,
+        pfNum,
+        pfStr,
+        avgRRStr,
+        grossProfit,
+        grossLoss,
+        startBal,
+        endBal,
+        dateRangeStr
+      };
+    });
+
+    const profitableWeeks = weekStats.filter(ws => ws.totalPnL > 0);
+    const losingWeeks = weekStats.filter(ws => ws.totalPnL < 0);
+    const totalSimPnL = weekStats.reduce((acc, ws) => acc + ws.totalPnL, 0);
+
+    // Build filter buttons
+    if (pillsContainer) {
+      pillsContainer.innerHTML = `
+        <button class="weekly-filter-btn ${weeklyCalendarFilter === 'all' ? 'active' : ''}" onclick="filterWeeklyCalendar('all')">
+          All Wks (${weekStats.length})
+        </button>
+        <button class="weekly-filter-btn ${weeklyCalendarFilter === 'profitable' ? 'active' : ''}" onclick="filterWeeklyCalendar('profitable')">
+          Green Wks (${profitableWeeks.length})
+        </button>
+        <button class="weekly-filter-btn ${weeklyCalendarFilter === 'losing' ? 'active' : ''}" onclick="filterWeeklyCalendar('losing')">
+          Red Wks (${losingWeeks.length})
+        </button>
       `;
     }
+
+    // Build stats container
+    if (statsContainer) {
+      const greenPct = weekStats.length > 0 ? ((profitableWeeks.length / weekStats.length) * 100).toFixed(0) : '0';
+      statsContainer.innerHTML = `
+        <span class="weekly-summary-chip">
+          <span>Wk WR:</span>
+          <strong class="${Number(greenPct) >= 50 ? 'val-green' : 'val-red'}">${greenPct}% (${profitableWeeks.length}W / ${losingWeeks.length}L)</strong>
+        </span>
+        <span class="weekly-summary-chip">
+          <span>Net P&L:</span>
+          <strong class="${totalSimPnL >= 0 ? 'val-green' : 'val-red'}">${totalSimPnL >= 0 ? '+$' : '-$'}${Math.round(Math.abs(totalSimPnL)).toLocaleString()}</strong>
+        </span>
+      `;
+    }
+
+    // Filter displayed weeks
+    let displayedWeeks = weekStats;
+    if (weeklyCalendarFilter === 'profitable') {
+      displayedWeeks = weekStats.filter(ws => ws.totalPnL > 0);
+    } else if (weeklyCalendarFilter === 'losing') {
+      displayedWeeks = weekStats.filter(ws => ws.totalPnL < 0);
+    }
+
+    if (displayedWeeks.length === 0) {
+      grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; color: var(--text-dim); font-size: 0.85rem;">No weeks match the current filter.</div>`;
+      return;
+    }
+
+    displayedWeeks.forEach(ws => {
+      const card = document.createElement('div');
+      const isProfitable = ws.totalPnL > 0;
+      const isLosing = ws.totalPnL < 0;
+      card.className = `cal-week-box ${isProfitable ? 'week-profitable' : (isLosing ? 'week-losing' : 'week-neutral')}`;
+
+      card.innerHTML = `
+        <div>
+          <div class="week-box-head">
+            <div class="week-box-title-group">
+              <span class="week-box-badge">📅 Wk ${ws.weekNum}</span>
+              <span class="week-box-dates">${ws.dateRangeStr}</span>
+            </div>
+            <span class="week-box-trades-count">${ws.totalTrades} trds</span>
+          </div>
+
+          <div class="week-box-pnl-section">
+            <div class="week-box-pnl-val ${ws.totalPnL >= 0 ? 'val-green' : 'val-red'}">
+              ${ws.totalPnL >= 0 ? '+$' : '-$'}${Math.round(Math.abs(ws.totalPnL)).toLocaleString()}
+            </div>
+            <span class="week-box-pnl-pct pill-pct ${ws.totalPct >= 0 ? 'pill-green' : 'pill-red'}">
+              ${ws.totalPct >= 0 ? '+' : ''}${ws.totalPct.toFixed(1)}%
+            </span>
+          </div>
+
+          <div class="week-box-stats-grid">
+            <div class="week-box-stat-item">
+              <span class="week-box-stat-label">WR</span>
+              <span class="week-box-stat-val ${ws.winRateNum >= 50 ? 'val-green' : 'val-red'} num-font">
+                ${ws.winRateStr}%
+              </span>
+              <span class="week-box-stat-sub num-font">${ws.winCount}W / ${ws.lossCount}L</span>
+            </div>
+            <div class="week-box-stat-item">
+              <span class="week-box-stat-label">PF</span>
+              <span class="week-box-stat-val ${ws.pfNum >= 1.0 || ws.pfStr === '∞' ? 'val-green' : 'val-red'} num-font">
+                ${ws.pfStr}
+              </span>
+              <span class="week-box-stat-sub">Factor</span>
+            </div>
+            <div class="week-box-stat-item">
+              <span class="week-box-stat-label">RR</span>
+              <span class="week-box-stat-val num-font" style="color:var(--accent-blue);">
+                ${ws.avgRRStr}
+              </span>
+              <span class="week-box-stat-sub">Avg RR</span>
+            </div>
+          </div>
+
+          <div style="margin-top:0.35rem;">
+            <div class="week-box-ratio-bar">
+              <div class="ratio-bar-win" style="width:${ws.winRateNum}%;"></div>
+              <div class="ratio-bar-loss" style="width:${100 - ws.winRateNum}%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="week-box-footer">
+          <span>End: <strong style="color:var(--text-main);" class="num-font">$${Math.round(ws.endBal).toLocaleString()}</strong></span>
+          <span class="week-box-inspect-hint">Inspect &rarr;</span>
+        </div>
+      `;
+
+      card.addEventListener('click', () => {
+        openWeekModal(
+          ws.weekNum,
+          ws.dateRangeStr,
+          ws.trades,
+          ws.totalPnL,
+          ws.winCount,
+          ws.lossCount,
+          ws.beCount,
+          ws.winRateStr,
+          ws.pfStr
+        );
+      });
+
+      grid.appendChild(card);
+    });
   }
 
   function renderTurnByTurnTradesView(monthTrades) {
@@ -2999,8 +4016,26 @@
   }
 
   function openWeekModal(weekNum, dateRangeStr, weekTrades, weekPnL, winTrades, lossTrades, beTrades, winRateStr, pfStr) {
+    const startBal = weekTrades.length > 0 ? (weekTrades[0].balance - weekTrades[0].pnl) : config.initialBalance;
+    const totalPct = startBal > 0 ? ((weekPnL / startBal) * 100) : 0;
+    let avgRRStr = '--';
+    let grossProfit = 0, grossLoss = 0;
+    weekTrades.forEach(t => {
+      if (t.outcome === 'WIN') grossProfit += t.pnl;
+      else if (t.outcome === 'LOSS') grossLoss += Math.abs(t.pnl);
+    });
+    if (winTrades > 0 && lossTrades > 0) {
+      const avgWin = grossProfit / winTrades;
+      const avgLoss = grossLoss / lossTrades;
+      avgRRStr = (avgLoss > 0 ? (avgWin / avgLoss) : config.rewardRatio).toFixed(2) + 'R';
+    } else if (winTrades > 0) {
+      avgRRStr = config.rewardRatio.toFixed(2) + 'R';
+    } else {
+      avgRRStr = '0.00R';
+    }
+
     document.getElementById('modalDayTitle').textContent = `📅 Week ${weekNum} Summary (${dateRangeStr})`;
-    document.getElementById('modalDaySub').textContent = `${weekTrades.length} Trades (${winTrades}W / ${lossTrades}L${beTrades > 0 ? ` / ${beTrades}BE` : ''}) | Net P&L: ${weekPnL >= 0 ? '+' : ''}$${Math.round(weekPnL).toLocaleString()} | Win Rate: ${winRateStr}% | PF: ${pfStr}`;
+    document.getElementById('modalDaySub').textContent = `${weekTrades.length} Trades (${winTrades}W / ${lossTrades}L${beTrades > 0 ? ` / ${beTrades}BE` : ''}) | Net P&L: ${weekPnL >= 0 ? '+' : ''}$${Math.round(weekPnL).toLocaleString()} (${totalPct >= 0 ? '+' : ''}${totalPct.toFixed(2)}%) | WR: ${winRateStr}% | PF: ${pfStr} | Avg RR: ${avgRRStr}`;
 
     let html = `
       <table style="width:100%; font-size:0.75rem;">
@@ -3059,6 +4094,7 @@
 
     const isLight = currentTheme === 'light';
     const isBlack = currentTheme === 'black';
+    const isGlass = currentTheme === 'glass';
 
     const periods = config.totalPeriods;
     const pWin = config.winRate / 100;
@@ -3087,13 +4123,13 @@
     const getX = (p) => padding.left + (p / periods) * chartW;
     const getY = (val) => padding.top + chartH - ((val - minVal) / (maxVal - minVal)) * chartH;
 
-    // Grid Styling
-    ctx.strokeStyle = isLight ? '#e2e8f0' : '#27272a';
+    // Grid Styling — unique per theme
+    ctx.strokeStyle = isLight ? '#e7e5e4' : (isGlass ? 'rgba(232, 121, 249, 0.14)' : (isBlack ? '#1a1a1a' : '#1f2937'));
     ctx.lineWidth = 1;
     ctx.setLineDash([3, 3]);
 
     const yTicks = 4;
-    ctx.fillStyle = isLight ? '#475569' : '#a1a1aa';
+    ctx.fillStyle = isLight ? '#78716c' : (isGlass ? '#d4d4d8' : (isBlack ? '#a1a1aa' : '#9ca3af'));
     ctx.font = '10px "Geist Mono", monospace';
     ctx.textAlign = 'right';
 
@@ -3119,7 +4155,7 @@
     for (let p = 0; p <= periods; p += stepPeriods) {
       const x = getX(p);
       ctx.beginPath();
-      ctx.strokeStyle = isLight ? '#cbd5e1' : (isBlack ? '#222222' : '#1e293b');
+      ctx.strokeStyle = isLight ? '#d6d3d1' : (isGlass ? 'rgba(232, 121, 249, 0.22)' : (isBlack ? '#1a1a1a' : '#1f2937'));
       ctx.moveTo(x, padding.top + chartH);
       ctx.lineTo(x, padding.top + chartH + 4);
       ctx.stroke();
@@ -3133,13 +4169,21 @@
     if (chartMode === 'ev') {
       const grad = ctx.createLinearGradient(0, padding.top, 0, padding.top + chartH);
       if (isLight) {
-        grad.addColorStop(0, 'rgba(79, 70, 229, 0.22)');
-        grad.addColorStop(0.5, 'rgba(2, 132, 199, 0.10)');
-        grad.addColorStop(1, 'rgba(248, 250, 252, 0.0)');
+        grad.addColorStop(0, 'rgba(124, 58, 237, 0.18)');
+        grad.addColorStop(0.5, 'rgba(124, 58, 237, 0.06)');
+        grad.addColorStop(1, 'rgba(250, 250, 249, 0.0)');
+      } else if (isGlass) {
+        grad.addColorStop(0, 'rgba(232, 121, 249, 0.35)');
+        grad.addColorStop(0.5, 'rgba(34, 211, 238, 0.18)');
+        grad.addColorStop(1, 'rgba(3, 7, 18, 0.0)');
+      } else if (isBlack) {
+        grad.addColorStop(0, 'rgba(20, 184, 166, 0.25)');
+        grad.addColorStop(0.5, 'rgba(103, 232, 249, 0.10)');
+        grad.addColorStop(1, 'rgba(0, 0, 0, 0.0)');
       } else {
-        grad.addColorStop(0, 'rgba(129, 140, 248, 0.28)');
-        grad.addColorStop(0.5, 'rgba(56, 189, 248, 0.12)');
-        grad.addColorStop(1, 'rgba(7, 9, 14, 0.0)');
+        grad.addColorStop(0, 'rgba(99, 102, 241, 0.25)');
+        grad.addColorStop(0.5, 'rgba(147, 197, 253, 0.10)');
+        grad.addColorStop(1, 'rgba(10, 14, 26, 0.0)');
       }
 
       ctx.beginPath();
@@ -3168,13 +4212,19 @@
         const cpX = (prevX + curX) / 2;
         ctx.bezierCurveTo(cpX, prevY, cpX, curY, curX, curY);
       }
-      ctx.strokeStyle = isLight ? '#4f46e5' : '#a5b4fc';
-      ctx.lineWidth = 2.2;
+      const evStroke = isLight ? '#7c3aed' : (isGlass ? '#e879f9' : (isBlack ? '#14b8a6' : '#818cf8'));
+      ctx.strokeStyle = evStroke;
+      if (isGlass) {
+        ctx.shadowColor = 'rgba(232, 121, 249, 0.65)';
+        ctx.shadowBlur = 12;
+      }
+      ctx.lineWidth = isGlass ? 2.8 : 2.2;
       ctx.stroke();
+      ctx.shadowBlur = 0;
 
       document.getElementById('chartLegend').innerHTML = `
         <div class="legend-tag">
-          <div class="legend-dot" style="background:${isLight ? '#4f46e5' : '#a5b4fc'}; "></div>
+          <div class="legend-dot" style="background:${evStroke}; "></div>
           <span>Expected Value Progression (${config.cadence === 'week' ? 'Weekly' : 'Monthly'} Compounding)</span>
         </div>
       `;
@@ -3182,7 +4232,7 @@
     } else if (chartMode === 'mc' && lastSimResults) {
       ctx.lineWidth = 0.8;
       lastSimResults.sampleRuns.forEach(run => {
-        ctx.strokeStyle = isLight ? 'rgba(100, 116, 139, 0.08)' : 'rgba(148, 163, 184, 0.07)';
+        ctx.strokeStyle = isLight ? 'rgba(120, 113, 108, 0.08)' : (isGlass ? 'rgba(232, 121, 249, 0.07)' : (isBlack ? 'rgba(161, 161, 170, 0.06)' : 'rgba(156, 163, 175, 0.07)'));
         ctx.beginPath();
         ctx.moveTo(getX(0), getY(run[0]));
         for (let p = 1; p <= periods; p++) ctx.lineTo(getX(p), getY(run[p]));
@@ -3191,13 +4241,21 @@
 
       const qRibbon = ctx.createLinearGradient(0, padding.top, 0, padding.top + chartH);
       if (isLight) {
-        qRibbon.addColorStop(0, 'rgba(5, 150, 105, 0.16)');
-        qRibbon.addColorStop(0.5, 'rgba(79, 70, 229, 0.08)');
-        qRibbon.addColorStop(1, 'rgba(225, 29, 72, 0.08)');
+        qRibbon.addColorStop(0, 'rgba(21, 128, 61, 0.14)');
+        qRibbon.addColorStop(0.5, 'rgba(124, 58, 237, 0.07)');
+        qRibbon.addColorStop(1, 'rgba(190, 18, 60, 0.07)');
+      } else if (isGlass) {
+        qRibbon.addColorStop(0, 'rgba(74, 222, 128, 0.28)');
+        qRibbon.addColorStop(0.5, 'rgba(232, 121, 249, 0.16)');
+        qRibbon.addColorStop(1, 'rgba(251, 146, 60, 0.18)');
+      } else if (isBlack) {
+        qRibbon.addColorStop(0, 'rgba(94, 234, 212, 0.20)');
+        qRibbon.addColorStop(0.5, 'rgba(103, 232, 249, 0.10)');
+        qRibbon.addColorStop(1, 'rgba(249, 168, 212, 0.12)');
       } else {
-        qRibbon.addColorStop(0, 'rgba(52, 211, 153, 0.22)');
-        qRibbon.addColorStop(0.5, 'rgba(129, 140, 248, 0.12)');
-        qRibbon.addColorStop(1, 'rgba(251, 113, 133, 0.14)');
+        qRibbon.addColorStop(0, 'rgba(110, 231, 183, 0.20)');
+        qRibbon.addColorStop(0.5, 'rgba(99, 102, 241, 0.10)');
+        qRibbon.addColorStop(1, 'rgba(252, 165, 165, 0.12)');
       }
 
       ctx.beginPath();
@@ -3208,34 +4266,52 @@
       ctx.fillStyle = qRibbon;
       ctx.fill();
 
-      // P95 Best (Eucalyptus Jade)
+      // P95 Best
+      const p95Color = isLight ? '#15803d' : (isBlack ? '#5eead4' : (isGlass ? '#4ade80' : '#6ee7b7'));
       ctx.beginPath();
       ctx.moveTo(getX(0), getY(lastSimResults.periodicPercentiles[0].p95));
       for (let p = 1; p <= periods; p++) ctx.lineTo(getX(p), getY(lastSimResults.periodicPercentiles[p].p95));
-      ctx.strokeStyle = isLight ? '#059669' : '#34d399';
+      ctx.strokeStyle = p95Color;
+      if (isGlass) {
+        ctx.shadowColor = 'rgba(74, 222, 128, 0.65)';
+        ctx.shadowBlur = 10;
+      }
       ctx.lineWidth = 2.0;
       ctx.stroke();
+      ctx.shadowBlur = 0;
 
-      // P50 Median (Iced Iris)
+      // P50 Median
+      const p50Color = isLight ? '#7c3aed' : (isGlass ? '#22d3ee' : (isBlack ? '#14b8a6' : '#818cf8'));
       ctx.beginPath();
       ctx.moveTo(getX(0), getY(lastSimResults.periodicPercentiles[0].p50));
       for (let p = 1; p <= periods; p++) ctx.lineTo(getX(p), getY(lastSimResults.periodicPercentiles[p].p50));
-      ctx.strokeStyle = isLight ? '#4f46e5' : '#818cf8';
+      ctx.strokeStyle = p50Color;
+      if (isGlass) {
+        ctx.shadowColor = 'rgba(34, 211, 238, 0.65)';
+        ctx.shadowBlur = 10;
+      }
       ctx.lineWidth = 2.4;
       ctx.stroke();
+      ctx.shadowBlur = 0;
 
-      // P5 Worst (Spiced Coral)
+      // P5 Worst
+      const p5Color = isLight ? '#be123c' : (isGlass ? '#fb923c' : (isBlack ? '#f9a8d4' : '#fca5a5'));
       ctx.beginPath();
       ctx.moveTo(getX(0), getY(lastSimResults.periodicPercentiles[0].p5));
       for (let p = 1; p <= periods; p++) ctx.lineTo(getX(p), getY(lastSimResults.periodicPercentiles[p].p5));
-      ctx.strokeStyle = isLight ? '#e11d48' : '#fb7185';
+      ctx.strokeStyle = p5Color;
+      if (isGlass) {
+        ctx.shadowColor = 'rgba(251, 146, 60, 0.65)';
+        ctx.shadowBlur = 10;
+      }
       ctx.lineWidth = 2.0;
       ctx.stroke();
+      ctx.shadowBlur = 0;
 
       document.getElementById('chartLegend').innerHTML = `
-        <div class="legend-tag"><div class="legend-dot" style="background:${isLight ? '#059669' : '#34d399'}; "></div><span>P95 Best (Jade)</span></div>
-        <div class="legend-tag"><div class="legend-dot" style="background:${isLight ? '#4f46e5' : '#818cf8'}; "></div><span>P50 Median (Iris)</span></div>
-        <div class="legend-tag"><div class="legend-dot" style="background:${isLight ? '#e11d48' : '#fb7185'}; "></div><span>P5 Worst (Coral)</span></div>
+        <div class="legend-tag"><div class="legend-dot" style="background:${p95Color}; "></div><span>P95 Best</span></div>
+        <div class="legend-tag"><div class="legend-dot" style="background:${p50Color}; "></div><span>P50 Median</span></div>
+        <div class="legend-tag"><div class="legend-dot" style="background:${p5Color}; "></div><span>P5 Worst</span></div>
       `;
     }
   }
@@ -3307,6 +4383,10 @@
   window.openDayModal = openDayModal;
   window.openWeekModal = openWeekModal;
   window.closeCalModal = closeCalModal;
+  window.filterWeeklyCalendar = filterWeeklyCalendar;
+  window.setParamValue = setParamValue;
+  window.setRiskType = setRiskType;
+  window.updateAllSliderTracks = updateAllSliderTracks;
 
   window.addEventListener('resize', () => {
     if (lastSimResults) renderChart();
@@ -3315,6 +4395,7 @@
   function initApp() {
     setTheme(currentTheme);
     recalculateAll();
+    updateAllSliderTracks();
   }
 
   if (document.readyState === 'loading') {
