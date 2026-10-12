@@ -567,159 +567,8 @@
     }
 
     /* TWIN TABLES LAYOUT FOR STATS VIEW */
-    .stats-table-wrapper {
-      width: 100%;
-      flex: 1;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      padding: 0;
-      margin: 0;
-      overflow: hidden;
-    }
-    .stats-twin-tables-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.85rem;
-      width: 100%;
-      flex: 1;
-      height: 100%;
-      align-items: stretch;
-    }
-    @media (max-width: 650px) {
-      .stats-twin-tables-grid {
-        grid-template-columns: 1fr;
-        overflow-y: auto;
-      }
-    }
-    .stats-table-card {
-      background: var(--bg-base);
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      transition: all 0.15s ease;
-    }
-    .stats-table-card:hover {
-      border-color: var(--border-strong);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .exec-stats-table {
-      width: 100%;
-      height: 100%;
-      border-collapse: collapse;
-      font-size: 0.8125rem;
-      display: table;
-    }
-    .exec-stats-table thead {
-      flex-shrink: 0;
-    }
-    .exec-stats-table th {
-      background: var(--bg-surface-elevated);
-      color: var(--text-muted);
-      font-weight: 600;
-      font-size: 0.6875rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 0.45rem 0.75rem;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    .exec-stats-table td {
-      padding: 0.45rem 0.75rem;
-      border-bottom: 1px solid var(--border-subtle);
-      vertical-align: middle;
-    }
-    .exec-stats-table tr:last-child td {
-      border-bottom: none;
-    }
-    .exec-stats-table tbody tr {
-      height: calc(100% / 6);
-    }
-
-    .stat-section-divider td {
-      background: var(--bg-surface-elevated);
-      padding: 0.28rem 0.65rem;
-      font-size: 0.625rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-dim) !important;
-      border-top: 1px solid var(--border-subtle);
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .stat-table-row {
-      transition: background-color 0.15s ease;
-      background: transparent !important;
-    }
-    .stat-table-row:hover {
-      background: var(--bg-surface-hover) !important;
-    }
-
-    /* ALL STATS ARE NEUTRAL BY DEFAULT */
-    .exec-stats-table .hero-val,
-    .exec-stats-table .stat-val,
-    .exec-stats-table span,
-    html[data-theme] .exec-stats-table .hero-val,
-    html[data-theme] .exec-stats-table .stat-val,
-    html[data-theme] .exec-stats-table .val-green,
-    html[data-theme] .exec-stats-table .val-red,
-    html[data-theme] .exec-stats-table .val-blue,
-    html[data-theme] .exec-stats-table .val-amber,
-    html[data-theme] .exec-stats-table .val-purple {
-      color: var(--text-main);
-      text-shadow: none !important;
-      filter: none !important;
-    }
-
-    /* USER SPECIFICATION: ONLY HIGHLIGHT TOTAL P&L AND GAIN % */
-    .exec-stats-table #dispTopTotalPnL.val-green,
-    .exec-stats-table #dispTopTotalPnLPct.val-green,
-    html[data-theme] .exec-stats-table #dispTopTotalPnL.val-green,
-    html[data-theme] .exec-stats-table #dispTopTotalPnLPct.val-green,
-    #dispCardTotalPnL.val-green,
-    #dispCardTotalPnLPct.val-green {
-      color: var(--accent-green) !important;
-      font-weight: 700;
-    }
-    .exec-stats-table #dispTopTotalPnL.val-red,
-    .exec-stats-table #dispTopTotalPnLPct.val-red,
-    html[data-theme] .exec-stats-table #dispTopTotalPnL.val-red,
-    html[data-theme] .exec-stats-table #dispTopTotalPnLPct.val-red,
-    #dispCardTotalPnL.val-red,
-    #dispCardTotalPnLPct.val-red {
-      color: var(--accent-red) !important;
-      font-weight: 700;
-    }
-
-    /* Subtle row highlight ONLY for Total PnL and Gain % */
-    .exec-stats-table tr#cardTopTotalPnL.highlight-profit,
-    .exec-stats-table tr#cardTopTotalPnLPct.highlight-profit {
-      background: var(--accent-green-bg) !important;
-    }
-    .exec-stats-table tr#cardTopTotalPnL.highlight-loss,
-    .exec-stats-table tr#cardTopTotalPnLPct.highlight-loss {
-      background: var(--accent-red-bg) !important;
-    }
-
-    .stat-name {
-      color: var(--text-muted);
-      font-weight: 500;
-      font-size: 0.8125rem;
-      white-space: nowrap;
-      text-align: left;
-      padding-right: 1.25rem !important; /* CLOSE GAP BETWEEN TOPIC AND VALUE */
-    }
-    .stat-val {
-      text-align: right;
-      white-space: nowrap;
-      padding-left: 0.25rem !important;
-    }
-
-    /* CARDS WRAPPER FOR STATS TOGGLE - EXACT FIT & ALIGNED WITH STRATEGY PARAMETERS */
+    /* 3x4 EXECUTIVE MATRIX TABLE & CARDS */
+    .stats-table-wrapper,
     .stats-cards-wrapper {
       width: 100%;
       flex: 1;
@@ -730,6 +579,66 @@
       margin: 0;
       overflow: hidden;
     }
+
+    /* 1. MATRIX TABLE (WIREFRAME GRID WITH CRISP BORDERS) */
+    .exec-matrix-table {
+      width: 100%;
+      height: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      background: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .exec-matrix-table td {
+      border: 1px solid var(--border-subtle);
+      padding: 0.65rem 0.85rem;
+      vertical-align: middle;
+      width: 33.333%;
+      height: 25%;
+      transition: background-color 0.15s ease;
+    }
+    .exec-matrix-table tr:first-child td {
+      border-top: none;
+    }
+    .exec-matrix-table tr:last-child td {
+      border-bottom: none;
+    }
+    .exec-matrix-table tr td:first-child {
+      border-left: none;
+    }
+    .exec-matrix-table tr td:last-child {
+      border-right: none;
+    }
+    .exec-matrix-table td:hover {
+      background: var(--bg-surface-hover);
+    }
+    .matrix-cell {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.25rem;
+      width: 100%;
+    }
+    .matrix-label {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: capitalize;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+    .matrix-val {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+      font-feature-settings: "tnum" 1;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.15;
+    }
+
+    /* 2. MATRIX CARDS GRID (DEFAULT) */
     .stats-cards-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -746,13 +655,14 @@
       }
     }
     .stats-cards-grid .hero-card {
-      padding: 0.5rem 0.65rem;
+      padding: 0.65rem 0.85rem;
       min-height: 0;
       min-width: 0;
       border-radius: 8px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: center;
+      gap: 0.25rem;
       background: var(--bg-base);
       border: 1px solid var(--border-subtle);
       transition: all 0.15s ease;
@@ -765,35 +675,75 @@
     }
     .stats-cards-grid .hero-label {
       color: var(--text-muted);
-      font-size: 0.65rem;
+      font-size: 0.75rem;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+      text-transform: capitalize;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      line-height: 1.1;
     }
     .stats-cards-grid .hero-val {
-      font-size: 1.15rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: var(--text-main);
       font-feature-settings: "tnum" 1;
       font-variant-numeric: tabular-nums;
       line-height: 1.15;
-      margin: 0.15rem 0;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .stats-cards-grid .hero-sub {
-      color: var(--text-dim);
-      font-size: 0.6875rem;
-      font-weight: 500;
-      line-height: 1.1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+
+    /* NEUTRAL TEXT BY DEFAULT FOR ALL METRICS */
+    .exec-matrix-table .matrix-val,
+    .stats-cards-grid .hero-val,
+    html[data-theme] .exec-matrix-table .matrix-val,
+    html[data-theme] .stats-cards-grid .hero-val {
+      color: var(--text-main);
+      text-shadow: none !important;
+      filter: none !important;
+    }
+
+    /* ONLY TOTAL P&L AND RETURN % ARE HIGHLIGHTED (PER REQUIREMENT) */
+    #dispTopTotalPnL.val-green,
+    #dispTopTotalPnLPct.val-green,
+    #dispCardTotalPnL.val-green,
+    #dispCardTotalPnLPct.val-green,
+    html[data-theme] #dispTopTotalPnL.val-green,
+    html[data-theme] #dispTopTotalPnLPct.val-green,
+    html[data-theme] #dispCardTotalPnL.val-green,
+    html[data-theme] #dispCardTotalPnLPct.val-green {
+      color: var(--accent-green) !important;
+      font-weight: 700;
+    }
+    #dispTopTotalPnL.val-red,
+    #dispTopTotalPnLPct.val-red,
+    #dispCardTotalPnL.val-red,
+    #dispCardTotalPnLPct.val-red,
+    html[data-theme] #dispTopTotalPnL.val-red,
+    html[data-theme] #dispTopTotalPnLPct.val-red,
+    html[data-theme] #dispCardTotalPnL.val-red,
+    html[data-theme] #dispCardTotalPnLPct.val-red {
+      color: var(--accent-red) !important;
+      font-weight: 700;
+    }
+
+    /* Subtle box/cell highlights for Total PnL and Return % */
+    #cardTileTotalPnL.highlight-profit,
+    #cardTileTotalPnLPct.highlight-profit,
+    td#cardTopTotalPnL.highlight-profit,
+    td#cardTopTotalPnLPct.highlight-profit {
+      background: var(--accent-green-bg) !important;
+      border-color: var(--accent-green-border) !important;
+    }
+    #cardTileTotalPnL.highlight-loss,
+    #cardTileTotalPnLPct.highlight-loss,
+    td#cardTopTotalPnL.highlight-loss,
+    td#cardTopTotalPnLPct.highlight-loss {
+      background: var(--accent-red-bg) !important;
+      border-color: var(--accent-red-border) !important;
     }
 
     .risk-mode-pill {
@@ -1224,7 +1174,7 @@
     .canvas-wrap {
       position: relative;
       width: 100%;
-      height: 240px;
+      height: 360px;
     }
     canvas {
       width: 100% !important;
@@ -1592,6 +1542,42 @@
     }
     .cal-week-summary-cell.summary-empty:hover {
       transform: none;
+    }
+
+    /* OPTION TO TURN OFF CALENDAR HIGHLIGHTS */
+    .no-cal-highlights .cal-day-cell.day-green,
+    .no-cal-highlights .cal-day-cell.day-red,
+    .no-cal-highlights [data-theme="glass"] .cal-day-cell.day-green,
+    .no-cal-highlights [data-theme="glass"] .cal-day-cell.day-red {
+      background: var(--bg-surface) !important;
+      border-color: var(--border-subtle) !important;
+      box-shadow: none !important;
+    }
+    .no-cal-highlights .cal-day-cell.day-green:hover,
+    .no-cal-highlights .cal-day-cell.day-red:hover {
+      background: var(--bg-surface-hover) !important;
+      border-color: var(--border-strong) !important;
+    }
+    .no-cal-highlights .cal-week-summary-cell.summary-green,
+    .no-cal-highlights .cal-week-summary-cell.summary-red {
+      background: var(--bg-surface-elevated) !important;
+      border-left: 2.5px solid var(--border-strong) !important;
+      border-color: var(--border-subtle) !important;
+    }
+    .no-cal-highlights .day-pnl.val-green,
+    .no-cal-highlights .day-pnl.val-red {
+      color: var(--text-main) !important;
+    }
+    .no-cal-highlights .pill-pct.pill-green,
+    .no-cal-highlights .pill-pct.pill-red {
+      background: var(--bg-surface-elevated) !important;
+      color: var(--text-muted) !important;
+    }
+    .no-cal-highlights .cal-week-box.week-profitable,
+    .no-cal-highlights .cal-week-box.week-losing {
+      background: var(--bg-surface) !important;
+      border-color: var(--border-subtle) !important;
+      box-shadow: none !important;
     }
 
     /* ==============================================================
@@ -2323,164 +2309,159 @@
             </div>
           </div>
 
-          <!-- 1. TWIN TABLES VIEW -->
+          <!-- 1. TABLE VIEW (EXACT 3x4 MATRIX FROM WIREFRAME) -->
           <div id="statsViewTableWrap" class="stats-table-wrapper" style="display:none;">
-            <div class="stats-twin-tables-grid">
-              <!-- Table 1: Capital & Drawdown Dynamics -->
-              <div class="stats-table-card">
-                <table class="exec-stats-table">
-                  <thead>
-                    <tr>
-                      <th style="text-align:left;">Capital & Drawdown</th>
-                      <th style="text-align:right;">Simulated Value</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="stat-table-row">
-                      <td class="stat-name">Initial Balance</td>
-                      <td class="stat-val"><span id="dispTopInitial" class="hero-val">$1,000</span></td>
-                    </tr>
-                    <tr class="stat-table-row">
-                      <td class="stat-name">Result Balance</td>
-                      <td class="stat-val"><span id="dispTopFinalBal" class="hero-val">$2,217</span></td>
-                    </tr>
-                    <tr id="cardTopTotalPnL" class="stat-table-row">
-                      <td class="stat-name">Total Net P&L</td>
-                      <td class="stat-val"><span id="dispTopTotalPnL" class="hero-val val-green">+$1,217</span></td>
-                    </tr>
-                    <tr id="cardTopTotalPnLPct" class="stat-table-row">
-                      <td class="stat-name">Return % (Gain)</td>
-                      <td class="stat-val"><span id="dispTopTotalPnLPct" class="hero-val val-green">+121.7%</span></td>
-                    </tr>
-                    <tr id="cardTopMedianDD" class="stat-table-row">
-                      <td class="stat-name">Maximum Drawdown</td>
-                      <td class="stat-val"><span id="dispTopMedianDD" class="hero-val">-9.1%</span></td>
-                    </tr>
-                    <tr id="cardTopRuin" class="stat-table-row">
-                      <td class="stat-name">Risk of Ruin (&gt;50% DD)</td>
-                      <td class="stat-val"><span id="dispTopRuin" class="hero-val">0.0%</span></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <!-- Table 2: Edge & Execution Metrics -->
-              <div class="stats-table-card">
-                <table class="exec-stats-table">
-                  <thead>
-                    <tr>
-                      <th style="text-align:left;">Edge & Execution</th>
-                      <th style="text-align:right;">Simulated Value</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="stat-table-row">
-                      <td class="stat-name">Win Trades %</td>
-                      <td class="stat-val"><span id="dispTopWinRate" class="hero-val">50.0%</span></td>
-                    </tr>
-                    <tr class="stat-table-row">
-                      <td class="stat-name">Reward-to-Risk (RR)</td>
-                      <td class="stat-val"><span id="dispTopAvgRR" class="hero-val">1 : 2.0</span></td>
-                    </tr>
-                    <tr id="cardProfitFactor" class="stat-table-row">
-                      <td class="stat-name">Profit Factor</td>
-                      <td class="stat-val"><span id="dispTopPF" class="hero-val">2.00</span></td>
-                    </tr>
-                    <tr id="cardTopExpectancy" class="stat-table-row">
-                      <td class="stat-name">Trade Expectancy</td>
-                      <td class="stat-val"><span id="dispTopExpectancy" class="hero-val">+1.00%</span></td>
-                    </tr>
-                    <tr class="stat-table-row">
-                      <td class="stat-name">Max Consecutive Losses</td>
-                      <td class="stat-val"><span id="dispTopMaxLossStreak" class="hero-val">15</span></td>
-                    </tr>
-                    <tr class="stat-table-row">
-                      <td class="stat-name">Max Consecutive Wins</td>
-                      <td class="stat-val"><span id="dispTopMaxWinStreak" class="hero-val">17</span></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+            <table class="exec-matrix-table">
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="matrix-cell">
+                      <div class="matrix-label">Initial Balance</div>
+                      <div class="matrix-val" id="dispTopInitial">$1,000</div>
+                    </div>
+                  </td>
+                  <td id="cardTopTotalPnL" class="highlight-profit">
+                    <div class="matrix-cell">
+                      <div class="matrix-label">Total Net P&L</div>
+                      <div class="matrix-val val-green" id="dispTopTotalPnL">+$1,217</div>
+                    </div>
+                  </td>
+                  <td id="cardTopTotalPnLPct" class="highlight-profit">
+                    <div class="matrix-cell">
+                      <div class="matrix-label">Return %</div>
+                      <div class="matrix-val val-green" id="dispTopTotalPnLPct">+121.7%</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="matrix-cell">
+                      <div class="matrix-label">Final Balance</div>
+                      <div class="matrix-val" id="dispTopFinalBal">$2,217</div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="matrix-cell">
+                      <div class="matrix-label">Max Win Streak</div>
+                      <div class="matrix-val" id="dispTopMaxWinStreak">17</div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="matrix-cell">
+                      <div class="matrix-label">Profit Factor</div>
+                      <div class="matrix-val" id="dispTopPF">2.00</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="matrix-cell">
+                      <div class="matrix-label">Max Drawdown</div>
+                      <div class="matrix-val" id="dispTopMedianDD">-9.1%</div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="matrix-cell">
+                      <div class="matrix-label">Max Loss Streak</div>
+                      <div class="matrix-val" id="dispTopMaxLossStreak">15</div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="matrix-cell">
+                      <div class="matrix-label">Risk of Ruin</div>
+                      <div class="matrix-val" id="dispTopRuin">0.0%</div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="matrix-cell">
+                      <div class="matrix-label">Trade Expectancy</div>
+                      <div class="matrix-val" id="dispTopExpectancy">+1.00%</div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="matrix-cell">
+                      <div class="matrix-label">Win %</div>
+                      <div class="matrix-val" id="dispTopWinRate">50.0%</div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="matrix-cell">
+                      <div class="matrix-label">RR</div>
+                      <div class="matrix-val" id="dispTopAvgRR">1 : 2.0</div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
-          <!-- 2. CARDS VIEW (DEFAULT - 3x4 GRID ALIGNED WITH STRATEGY PARAMETERS) -->
+          <!-- 2. CARDS VIEW (DEFAULT - 3x4 GRID MATCHING WIREFRAME) -->
           <div id="statsViewCardsWrap" class="stats-cards-wrapper" style="display:flex;">
             <div class="stats-cards-grid">
-              <!-- Row 1: Capital & Profit -->
+              <!-- Row 1: Initial Balance | Total Net P&L | Return % -->
               <div class="hero-card">
                 <div class="hero-label">Initial Balance</div>
                 <div class="hero-val" id="dispCardInitial">$1,000</div>
-                <div class="hero-sub">Starting Capital</div>
-              </div>
-
-              <div class="hero-card">
-                <div class="hero-label">Result Balance</div>
-                <div class="hero-val" id="dispCardFinalBal">$2,217</div>
-                <div class="hero-sub">Final Capital</div>
               </div>
 
               <div class="hero-card highlight-profit" id="cardTileTotalPnL">
                 <div class="hero-label">Total Net P&L</div>
                 <div class="hero-val val-green" id="dispCardTotalPnL">+$1,217</div>
-                <div class="hero-sub">Expected Return</div>
               </div>
 
-              <!-- Row 2: Returns & Drawdowns -->
               <div class="hero-card highlight-profit" id="cardTileTotalPnLPct">
-                <div class="hero-label">Return % (Gain)</div>
+                <div class="hero-label">Return %</div>
                 <div class="hero-val val-green" id="dispCardTotalPnLPct">+121.7%</div>
-                <div class="hero-sub">ROI on Capital</div>
               </div>
 
+              <!-- Row 2: Final Balance | Max Win Streak | Profit Factor -->
               <div class="hero-card">
-                <div class="hero-label">Max Drawdown</div>
-                <div class="hero-val" id="dispCardMedianDD">-9.1%</div>
-                <div class="hero-sub" id="dispCardSubWorstDD">Worst: -18.7%</div>
-              </div>
-
-              <div class="hero-card">
-                <div class="hero-label">Risk of Ruin</div>
-                <div class="hero-val" id="dispCardRuin">0.0%</div>
-                <div class="hero-sub">&gt;50% DD Odds</div>
-              </div>
-
-              <!-- Row 3: Streaks & Win Rate -->
-              <div class="hero-card">
-                <div class="hero-label">Max Loss Streak</div>
-                <div class="hero-val" id="dispCardMaxLossStreak">15</div>
-                <div class="hero-sub">Stress Run</div>
+                <div class="hero-label">Final Balance</div>
+                <div class="hero-val" id="dispCardFinalBal">$2,217</div>
               </div>
 
               <div class="hero-card">
                 <div class="hero-label">Max Win Streak</div>
                 <div class="hero-val" id="dispCardMaxWinStreak">17</div>
-                <div class="hero-sub">Peak Win Run</div>
-              </div>
-
-              <div class="hero-card">
-                <div class="hero-label">Win Trades %</div>
-                <div class="hero-val" id="dispCardWinRate">50.0%</div>
-                <div class="hero-sub">Trade Hit Rate</div>
-              </div>
-
-              <!-- Row 4: Edge & Expectancy -->
-              <div class="hero-card">
-                <div class="hero-label">Reward-to-Risk</div>
-                <div class="hero-val" id="dispCardAvgRR">1 : 2.0</div>
-                <div class="hero-sub">Average RR</div>
               </div>
 
               <div class="hero-card">
                 <div class="hero-label">Profit Factor</div>
                 <div class="hero-val" id="dispCardPF">2.00</div>
-                <div class="hero-sub">Gross Win / Loss</div>
+              </div>
+
+              <!-- Row 3: Max Drawdown | Max Loss Streak | Risk of Ruin -->
+              <div class="hero-card">
+                <div class="hero-label">Max Drawdown</div>
+                <div class="hero-val" id="dispCardMedianDD">-9.1%</div>
               </div>
 
               <div class="hero-card">
+                <div class="hero-label">Max Loss Streak</div>
+                <div class="hero-val" id="dispCardMaxLossStreak">15</div>
+              </div>
+
+              <div class="hero-card">
+                <div class="hero-label">Risk of Ruin</div>
+                <div class="hero-val" id="dispCardRuin">0.0%</div>
+              </div>
+
+              <!-- Row 4: Trade Expectancy | Win % | RR -->
+              <div class="hero-card">
                 <div class="hero-label">Trade Expectancy</div>
                 <div class="hero-val" id="dispCardExpectancy">+1.00%</div>
-                <div class="hero-sub">EV / Trade</div>
+              </div>
+
+              <div class="hero-card">
+                <div class="hero-label">Win %</div>
+                <div class="hero-val" id="dispCardWinRate">50.0%</div>
+              </div>
+
+              <div class="hero-card">
+                <div class="hero-label">RR</div>
+                <div class="hero-val" id="dispCardAvgRR">1 : 2.0</div>
               </div>
             </div>
           </div>
@@ -2492,9 +2473,18 @@
       <div class="panel-card">
         <div class="panel-header-row">
           <span class="panel-header-title">📈 Capital Trajectory</span>
-          <div class="chart-pill-switcher">
-            <button class="chart-pill-btn active" id="tabExpectedCurve" onclick="switchChartMode('ev')">Expected Value</button>
-            <button class="chart-pill-btn" id="tabMonteCarlo" onclick="switchChartMode('mc')">MC Quantile Fan (P95/P50/P5)</button>
+          <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+            <!-- RESOLUTION SWITCHER: PER TRADE (DEFAULT) | DAY | WEEK -->
+            <div class="chart-pill-switcher">
+              <button class="chart-pill-btn active" id="btnResTrade" onclick="setChartResolution('trade')" title="Resolution: Per Trade (Default)">Per Trade</button>
+              <button class="chart-pill-btn" id="btnResDay" onclick="setChartResolution('day')" title="Resolution: Daily Aggregation">Day</button>
+              <button class="chart-pill-btn" id="btnResWeek" onclick="setChartResolution('week')" title="Resolution: Weekly Aggregation">Week</button>
+            </div>
+            <!-- MODE SWITCHER: EV | MC FAN -->
+            <div class="chart-pill-switcher">
+              <button class="chart-pill-btn active" id="tabExpectedCurve" onclick="switchChartMode('ev')">Expected Value</button>
+              <button class="chart-pill-btn" id="tabMonteCarlo" onclick="switchChartMode('mc')">MC Quantile Fan (P95/P50/P5)</button>
+            </div>
           </div>
         </div>
 
@@ -2592,7 +2582,7 @@
 
     <!-- RIGHT COLUMN: BLUE CONTAINER [PNL CALENDAR] -->
     <div class="right-dashboard-column">
-      <div class="panel-card calendar-full-column-panel">
+      <div class="panel-card calendar-full-column-panel calendar-execution-panel" id="calFullColumnPanel">
         <div class="panel-header-row">
           <span class="panel-header-title">
             <span>📅</span> Simulated P&L Calendar
@@ -2627,6 +2617,9 @@
           <div style="display:flex; align-items:center; gap:0.45rem; font-size:0.8125rem; flex-wrap:wrap;">
             <button class="cal-nav-btn active" id="btnToggleWeekends" onclick="toggleWeekends()" title="Toggle weekends in calendar view" style="font-weight:600;">
               <span>🗓️</span> Weekends: Off
+            </button>
+            <button class="cal-nav-btn active" id="btnToggleCalHighlights" onclick="toggleCalHighlights()" title="Toggle calendar profit/loss highlights on or off" style="font-weight:600;">
+              <span>🎨</span> Highlights: On
             </button>
             <span style="color:var(--text-muted); font-weight:500;">Path:</span>
             <select id="calPathSelect" class="cal-path-select" onchange="changeCalPath(this.value)">
@@ -3081,6 +3074,35 @@
     renderChart();
   }
 
+  let chartResolution = 'trade'; // 'trade' (default) | 'day' | 'week'
+  function setChartResolution(res) {
+    chartResolution = res;
+    const btnTrade = document.getElementById('btnResTrade');
+    const btnDay = document.getElementById('btnResDay');
+    const btnWeek = document.getElementById('btnResWeek');
+    if (btnTrade) btnTrade.classList.toggle('active', res === 'trade');
+    if (btnDay) btnDay.classList.toggle('active', res === 'day');
+    if (btnWeek) btnWeek.classList.toggle('active', res === 'week');
+    renderChart();
+  }
+  window.setChartResolution = setChartResolution;
+
+  let calHighlightsEnabled = true;
+  function toggleCalHighlights() {
+    calHighlightsEnabled = !calHighlightsEnabled;
+    const btn = document.getElementById('btnToggleCalHighlights');
+    if (btn) {
+      btn.classList.toggle('active', calHighlightsEnabled);
+      btn.innerHTML = `<span>🎨</span> Highlights: ${calHighlightsEnabled ? 'On' : 'Off'}`;
+    }
+    const calPanel = document.querySelector('.calendar-execution-panel');
+    if (calPanel) {
+      calPanel.classList.toggle('no-cal-highlights', !calHighlightsEnabled);
+    }
+    renderCalendar();
+  }
+  window.toggleCalHighlights = toggleCalHighlights;
+
   let statsLayoutMode = 'cards';
   function switchStatsLayout(mode) {
     statsLayoutMode = mode;
@@ -3242,6 +3264,9 @@
 
     const periodicMatrix = [];
     for (let p = 0; p <= periods; p++) periodicMatrix[p] = [];
+    const tradeMatrix = [];
+    for (let t = 0; t <= totalTrades; t++) tradeMatrix[t] = [];
+    const tradeRuns = [];
 
     for (let i = 0; i < iters; i++) {
       let bal = config.initialBalance;
@@ -3251,13 +3276,19 @@
       let curWinStreak = 0, peakWinStreak = 0;
 
       const runTrajectory = [bal];
+      const tradeTrajectory = [bal];
       periodicMatrix[0].push(bal);
+      tradeMatrix[0].push(bal);
 
+      let tradeIdx = 0;
       for (let p = 1; p <= periods; p++) {
         for (let t = 0; t < tpp; t++) {
+          tradeIdx++;
           if (bal <= 1) {
             curLossStreak++;
             if (curLossStreak > peakLossStreak) peakLossStreak = curLossStreak;
+            tradeMatrix[tradeIdx].push(bal);
+            tradeTrajectory.push(bal);
             continue;
           }
 
@@ -3288,6 +3319,9 @@
           if (bal > peak) peak = bal;
           const currentDD = peak > 0 ? ((peak - bal) / peak) * 100 : 100;
           if (currentDD > maxDD) maxDD = currentDD;
+
+          tradeMatrix[tradeIdx].push(bal);
+          tradeTrajectory.push(bal);
         }
         periodicMatrix[p].push(bal);
         runTrajectory.push(bal);
@@ -3300,7 +3334,10 @@
 
       allDrawdowns.push(maxDD);
       finalBalances.push(bal);
-      if (i < 30) runs.push(runTrajectory);
+      if (i < 30) {
+        runs.push(runTrajectory);
+        tradeRuns.push(tradeTrajectory);
+      }
     }
 
     finalBalances.sort((a, b) => a - b);
@@ -3323,6 +3360,16 @@
       });
     }
 
+    const tradePercentiles = [];
+    for (let t = 0; t <= totalTrades; t++) {
+      const arr = tradeMatrix[t].sort((a, b) => a - b);
+      tradePercentiles.push({
+        p5: arr[Math.floor(iters * 0.05)],
+        p50: arr[Math.floor(iters * 0.50)],
+        p95: arr[Math.floor(iters * 0.95)]
+      });
+    }
+
     lastSimResults = {
       p5, p50, p95,
       medianDD, worstDD,
@@ -3331,7 +3378,10 @@
       maxLossStreak: totalMaxLossStreak,
       maxWinStreak: totalMaxWinStreak,
       sampleRuns: runs,
+      sampleTradeRuns: tradeRuns,
       periodicPercentiles,
+      tradePercentiles,
+      totalTrades,
       expectedFinalBalance,
       theoreticalPF
     };
@@ -3813,14 +3863,14 @@
 
           const cell = document.createElement('div');
           let statusClass = '';
-          if (dayTrades.length > 0) {
+          if (dayTrades.length > 0 && calHighlightsEnabled) {
             statusClass = dayPnL > 0 ? 'day-green' : (dayPnL < 0 ? 'day-red' : '');
           }
           cell.className = `cal-day-cell ${statusClass}`;
 
           const isGreen = dayPnL > 0;
           const isRed = dayPnL < 0;
-          const pnlColor = isGreen ? 'val-green' : (isRed ? 'val-red' : 'text-slate-400');
+          const pnlColor = !calHighlightsEnabled ? '' : (isGreen ? 'val-green' : (isRed ? 'val-red' : 'text-slate-400'));
           const pnlFormatted = dayTrades.length > 0
             ? `${dayPnL >= 0 ? '+$' : '-$'}${Math.round(Math.abs(dayPnL)).toLocaleString()}`
             : (isWeekend ? '' : '<span style="color:var(--text-dim); font-size:0.875rem;">—</span>');
@@ -3837,9 +3887,9 @@
             </div>
             ${dayTrades.length > 0 ? `
               <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.625rem; color:var(--text-dim); border-top:1px solid rgba(255,255,255,0.06); padding-top:0.15rem;">
-                <span class="val-green num-font" style="font-weight:600;">${dayTrades.filter(t => t.outcome === 'WIN').length}W</span>
+                <span class="${calHighlightsEnabled ? 'val-green' : ''} num-font" style="font-weight:600;">${dayTrades.filter(t => t.outcome === 'WIN').length}W</span>
                 <span style="color:var(--text-dim); font-size:0.55rem;">•</span>
-                <span class="val-red num-font" style="font-weight:600;">${dayTrades.filter(t => t.outcome === 'LOSS').length}L</span>
+                <span class="${calHighlightsEnabled ? 'val-red' : ''} num-font" style="font-weight:600;">${dayTrades.filter(t => t.outcome === 'LOSS').length}L</span>
               </div>
             ` : '<div style="height:2px;"></div>'}
           `;
@@ -3915,7 +3965,8 @@
           avgRRStr = '0.0R';
         }
 
-        sumCell.className = `cal-week-summary-cell ${weekPnL >= 0 ? 'summary-green' : 'summary-red'}`;
+        const sumClass = calHighlightsEnabled ? (weekPnL >= 0 ? 'summary-green' : 'summary-red') : '';
+        sumCell.className = `cal-week-summary-cell ${sumClass}`;
         sumCell.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <span style="font-size:0.7rem; font-weight:700; color:var(--text-main);">Wk ${displayWeekNum}</span>
@@ -3923,29 +3974,29 @@
           </div>
           <div style="margin:0.12rem 0; text-align:center;">
             <div style="display:flex; justify-content:center; align-items:baseline; gap:0.25rem;">
-              <span class="${weekPnL >= 0 ? 'val-green' : 'val-red'} num-font" style="font-size:0.85rem; font-weight:700;">
+              <span class="${calHighlightsEnabled ? (weekPnL >= 0 ? 'val-green' : 'val-red') : ''} num-font" style="font-size:0.85rem; font-weight:700;">
                 ${weekPnL >= 0 ? '+$' : '-$'}${Math.round(Math.abs(weekPnL)).toLocaleString()}
               </span>
-              <span class="pill-pct ${totalPct >= 0 ? 'pill-green' : 'pill-red'} num-font" style="font-size:0.58rem; padding:0.06rem 0.32rem;">
+              <span class="pill-pct ${calHighlightsEnabled ? (totalPct >= 0 ? 'pill-green' : 'pill-red') : ''} num-font" style="font-size:0.58rem; padding:0.06rem 0.32rem;">
                 ${totalPct >= 0 ? '+' : ''}${totalPct.toFixed(1)}%
               </span>
             </div>
             <div style="font-size:0.58rem; color:var(--text-muted); margin-top:0.08rem;">
-              ${totalWeekTrades} trds (<span class="val-green num-font" style="font-weight:600;">${winTrades}W</span> / <span class="val-red num-font" style="font-weight:600;">${lossTrades}L</span>)
+              ${totalWeekTrades} trds (<span class="${calHighlightsEnabled ? 'val-green' : ''} num-font" style="font-weight:600;">${winTrades}W</span> / <span class="${calHighlightsEnabled ? 'val-red' : ''} num-font" style="font-weight:600;">${lossTrades}L</span>)
             </div>
           </div>
           <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:0.1rem; padding-top:0.18rem; border-top:1px solid rgba(255,255,255,0.06); text-align:center; font-size:0.58rem;">
             <div>
               <div style="color:var(--text-dim); font-size:0.52rem; text-transform:uppercase; letter-spacing:0.02em;">WR</div>
-              <div class="${winRateNum >= 50 ? 'val-green' : 'val-red'} num-font" style="font-weight:600;">${winRateStr}%</div>
+              <div class="${calHighlightsEnabled ? (winRateNum >= 50 ? 'val-green' : 'val-red') : ''} num-font" style="font-weight:600;">${winRateStr}%</div>
             </div>
             <div>
               <div style="color:var(--text-dim); font-size:0.52rem; text-transform:uppercase; letter-spacing:0.02em;">PF</div>
-              <div class="${pfNum >= 1.0 || pfStr === '∞' ? 'val-green' : 'val-red'} num-font" style="font-weight:600;">${pfStr}</div>
+              <div class="${calHighlightsEnabled ? (pfNum >= 1.0 || pfStr === '∞' ? 'val-green' : 'val-red') : ''} num-font" style="font-weight:600;">${pfStr}</div>
             </div>
             <div>
               <div style="color:var(--text-dim); font-size:0.52rem; text-transform:uppercase; letter-spacing:0.02em;">RR</div>
-              <div style="color:var(--accent-blue); font-weight:600;" class="num-font">${avgRRStr}</div>
+              <div style="${calHighlightsEnabled ? 'color:var(--accent-blue);' : ''} font-weight:600;" class="num-font">${avgRRStr}</div>
             </div>
           </div>
         `;
@@ -4129,7 +4180,8 @@
       const card = document.createElement('div');
       const isProfitable = ws.totalPnL > 0;
       const isLosing = ws.totalPnL < 0;
-      card.className = `cal-week-box ${isProfitable ? 'week-profitable' : (isLosing ? 'week-losing' : 'week-neutral')}`;
+      const weekStatusClass = calHighlightsEnabled ? (isProfitable ? 'week-profitable' : (isLosing ? 'week-losing' : 'week-neutral')) : 'week-neutral';
+      card.className = `cal-week-box ${weekStatusClass}`;
 
       card.innerHTML = `
         <div>
@@ -4142,10 +4194,10 @@
           </div>
 
           <div class="week-box-pnl-section">
-            <div class="week-box-pnl-val ${ws.totalPnL >= 0 ? 'val-green' : 'val-red'}">
+            <div class="week-box-pnl-val ${calHighlightsEnabled ? (ws.totalPnL >= 0 ? 'val-green' : 'val-red') : ''}">
               ${ws.totalPnL >= 0 ? '+$' : '-$'}${Math.round(Math.abs(ws.totalPnL)).toLocaleString()}
             </div>
-            <span class="week-box-pnl-pct pill-pct ${ws.totalPct >= 0 ? 'pill-green' : 'pill-red'}">
+            <span class="week-box-pnl-pct pill-pct ${calHighlightsEnabled ? (ws.totalPct >= 0 ? 'pill-green' : 'pill-red') : ''}">
               ${ws.totalPct >= 0 ? '+' : ''}${ws.totalPct.toFixed(1)}%
             </span>
           </div>
@@ -4153,14 +4205,14 @@
           <div class="week-box-stats-grid">
             <div class="week-box-stat-item">
               <span class="week-box-stat-label">WR</span>
-              <span class="week-box-stat-val ${ws.winRateNum >= 50 ? 'val-green' : 'val-red'} num-font">
+              <span class="week-box-stat-val ${calHighlightsEnabled ? (ws.winRateNum >= 50 ? 'val-green' : 'val-red') : ''} num-font">
                 ${ws.winRateStr}%
               </span>
               <span class="week-box-stat-sub num-font">${ws.winCount}W / ${ws.lossCount}L</span>
             </div>
             <div class="week-box-stat-item">
               <span class="week-box-stat-label">PF</span>
-              <span class="week-box-stat-val ${ws.pfNum >= 1.0 || ws.pfStr === '∞' ? 'val-green' : 'val-red'} num-font">
+              <span class="week-box-stat-val ${calHighlightsEnabled ? (ws.pfNum >= 1.0 || ws.pfStr === '∞' ? 'val-green' : 'val-red') : ''} num-font">
                 ${ws.pfStr}
               </span>
               <span class="week-box-stat-sub">Factor</span>
@@ -4532,41 +4584,71 @@
     const isGlass = currentTheme === 'glass';
 
     const periods = config.totalPeriods;
+    const tpp = config.tradesPerPeriod;
+    const totalTrades = periods * tpp;
     const pWin = config.winRate / 100;
     const pBE = Math.min(config.breakEvenRate / 100, 1 - pWin);
     const pLoss = Math.max(0, 1 - pWin - pBE);
     const isFixedRisk = config.riskType === 'fixed';
     const rr = config.rewardRatio;
 
+    // Determine totalSteps based on active chartResolution
+    // 'trade' (default) -> per trade (0..totalTrades)
+    // 'day' -> per day (0..totalDays)
+    // 'week' -> per week (0..totalWeeks)
+    let totalSteps = totalTrades;
+    let unitLabel = 'T';
+    if (chartResolution === 'day') {
+      const daysPerPeriod = config.cadence === 'week' ? (calShowWeekends ? 7 : 5) : (calShowWeekends ? 30 : 22);
+      totalSteps = Math.max(1, periods * daysPerPeriod);
+      unitLabel = 'd';
+    } else if (chartResolution === 'week') {
+      totalSteps = config.cadence === 'week' ? periods : Math.max(1, Math.round(periods * 4.33));
+      unitLabel = 'w';
+    } else {
+      totalSteps = Math.max(1, totalTrades);
+      unitLabel = 'T';
+    }
+
+    // Helper: Map step index (0..totalSteps) to trade index (0..totalTrades)
+    const stepToTradeIdx = (s) => {
+      if (chartResolution === 'trade') return Math.min(totalTrades, s);
+      return Math.min(totalTrades, Math.round(s * (totalTrades / totalSteps)));
+    };
+
+    // Calculate Expected Value points across steps
     const evPoints = [];
     if (isFixedRisk) {
       const fixedRiskDollar = config.riskPerTrade;
       const evDollarPerTrade = pWin * (fixedRiskDollar * rr) - pLoss * fixedRiskDollar;
-      for (let p = 0; p <= periods; p++) {
-        const tradesSoFar = p * config.tradesPerPeriod;
-        const b = Math.max(0, config.initialBalance + (evDollarPerTrade * tradesSoFar));
+      for (let s = 0; s <= totalSteps; s++) {
+        const tIdx = stepToTradeIdx(s);
+        const b = Math.max(0, config.initialBalance + (evDollarPerTrade * tIdx));
         evPoints.push(b);
       }
     } else {
       const risk = config.riskPerTrade / 100;
       const tradeEV = pWin * (1 + risk * rr) + pBE * 1.0 + pLoss * (1 - risk);
-      for (let p = 0; p <= periods; p++) {
-        const tradesSoFar = p * config.tradesPerPeriod;
-        const b = config.initialBalance * Math.pow(tradeEV, tradesSoFar);
+      for (let s = 0; s <= totalSteps; s++) {
+        const tIdx = stepToTradeIdx(s);
+        const b = config.initialBalance * Math.pow(tradeEV, tIdx);
         evPoints.push(b);
       }
     }
 
     let maxVal = Math.max(...evPoints);
     if (chartMode === 'mc' && lastSimResults) {
-      const p95Max = lastSimResults.periodicPercentiles[periods].p95;
-      maxVal = Math.max(maxVal, p95Max);
+      if (lastSimResults.tradePercentiles && lastSimResults.tradePercentiles[totalTrades]) {
+        maxVal = Math.max(maxVal, lastSimResults.tradePercentiles[totalTrades].p95);
+      } else if (lastSimResults.periodicPercentiles && lastSimResults.periodicPercentiles[periods]) {
+        maxVal = Math.max(maxVal, lastSimResults.periodicPercentiles[periods].p95);
+      }
     }
     maxVal = maxVal * 1.12;
     if (maxVal <= 0) maxVal = 1000;
 
     const minVal = 0;
-    const getX = (p) => padding.left + (p / periods) * chartW;
+    const getX = (s) => padding.left + (s / totalSteps) * chartW;
     const getY = (val) => padding.top + chartH - ((val - minVal) / (maxVal - minVal)) * chartH;
 
     // Grid Styling — unique per theme
@@ -4595,21 +4677,31 @@
 
     ctx.textAlign = 'center';
     ctx.setLineDash([]);
-    const periodUnit = config.cadence === 'week' ? 'w' : 'm';
-    const stepPeriods = periods <= 12 ? 2 : (periods <= 36 ? 3 : (periods <= 104 ? 13 : 26));
 
-    for (let p = 0; p <= periods; p += stepPeriods) {
-      const x = getX(p);
+    // Determine appropriate X-axis tick step
+    let stepSize = 1;
+    if (chartResolution === 'trade') {
+      stepSize = totalSteps <= 20 ? 2 : (totalSteps <= 50 ? 5 : (totalSteps <= 100 ? 10 : (totalSteps <= 250 ? 25 : 50)));
+    } else if (chartResolution === 'day') {
+      stepSize = totalSteps <= 14 ? 2 : (totalSteps <= 35 ? 5 : (totalSteps <= 90 ? 10 : 20));
+    } else {
+      stepSize = totalSteps <= 12 ? 2 : (totalSteps <= 36 ? 3 : (totalSteps <= 104 ? 13 : 26));
+    }
+
+    for (let s = 0; s <= totalSteps; s += stepSize) {
+      const x = getX(s);
       ctx.beginPath();
       ctx.strokeStyle = isLight ? '#d6d3d1' : (isGlass ? 'rgba(232, 121, 249, 0.22)' : (isBlack ? '#1a1a1a' : '#1f2937'));
       ctx.moveTo(x, padding.top + chartH);
       ctx.lineTo(x, padding.top + chartH + 4);
       ctx.stroke();
-      ctx.fillText(`${p}${periodUnit}`, x, padding.top + chartH + 14);
+      const tickText = chartResolution === 'trade' ? `T${s}` : `${s}${unitLabel}`;
+      ctx.fillText(tickText, x, padding.top + chartH + 14);
     }
-    if (periods % stepPeriods !== 0) {
-      const x = getX(periods);
-      ctx.fillText(`${periods}${periodUnit}`, x, padding.top + chartH + 14);
+    if (totalSteps % stepSize !== 0) {
+      const x = getX(totalSteps);
+      const tickText = chartResolution === 'trade' ? `T${totalSteps}` : `${totalSteps}${unitLabel}`;
+      ctx.fillText(tickText, x, padding.top + chartH + 14);
     }
 
     if (chartMode === 'ev') {
@@ -4634,15 +4726,10 @@
 
       ctx.beginPath();
       ctx.moveTo(getX(0), getY(evPoints[0]));
-      for (let p = 1; p <= periods; p++) {
-        const prevX = getX(p - 1);
-        const prevY = getY(evPoints[p - 1]);
-        const curX = getX(p);
-        const curY = getY(evPoints[p]);
-        const cpX = (prevX + curX) / 2;
-        ctx.bezierCurveTo(cpX, prevY, cpX, curY, curX, curY);
+      for (let s = 1; s <= totalSteps; s++) {
+        ctx.lineTo(getX(s), getY(evPoints[s]));
       }
-      ctx.lineTo(getX(periods), getY(minVal));
+      ctx.lineTo(getX(totalSteps), getY(minVal));
       ctx.lineTo(getX(0), getY(minVal));
       ctx.closePath();
       ctx.fillStyle = grad;
@@ -4650,13 +4737,8 @@
 
       ctx.beginPath();
       ctx.moveTo(getX(0), getY(evPoints[0]));
-      for (let p = 1; p <= periods; p++) {
-        const prevX = getX(p - 1);
-        const prevY = getY(evPoints[p - 1]);
-        const curX = getX(p);
-        const curY = getY(evPoints[p]);
-        const cpX = (prevX + curX) / 2;
-        ctx.bezierCurveTo(cpX, prevY, cpX, curY, curX, curY);
+      for (let s = 1; s <= totalSteps; s++) {
+        ctx.lineTo(getX(s), getY(evPoints[s]));
       }
       const evStroke = isLight ? '#7c3aed' : (isGlass ? '#e879f9' : (isBlack ? '#14b8a6' : '#818cf8'));
       ctx.strokeStyle = evStroke;
@@ -4668,22 +4750,52 @@
       ctx.stroke();
       ctx.shadowBlur = 0;
 
+      const resLabel = chartResolution === 'trade' ? 'Per-Trade' : (chartResolution === 'day' ? 'Daily' : 'Weekly');
       document.getElementById('chartLegend').innerHTML = `
         <div class="legend-tag">
-          <div class="legend-dot" style="background:${evStroke}; "></div>
-          <span>Expected Value Progression (${config.cadence === 'week' ? 'Weekly' : 'Monthly'} Compounding)</span>
+          <div class="legend-dot" style="background:${evStroke};"></div>
+          <span>Expected Value Progression (${resLabel} Resolution)</span>
         </div>
       `;
 
     } else if (chartMode === 'mc' && lastSimResults) {
+      const hasTradePct = !!(lastSimResults.tradePercentiles && lastSimResults.tradePercentiles.length);
+      const sampleRuns = (hasTradePct && lastSimResults.sampleTradeRuns && lastSimResults.sampleTradeRuns.length) 
+        ? lastSimResults.sampleTradeRuns 
+        : lastSimResults.sampleRuns;
+
       ctx.lineWidth = 0.8;
-      lastSimResults.sampleRuns.forEach(run => {
+      sampleRuns.forEach(run => {
         ctx.strokeStyle = isLight ? 'rgba(120, 113, 108, 0.08)' : (isGlass ? 'rgba(232, 121, 249, 0.07)' : (isBlack ? 'rgba(161, 161, 170, 0.06)' : 'rgba(156, 163, 175, 0.07)'));
         ctx.beginPath();
-        ctx.moveTo(getX(0), getY(run[0]));
-        for (let p = 1; p <= periods; p++) ctx.lineTo(getX(p), getY(run[p]));
+        const startVal = run[0];
+        ctx.moveTo(getX(0), getY(startVal));
+        for (let s = 1; s <= totalSteps; s++) {
+          const tIdx = stepToTradeIdx(s);
+          const rVal = hasTradePct ? (run[tIdx] !== undefined ? run[tIdx] : run[run.length - 1]) : (run[s] !== undefined ? run[s] : run[run.length - 1]);
+          ctx.lineTo(getX(s), getY(rVal));
+        }
         ctx.stroke();
       });
+
+      const getP95 = (s) => {
+        const tIdx = stepToTradeIdx(s);
+        if (hasTradePct && lastSimResults.tradePercentiles[tIdx]) return lastSimResults.tradePercentiles[tIdx].p95;
+        const pIdx = Math.min(periods, Math.round(s * (periods / totalSteps)));
+        return lastSimResults.periodicPercentiles[pIdx] ? lastSimResults.periodicPercentiles[pIdx].p95 : config.initialBalance;
+      };
+      const getP50 = (s) => {
+        const tIdx = stepToTradeIdx(s);
+        if (hasTradePct && lastSimResults.tradePercentiles[tIdx]) return lastSimResults.tradePercentiles[tIdx].p50;
+        const pIdx = Math.min(periods, Math.round(s * (periods / totalSteps)));
+        return lastSimResults.periodicPercentiles[pIdx] ? lastSimResults.periodicPercentiles[pIdx].p50 : config.initialBalance;
+      };
+      const getP5 = (s) => {
+        const tIdx = stepToTradeIdx(s);
+        if (hasTradePct && lastSimResults.tradePercentiles[tIdx]) return lastSimResults.tradePercentiles[tIdx].p5;
+        const pIdx = Math.min(periods, Math.round(s * (periods / totalSteps)));
+        return lastSimResults.periodicPercentiles[pIdx] ? lastSimResults.periodicPercentiles[pIdx].p5 : config.initialBalance;
+      };
 
       const qRibbon = ctx.createLinearGradient(0, padding.top, 0, padding.top + chartH);
       if (isLight) {
@@ -4705,9 +4817,9 @@
       }
 
       ctx.beginPath();
-      ctx.moveTo(getX(0), getY(lastSimResults.periodicPercentiles[0].p95));
-      for (let p = 1; p <= periods; p++) ctx.lineTo(getX(p), getY(lastSimResults.periodicPercentiles[p].p95));
-      for (let p = periods; p >= 0; p--) ctx.lineTo(getX(p), getY(lastSimResults.periodicPercentiles[p].p5));
+      ctx.moveTo(getX(0), getY(getP95(0)));
+      for (let s = 1; s <= totalSteps; s++) ctx.lineTo(getX(s), getY(getP95(s)));
+      for (let s = totalSteps; s >= 0; s--) ctx.lineTo(getX(s), getY(getP5(s)));
       ctx.closePath();
       ctx.fillStyle = qRibbon;
       ctx.fill();
@@ -4715,8 +4827,8 @@
       // P95 Best
       const p95Color = isLight ? '#15803d' : (isBlack ? '#5eead4' : (isGlass ? '#4ade80' : '#6ee7b7'));
       ctx.beginPath();
-      ctx.moveTo(getX(0), getY(lastSimResults.periodicPercentiles[0].p95));
-      for (let p = 1; p <= periods; p++) ctx.lineTo(getX(p), getY(lastSimResults.periodicPercentiles[p].p95));
+      ctx.moveTo(getX(0), getY(getP95(0)));
+      for (let s = 1; s <= totalSteps; s++) ctx.lineTo(getX(s), getY(getP95(s)));
       ctx.strokeStyle = p95Color;
       if (isGlass) {
         ctx.shadowColor = 'rgba(74, 222, 128, 0.65)';
@@ -4729,8 +4841,8 @@
       // P50 Median
       const p50Color = isLight ? '#7c3aed' : (isGlass ? '#22d3ee' : (isBlack ? '#14b8a6' : '#818cf8'));
       ctx.beginPath();
-      ctx.moveTo(getX(0), getY(lastSimResults.periodicPercentiles[0].p50));
-      for (let p = 1; p <= periods; p++) ctx.lineTo(getX(p), getY(lastSimResults.periodicPercentiles[p].p50));
+      ctx.moveTo(getX(0), getY(getP50(0)));
+      for (let s = 1; s <= totalSteps; s++) ctx.lineTo(getX(s), getY(getP50(s)));
       ctx.strokeStyle = p50Color;
       if (isGlass) {
         ctx.shadowColor = 'rgba(34, 211, 238, 0.65)';
@@ -4743,8 +4855,8 @@
       // P5 Worst
       const p5Color = isLight ? '#be123c' : (isGlass ? '#fb923c' : (isBlack ? '#f9a8d4' : '#fca5a5'));
       ctx.beginPath();
-      ctx.moveTo(getX(0), getY(lastSimResults.periodicPercentiles[0].p5));
-      for (let p = 1; p <= periods; p++) ctx.lineTo(getX(p), getY(lastSimResults.periodicPercentiles[p].p5));
+      ctx.moveTo(getX(0), getY(getP5(0)));
+      for (let s = 1; s <= totalSteps; s++) ctx.lineTo(getX(s), getY(getP5(s)));
       ctx.strokeStyle = p5Color;
       if (isGlass) {
         ctx.shadowColor = 'rgba(251, 146, 60, 0.65)';
@@ -4754,10 +4866,11 @@
       ctx.stroke();
       ctx.shadowBlur = 0;
 
+      const resLabel = chartResolution === 'trade' ? 'Per-Trade' : (chartResolution === 'day' ? 'Daily' : 'Weekly');
       document.getElementById('chartLegend').innerHTML = `
-        <div class="legend-tag"><div class="legend-dot" style="background:${p95Color}; "></div><span>P95 Best</span></div>
-        <div class="legend-tag"><div class="legend-dot" style="background:${p50Color}; "></div><span>P50 Median</span></div>
-        <div class="legend-tag"><div class="legend-dot" style="background:${p5Color}; "></div><span>P5 Worst</span></div>
+        <div class="legend-tag"><div class="legend-dot" style="background:${p95Color};"></div><span>P95 Best (${resLabel})</span></div>
+        <div class="legend-tag"><div class="legend-dot" style="background:${p50Color};"></div><span>P50 Median</span></div>
+        <div class="legend-tag"><div class="legend-dot" style="background:${p5Color};"></div><span>P5 Worst</span></div>
       `;
     }
   }
