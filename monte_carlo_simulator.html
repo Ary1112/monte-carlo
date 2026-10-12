@@ -1208,13 +1208,17 @@
       padding-bottom: 0.4rem;
     }
 
-    /* MONTH VIEW GRID (7 DAYS + 1 WEEK SUMMARY) — 20% COMPACT SCALING */
+    /* MONTH VIEW GRID (7 OR 5 TRADING DAYS + 1 WEEK SUMMARY) — 20% COMPACT SCALING */
     .cal-days-header-grid {
       display: grid;
       grid-template-columns: repeat(7, minmax(68px, 1fr)) minmax(136px, 1.3fr);
       gap: 0.38rem;
       min-width: 580px;
       margin-bottom: 0.38rem;
+    }
+    .cal-days-header-grid.hide-weekends {
+      grid-template-columns: repeat(5, minmax(78px, 1fr)) minmax(136px, 1.3fr);
+      min-width: 500px;
     }
     .cal-col-name {
       text-align: center;
@@ -1236,6 +1240,10 @@
       grid-template-columns: repeat(7, minmax(68px, 1fr)) minmax(136px, 1.3fr);
       gap: 0.38rem;
       min-width: 580px;
+    }
+    .cal-days-grid.hide-weekends {
+      grid-template-columns: repeat(5, minmax(78px, 1fr)) minmax(136px, 1.3fr);
+      min-width: 500px;
     }
 
     /* DAY CELLS: SCALED 20% SMALLER (MIN-HEIGHT 68PX) */
@@ -2264,8 +2272,11 @@
             </select>
           </div>
 
-          <!-- TRAJECTORY PATH SELECTOR -->
-          <div style="display:flex; align-items:center; gap:0.45rem; font-size:0.8125rem;">
+          <!-- TRAJECTORY PATH & WEEKEND TOGGLE -->
+          <div style="display:flex; align-items:center; gap:0.45rem; font-size:0.8125rem; flex-wrap:wrap;">
+            <button class="cal-nav-btn active" id="btnToggleWeekends" onclick="toggleWeekends()" title="Toggle weekends in calendar view" style="font-weight:600;">
+              <span>🗓️</span> Weekends: Off
+            </button>
             <span style="color:var(--text-muted); font-weight:500;">Path:</span>
             <select id="calPathSelect" class="cal-path-select" onchange="changeCalPath(this.value)">
               <option value="p50">50th % Median Path</option>
@@ -2289,12 +2300,12 @@
         <!-- 1. FULL MONTH VIEW -->
         <div id="calViewMonthWrap" style="display:block;">
           <div class="cal-scroll-wrapper">
-          <div class="cal-days-header-grid">
-            <div class="cal-col-name">Sun</div><div class="cal-col-name">Mon</div><div class="cal-col-name">Tue</div>
-            <div class="cal-col-name">Wed</div><div class="cal-col-name">Thu</div><div class="cal-col-name">Fri</div><div class="cal-col-name">Sat</div>
+          <div class="cal-days-header-grid hide-weekends" id="calDaysHeaderGrid">
+            <div class="cal-col-name" id="calColSun">Sun</div><div class="cal-col-name">Mon</div><div class="cal-col-name">Tue</div>
+            <div class="cal-col-name">Wed</div><div class="cal-col-name">Thu</div><div class="cal-col-name">Fri</div><div class="cal-col-name" id="calColSat">Sat</div>
             <div class="cal-col-name cal-col-summary-name">Week Summary</div>
           </div>
-          <div class="cal-days-grid" id="calMonthDaysGrid"></div>
+          <div class="cal-days-grid hide-weekends" id="calMonthDaysGrid"></div>
           </div>
 
           <!-- ACTIVE DAY & RUN EXECUTION INSPECTOR DECK (FILLS VERTICAL SPACE IN RIGHT COLUMN) -->
@@ -2392,8 +2403,27 @@
   let calMonthIdx = 1;
   let calWeekIdx = 1;
   let calPathMode = 'p50';
+  let calShowWeekends = false; // By default remove weekends from calendar view
   let activeSimulatedRun = null;
   let activeTradeFilter = 'all';
+
+  function toggleWeekends() {
+    calShowWeekends = !calShowWeekends;
+    const btn = document.getElementById('btnToggleWeekends');
+    if (btn) {
+      btn.innerHTML = calShowWeekends ? '<span>🗓️</span> Weekends: On' : '<span>🗓️</span> Weekends: Off';
+      btn.classList.toggle('active', !calShowWeekends);
+    }
+    const headerGrid = document.getElementById('calDaysHeaderGrid');
+    const daysGrid = document.getElementById('calMonthDaysGrid');
+    const colSun = document.getElementById('calColSun');
+    const colSat = document.getElementById('calColSat');
+    if (headerGrid) headerGrid.classList.toggle('hide-weekends', !calShowWeekends);
+    if (daysGrid) daysGrid.classList.toggle('hide-weekends', !calShowWeekends);
+    if (colSun) colSun.style.display = calShowWeekends ? 'block' : 'none';
+    if (colSat) colSat.style.display = calShowWeekends ? 'block' : 'none';
+    renderCalendar();
+  }
 
   /* ================================================================
      2. THEME SWITCHER LOGIC (LIGHT, DARK, BLACK)
@@ -2613,7 +2643,9 @@
     const slideEl = document.getElementById(item.slide);
     const numEl = document.getElementById(item.num);
     if (slideEl) {
-      slideEl.value = val;
+      const sMin = parseFloat(slideEl.min) || 0;
+      const sMax = parseFloat(slideEl.max) || 100;
+      slideEl.value = Math.max(sMin, Math.min(sMax, val));
       updateSliderTrack(item.slide);
     }
     if (numEl) {
@@ -2637,10 +2669,17 @@
 
     numEl.addEventListener('change', (e) => {
       let val = parseVal(e.target.value);
-      if (item.min !== undefined) val = Math.max(item.min, val);
-      if (item.max !== undefined) val = Math.min(item.max, val);
+      // Allow user to type any positive/valid value they want
+      // Only enforce physical lower-bound of 0 for sensible simulation
+      if (val < 0) val = 0;
       config[item.key] = val;
-      slideEl.value = val;
+
+      // Keep slider clamped safely to its slider track bounds
+      const sMin = parseFloat(slideEl.min) || 0;
+      const sMax = parseFloat(slideEl.max) || 100;
+      slideEl.value = Math.max(sMin, Math.min(sMax, val));
+
+      // Display formatted value that user typed without capping it to slider max
       numEl.value = formatVal(val, item);
       updateSliderTrack(item.slide);
       recalculateAll();
@@ -3335,6 +3374,15 @@
 
   function renderMonthGridView(year, month, tradeMap) {
     const grid = document.getElementById('calMonthDaysGrid');
+    const headerGrid = document.getElementById('calDaysHeaderGrid');
+    const colSun = document.getElementById('calColSun');
+    const colSat = document.getElementById('calColSat');
+
+    if (headerGrid) headerGrid.classList.toggle('hide-weekends', !calShowWeekends);
+    if (grid) grid.classList.toggle('hide-weekends', !calShowWeekends);
+    if (colSun) colSun.style.display = calShowWeekends ? 'block' : 'none';
+    if (colSat) colSat.style.display = calShowWeekends ? 'block' : 'none';
+
     grid.innerHTML = '';
 
     const monthNamesShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -3347,19 +3395,25 @@
       let weekTrades = [];
       const weekDays = [];
 
-      // 7 Day Cells for this week row
+      // Day Cells for this week row (0=Sun, 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat)
       for (let col = 0; col < 7; col++) {
         const slot = w * 7 + col;
+        const isWeekendCol = (col === 0 || col === 6);
+
         if (slot < firstDay) {
           // Leading month padding
-          const cell = document.createElement('div');
-          cell.className = 'cal-day-cell other-month';
-          grid.appendChild(cell);
+          if (calShowWeekends || !isWeekendCol) {
+            const cell = document.createElement('div');
+            cell.className = 'cal-day-cell other-month';
+            grid.appendChild(cell);
+          }
         } else if (slot >= totalSlots) {
           // Trailing month padding
-          const cell = document.createElement('div');
-          cell.className = 'cal-day-cell other-month';
-          grid.appendChild(cell);
+          if (calShowWeekends || !isWeekendCol) {
+            const cell = document.createElement('div');
+            cell.className = 'cal-day-cell other-month';
+            grid.appendChild(cell);
+          }
         } else {
           // Valid calendar day
           const day = slot - firstDay + 1;
@@ -3375,6 +3429,11 @@
             dayPnL += t.pnl;
             weekTrades.push(t);
           });
+
+          // Skip appending cell if weekends are hidden and this is Saturday/Sunday
+          if (!calShowWeekends && isWeekend) {
+            continue;
+          }
 
           const cell = document.createElement('div');
           let statusClass = '';
@@ -4100,15 +4159,26 @@
     const pWin = config.winRate / 100;
     const pBE = Math.min(config.breakEvenRate / 100, 1 - pWin);
     const pLoss = Math.max(0, 1 - pWin - pBE);
-    const risk = config.riskPerTrade / 100;
+    const isFixedRisk = config.riskType === 'fixed';
     const rr = config.rewardRatio;
-    const tradeEV = pWin * (1 + risk * rr) + pBE * 1.0 + pLoss * (1 - risk);
 
     const evPoints = [];
-    for (let p = 0; p <= periods; p++) {
-      const tradesSoFar = p * config.tradesPerPeriod;
-      const b = config.initialBalance * Math.pow(tradeEV, tradesSoFar);
-      evPoints.push(b);
+    if (isFixedRisk) {
+      const fixedRiskDollar = config.riskPerTrade;
+      const evDollarPerTrade = pWin * (fixedRiskDollar * rr) - pLoss * fixedRiskDollar;
+      for (let p = 0; p <= periods; p++) {
+        const tradesSoFar = p * config.tradesPerPeriod;
+        const b = Math.max(0, config.initialBalance + (evDollarPerTrade * tradesSoFar));
+        evPoints.push(b);
+      }
+    } else {
+      const risk = config.riskPerTrade / 100;
+      const tradeEV = pWin * (1 + risk * rr) + pBE * 1.0 + pLoss * (1 - risk);
+      for (let p = 0; p <= periods; p++) {
+        const tradesSoFar = p * config.tradesPerPeriod;
+        const b = config.initialBalance * Math.pow(tradeEV, tradesSoFar);
+        evPoints.push(b);
+      }
     }
 
     let maxVal = Math.max(...evPoints);
@@ -4386,6 +4456,7 @@
   window.filterWeeklyCalendar = filterWeeklyCalendar;
   window.setParamValue = setParamValue;
   window.setRiskType = setRiskType;
+  window.toggleWeekends = toggleWeekends;
   window.updateAllSliderTracks = updateAllSliderTracks;
 
   window.addEventListener('resize', () => {
