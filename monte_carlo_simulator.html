@@ -540,28 +540,103 @@
     }
 
     /* ==============================================================
-       TOP LEVEL STATS (UNIFIED HEADER DECK)
+       TOP LEVEL SPLIT: STRATEGY PARAMETERS (LEFT) & STATS TABLE (RIGHT)
        ============================================================== */
-    .hero-stats-deck {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 1.25rem;
-    }
-    .hero-stats-grid {
+    .strategy-stats-split-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 0.65rem;
+      grid-template-columns: minmax(320px, 1.1fr) minmax(290px, 0.9fr);
+      gap: 1.25rem;
+      align-items: stretch;
+      width: 100%;
     }
-    @media (max-width: 1200px) {
-      .hero-stats-grid { grid-template-columns: repeat(3, 1fr); }
+    @media (max-width: 990px) {
+      .strategy-stats-split-grid {
+        grid-template-columns: 1fr;
+      }
     }
-    @media (max-width: 800px) {
-      .hero-stats-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .params-panel, .stats-table-panel {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
-    @media (max-width: 520px) {
-      .hero-stats-grid { grid-template-columns: 1fr; }
+
+    .stats-table-wrapper {
+      overflow-x: auto;
+      width: 100%;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-subtle) transparent;
+      flex: 1;
     }
+
+    .exec-stats-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+    }
+    .exec-stats-table th {
+      background: var(--bg-base);
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.45rem 0.65rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .exec-stats-table td {
+      padding: 0.38rem 0.65rem;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+    .exec-stats-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .stat-section-divider td {
+      background: var(--bg-surface-elevated);
+      padding: 0.28rem 0.65rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent-primary);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .stat-table-row {
+      transition: background-color 0.15s ease;
+    }
+    .stat-table-row:hover {
+      background: var(--bg-surface-hover);
+    }
+    .stat-table-row.highlight-profit, tr.hero-card.highlight-profit {
+      background: var(--accent-green-bg) !important;
+    }
+    .stat-table-row.highlight-loss, tr.hero-card.highlight-loss {
+      background: var(--accent-red-bg) !important;
+    }
+
+    .stat-name {
+      color: var(--text-main);
+      font-weight: 500;
+      white-space: nowrap;
+      text-align: left;
+    }
+    .stat-val {
+      text-align: right;
+      white-space: nowrap;
+    }
+    .stat-sub {
+      text-align: right;
+      white-space: nowrap;
+    }
+    .stat-sub-text {
+      color: var(--text-dim);
+      font-size: 0.72rem;
+    }
+
     .risk-mode-pill {
       display: inline-flex;
       background: var(--bg-surface-elevated);
@@ -623,16 +698,18 @@
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
       font-feature-settings: "tnum" 1, "zero" 0;
       font-variant-numeric: tabular-nums;
-      font-size: 1.35rem;
+      font-size: 0.875rem;
       font-weight: 700;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.015em;
       line-height: 1.2;
       color: var(--text-main);
-      margin: 0.2rem 0;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      text-align: right;
     }
+    .hero-val.val-green { color: var(--accent-green) !important; }
+    .hero-val.val-red { color: var(--accent-red) !important; }
+    .hero-val.val-blue { color: var(--accent-blue) !important; }
+    .hero-val.val-amber { color: var(--accent-amber) !important; }
     .hero-sub {
       font-size: 0.75rem;
       font-weight: 400;
@@ -1850,89 +1927,15 @@
 
     <!-- LEFT COLUMN: BLUE CONTAINER [1, 2, 3, 4, 5] -->
     <div class="left-dashboard-column">
-      <!-- 1. TOP LEVEL STATS (BOX 1) -->
-      <div class="panel-card hero-stats-deck">
-        <div class="hero-stats-grid">
-          <!-- 1. Initial Balance -->
-          <div class="hero-card">
-            <div class="hero-label">Initial Balance</div>
-            <div class="hero-val" id="dispTopInitial">$1,000</div>
-            <div class="hero-sub">Starting Capital</div>
-          </div>
-
-          <!-- 2. Total PnL -->
-          <div class="hero-card highlight-profit" id="cardTopTotalPnL">
-            <div class="hero-label">Total P&L</div>
-            <div class="hero-val val-green" id="dispTopTotalPnL">+$1,217</div>
-            <div class="hero-sub" id="dispTopSubTotalPnL">Expected Return</div>
-          </div>
-
-          <!-- 3. Total PnL % -->
-          <div class="hero-card highlight-profit" id="cardTopTotalPnLPct">
-            <div class="hero-label">Total P&L %</div>
-            <div class="hero-val val-green" id="dispTopTotalPnLPct">+121.7%</div>
-            <div class="hero-sub" id="dispTopSubPnLPct">ROI on Capital</div>
-          </div>
-
-          <!-- 4. Final Balance -->
-          <div class="hero-card">
-            <div class="hero-label">Final Balance</div>
-            <div class="hero-val val-blue" id="dispTopFinalBal">$2,217</div>
-            <div class="hero-sub" id="dispTopSubFinalBal">Expected Capital</div>
-          </div>
-
-          <!-- 5. Average RR -->
-          <div class="hero-card">
-            <div class="hero-label">Average RR</div>
-            <div class="hero-val val-amber" id="dispTopAvgRR">1 : 2.0</div>
-            <div class="hero-sub">Reward-to-Risk</div>
-          </div>
-
-          <!-- 6. Win Rate -->
-          <div class="hero-card">
-            <div class="hero-label">Win Rate</div>
-            <div class="hero-val val-blue" id="dispTopWinRate">50.0%</div>
-            <div class="hero-sub" id="dispTopSubWinRate">Trade Hit Rate</div>
-          </div>
-
-          <!-- 7. Profit Factor -->
-          <div class="hero-card" id="cardProfitFactor">
-            <div class="hero-label">Profit Factor</div>
-            <div class="hero-val val-green" id="dispTopPF">2.00</div>
-            <div class="hero-sub" id="dispTopSubPF">Gross Win / Loss</div>
-          </div>
-
-          <!-- 8. Expectancy -->
-          <div class="hero-card" id="cardTopExpectancy">
-            <div class="hero-label">Expectancy</div>
-            <div class="hero-val val-green" id="dispTopExpectancy">+1.00%</div>
-            <div class="hero-sub" id="dispTopSubExpectancy">+0.50R / trade EV</div>
-          </div>
-
-          <!-- 9. Max Drawdown (Median) -->
-          <div class="hero-card" id="cardTopMedianDD">
-            <div class="hero-label">Max Drawdown</div>
-            <div class="hero-val val-amber" id="dispTopMedianDD">9.1%</div>
-            <div class="hero-sub" id="dispTopSubWorstDD">Worst Run: 18.7%</div>
-          </div>
-
-          <!-- 10. Risk of Ruin & Tail Risk -->
-          <div class="hero-card" id="cardTopRuin">
-            <div class="hero-label">Risk of Ruin</div>
-            <div class="hero-val val-green" id="dispTopRuin">0.0%</div>
-            <div class="hero-sub" id="dispTopSubLossStreak">Max Loss Streak: 15L</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 2. STRATEGY PARAMETERS (BOX 2) -->
-      <!-- 1. STRATEGY PARAMETERS PANEL -->
-      <div class="panel-card">
-        <div class="panel-header-row">
-          <div>
-            <span class="panel-header-title">Strategy Parameters</span>
-            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.15rem;">Calibrate trading edge, capital risk allocation, and compounding horizon</div>
-          </div>
+      <!-- TOP SPLIT: STRATEGY PARAMETERS (LEFT) & EXECUTIVE STATS TABLE (RIGHT) -->
+      <div class="strategy-stats-split-grid">
+        <!-- 1. STRATEGY PARAMETERS (LEFT) -->
+        <div class="panel-card params-panel">
+          <div class="panel-header-row">
+            <div>
+              <span class="panel-header-title">Strategy Parameters</span>
+              <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.15rem;">Calibrate trading edge, capital risk allocation, and compounding horizon</div>
+            </div>
           <div style="display:flex; align-items:center; gap:0.5rem;">
             <!-- CADENCE SWITCHER (MONTHS VS WEEKS) -->
             <div class="cadence-switcher-pill">
@@ -2129,6 +2132,93 @@
                 <button type="button" class="quick-pill" onclick="setParamValue('iterations', 2000)">2k</button>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+        <!-- 2. STRATEGY STATS TABLE (RIGHT) -->
+        <div class="panel-card stats-table-panel">
+          <div class="panel-header-row">
+            <div>
+              <span class="panel-header-title">📊 Executive Performance Stats</span>
+              <div style="font-size:0.75rem; color:var(--text-muted); margin-top:0.15rem;">Simulated Edge & Outcome Metrics</div>
+            </div>
+            <span class="badge" style="font-size:0.7rem;">P50 Median</span>
+          </div>
+
+          <div class="stats-table-wrapper">
+            <table class="exec-stats-table">
+              <thead>
+                <tr>
+                  <th style="text-align:left;">Metric</th>
+                  <th style="text-align:right;">Sim Value</th>
+                  <th style="text-align:right;">Context</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="stat-section-divider">
+                  <td colspan="3"><span>Capital & Returns</span></td>
+                </tr>
+                <tr class="stat-table-row">
+                  <td class="stat-name">Initial Balance</td>
+                  <td class="stat-val"><span id="dispTopInitial" class="hero-val">$1,000</span></td>
+                  <td class="stat-sub"><span class="stat-sub-text">Starting Capital</span></td>
+                </tr>
+                <tr id="cardTopTotalPnL" class="stat-table-row">
+                  <td class="stat-name">Total Net P&L</td>
+                  <td class="stat-val"><span id="dispTopTotalPnL" class="hero-val val-green">+$1,217</span></td>
+                  <td class="stat-sub"><span id="dispTopSubTotalPnL" class="stat-sub-text">Expected Return</span></td>
+                </tr>
+                <tr id="cardTopTotalPnLPct" class="stat-table-row">
+                  <td class="stat-name">Total Return %</td>
+                  <td class="stat-val"><span id="dispTopTotalPnLPct" class="hero-val val-green">+121.7%</span></td>
+                  <td class="stat-sub"><span id="dispTopSubPnLPct" class="stat-sub-text">ROI on Capital</span></td>
+                </tr>
+                <tr class="stat-table-row">
+                  <td class="stat-name">Final Capital</td>
+                  <td class="stat-val"><span id="dispTopFinalBal" class="hero-val val-blue">$2,217</span></td>
+                  <td class="stat-sub"><span id="dispTopSubFinalBal" class="stat-sub-text">Expected Capital</span></td>
+                </tr>
+
+                <tr class="stat-section-divider">
+                  <td colspan="3"><span>Edge & Mechanics</span></td>
+                </tr>
+                <tr class="stat-table-row">
+                  <td class="stat-name">Win Rate</td>
+                  <td class="stat-val"><span id="dispTopWinRate" class="hero-val val-blue">50.0%</span></td>
+                  <td class="stat-sub"><span id="dispTopSubWinRate" class="stat-sub-text">Trade Hit Rate</span></td>
+                </tr>
+                <tr class="stat-table-row">
+                  <td class="stat-name">Reward-to-Risk (RR)</td>
+                  <td class="stat-val"><span id="dispTopAvgRR" class="hero-val val-amber">1 : 2.0</span></td>
+                  <td class="stat-sub"><span class="stat-sub-text">Avg Target Multiplier</span></td>
+                </tr>
+                <tr id="cardProfitFactor" class="stat-table-row">
+                  <td class="stat-name">Profit Factor</td>
+                  <td class="stat-val"><span id="dispTopPF" class="hero-val val-green">2.00</span></td>
+                  <td class="stat-sub"><span id="dispTopSubPF" class="stat-sub-text">Gross Win / Loss</span></td>
+                </tr>
+                <tr id="cardTopExpectancy" class="stat-table-row">
+                  <td class="stat-name">Trade Expectancy</td>
+                  <td class="stat-val"><span id="dispTopExpectancy" class="hero-val val-green">+1.00%</span></td>
+                  <td class="stat-sub"><span id="dispTopSubExpectancy" class="stat-sub-text">+0.50R / trade EV</span></td>
+                </tr>
+
+                <tr class="stat-section-divider">
+                  <td colspan="3"><span>Risk & Drawdowns</span></td>
+                </tr>
+                <tr id="cardTopMedianDD" class="stat-table-row">
+                  <td class="stat-name">Max Drawdown</td>
+                  <td class="stat-val"><span id="dispTopMedianDD" class="hero-val val-amber">9.1%</span></td>
+                  <td class="stat-sub"><span id="dispTopSubWorstDD" class="stat-sub-text">Worst Run: 18.7%</span></td>
+                </tr>
+                <tr id="cardTopRuin" class="stat-table-row">
+                  <td class="stat-name">Risk of Ruin</td>
+                  <td class="stat-val"><span id="dispTopRuin" class="hero-val val-green">0.0%</span></td>
+                  <td class="stat-sub"><span id="dispTopSubLossStreak" class="stat-sub-text">Max Loss Streak: 15L</span></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -2777,11 +2867,11 @@
     const pnlValEl = document.getElementById('dispTopTotalPnL');
     if (pnlValEl) {
       if (totalProfitLoss >= 0) {
-        if (cardPnL) cardPnL.className = 'hero-card highlight-profit';
+        if (cardPnL) cardPnL.className = 'stat-table-row highlight-profit';
         pnlValEl.className = 'hero-val val-green';
         pnlValEl.textContent = '+$' + Math.round(totalProfitLoss).toLocaleString();
       } else {
-        if (cardPnL) cardPnL.className = 'hero-card highlight-loss';
+        if (cardPnL) cardPnL.className = 'stat-table-row highlight-loss';
         pnlValEl.className = 'hero-val val-red';
         pnlValEl.textContent = '-$' + Math.round(Math.abs(totalProfitLoss)).toLocaleString();
       }
@@ -2792,11 +2882,11 @@
     const pnlPctEl = document.getElementById('dispTopTotalPnLPct');
     if (pnlPctEl) {
       if (totalReturnPct >= 0) {
-        if (cardPnLPct) cardPnLPct.className = 'hero-card highlight-profit';
+        if (cardPnLPct) cardPnLPct.className = 'stat-table-row highlight-profit';
         pnlPctEl.className = 'hero-val val-green';
         pnlPctEl.textContent = `+${totalReturnPct.toFixed(1)}%`;
       } else {
-        if (cardPnLPct) cardPnLPct.className = 'hero-card highlight-loss';
+        if (cardPnLPct) cardPnLPct.className = 'stat-table-row highlight-loss';
         pnlPctEl.className = 'hero-val val-red';
         pnlPctEl.textContent = `${totalReturnPct.toFixed(1)}%`;
       }
