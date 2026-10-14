@@ -69,6 +69,8 @@
       --accent-blue-bg: rgba(147, 197, 253, 0.08);
       --accent-amber: #fcd34d;
       --accent-purple: #c4b5fd;
+      --accent-purple-bg: rgba(196, 181, 253, 0.12);
+      --accent-purple-border: rgba(196, 181, 253, 0.32);
       --input-bg: #0a0e1a;
       --chart-grid: #1f2937;
       --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.35);
@@ -98,6 +100,8 @@
       --accent-blue-bg: rgba(103, 232, 249, 0.07);
       --accent-amber: #fde68a;
       --accent-purple: #d8b4fe;
+      --accent-purple-bg: rgba(216, 180, 254, 0.12);
+      --accent-purple-border: rgba(216, 180, 254, 0.32);
       --input-bg: #000000;
       --chart-grid: #141414;
       --card-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.6);
@@ -127,6 +131,8 @@
       --accent-blue-bg: rgba(29, 78, 216, 0.06);
       --accent-amber: #b45309;
       --accent-purple: #7c3aed;
+      --accent-purple-bg: rgba(124, 58, 237, 0.10);
+      --accent-purple-border: rgba(124, 58, 237, 0.28);
       --input-bg: #fafaf9;
       --chart-grid: #e7e5e4;
       --card-shadow: 0 1px 3px 0 rgba(28, 25, 23, 0.06);
@@ -160,6 +166,8 @@
       --accent-blue-bg: rgba(56, 189, 248, 0.16);
       --accent-amber: #facc15;
       --accent-purple: #c084fc;
+      --accent-purple-bg: rgba(192, 132, 252, 0.18);
+      --accent-purple-border: rgba(192, 132, 252, 0.42);
       --input-bg: rgba(3, 7, 18, 0.70);
       --chart-grid: rgba(56, 189, 248, 0.12);
       --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.50);
@@ -789,6 +797,20 @@
     .hero-card.highlight-loss {
       background: var(--accent-red-bg) !important;
       border-color: var(--accent-red-border) !important;
+    }
+    .hero-card.highlight-purple,
+    td.highlight-purple,
+    .matrix-cell.highlight-purple {
+      background: var(--accent-purple-bg) !important;
+      border-color: var(--accent-purple-border) !important;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+    .hero-card.highlight-purple .hero-val,
+    td.highlight-purple .matrix-val,
+    .matrix-cell.highlight-purple .matrix-val,
+    .val-purple {
+      color: var(--accent-purple) !important;
+      font-weight: 700;
     }
     .hero-label {
       color: var(--text-muted);
@@ -1568,6 +1590,37 @@
       border-color: var(--border-subtle) !important;
       box-shadow: none !important;
     }
+    /* Turn off Row 3 purple background & border (keep text color purple) */
+    .no-cal-highlights .hero-card.highlight-purple,
+    .no-cal-highlights td.highlight-purple,
+    .no-cal-highlights .matrix-cell.highlight-purple,
+    .no-highlights .hero-card.highlight-purple,
+    .no-highlights td.highlight-purple,
+    .no-highlights .matrix-cell.highlight-purple {
+      background: var(--bg-base) !important;
+      border-color: var(--border-subtle) !important;
+      box-shadow: none !important;
+    }
+    /* Turn off Total PnL & Return % tile backgrounds (keep text colors) */
+    .no-cal-highlights #cardTileTotalPnL.highlight-profit,
+    .no-cal-highlights #cardTileTotalPnL.highlight-loss,
+    .no-cal-highlights #cardTileTotalPnLPct.highlight-profit,
+    .no-cal-highlights #cardTileTotalPnLPct.highlight-loss,
+    .no-cal-highlights td#cardTopTotalPnL.highlight-profit,
+    .no-cal-highlights td#cardTopTotalPnL.highlight-loss,
+    .no-cal-highlights td#cardTopTotalPnLPct.highlight-profit,
+    .no-cal-highlights td#cardTopTotalPnLPct.highlight-loss,
+    .no-highlights #cardTileTotalPnL.highlight-profit,
+    .no-highlights #cardTileTotalPnL.highlight-loss,
+    .no-highlights #cardTileTotalPnLPct.highlight-profit,
+    .no-highlights #cardTileTotalPnLPct.highlight-loss,
+    .no-highlights td#cardTopTotalPnL.highlight-profit,
+    .no-highlights td#cardTopTotalPnL.highlight-loss,
+    .no-highlights td#cardTopTotalPnLPct.highlight-profit,
+    .no-highlights td#cardTopTotalPnLPct.highlight-loss {
+      background: var(--bg-base) !important;
+      border-color: var(--border-subtle) !important;
+    }
 
     /* ==============================================================
        CALENDAR INSPECTOR DECK — 20% SCALED COMPACT
@@ -2343,22 +2396,22 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>
+                  <td id="tdTopMaxDD" class="highlight-purple">
                     <div class="matrix-cell">
                       <div class="matrix-label">Max Drawdown</div>
-                      <div class="matrix-val" id="dispTopMedianDD">-9.1%</div>
+                      <div class="matrix-val val-purple" id="dispTopMedianDD">-9.1%</div>
                     </div>
                   </td>
-                  <td>
+                  <td id="tdTopMaxLossStreak" class="highlight-purple">
                     <div class="matrix-cell">
                       <div class="matrix-label">Max Loss Streak</div>
-                      <div class="matrix-val" id="dispTopMaxLossStreak">15</div>
+                      <div class="matrix-val val-purple" id="dispTopMaxLossStreak">15</div>
                     </div>
                   </td>
-                  <td>
+                  <td id="tdTopRiskOfRuin" class="highlight-purple">
                     <div class="matrix-cell">
                       <div class="matrix-label">Risk of Ruin</div>
-                      <div class="matrix-val" id="dispTopRuin">0.0%</div>
+                      <div class="matrix-val val-purple" id="dispTopRuin">0.0%</div>
                     </div>
                   </td>
                 </tr>
@@ -2422,19 +2475,19 @@
               </div>
 
               <!-- Row 3: Max Drawdown | Max Loss Streak | Risk of Ruin -->
-              <div class="hero-card">
+              <div class="hero-card highlight-purple" id="cardTileMaxDD">
                 <div class="hero-label">Max Drawdown</div>
-                <div class="hero-val" id="dispCardMedianDD">-9.1%</div>
+                <div class="hero-val val-purple" id="dispCardMedianDD">-9.1%</div>
               </div>
 
-              <div class="hero-card">
+              <div class="hero-card highlight-purple" id="cardTileMaxLossStreak">
                 <div class="hero-label">Max Loss Streak</div>
-                <div class="hero-val" id="dispCardMaxLossStreak">15</div>
+                <div class="hero-val val-purple" id="dispCardMaxLossStreak">15</div>
               </div>
 
-              <div class="hero-card">
+              <div class="hero-card highlight-purple" id="cardTileRiskOfRuin">
                 <div class="hero-label">Risk of Ruin</div>
-                <div class="hero-val" id="dispCardRuin">0.0%</div>
+                <div class="hero-val val-purple" id="dispCardRuin">0.0%</div>
               </div>
 
               <!-- Row 4: Trade Expectancy | Win % | RR -->
@@ -3088,6 +3141,8 @@
     if (calPanel) {
       calPanel.classList.toggle('no-cal-highlights', !calHighlightsEnabled);
     }
+    document.body.classList.toggle('no-cal-highlights', !calHighlightsEnabled);
+    document.body.classList.toggle('no-highlights', !calHighlightsEnabled);
     renderCalendar();
   }
   window.toggleCalHighlights = toggleCalHighlights;
