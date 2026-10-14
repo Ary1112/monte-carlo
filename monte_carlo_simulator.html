@@ -66,7 +66,8 @@
       --accent-red-bg: rgba(252, 165, 165, 0.08);
       --accent-red-border: rgba(252, 165, 165, 0.18);
       --accent-blue: #93c5fd;
-      --accent-blue-bg: rgba(147, 197, 253, 0.08);
+      --accent-blue-bg: rgba(147, 197, 253, 0.12);
+      --accent-blue-border: rgba(147, 197, 253, 0.32);
       --accent-amber: #fcd34d;
       --accent-purple: #c4b5fd;
       --accent-purple-bg: rgba(196, 181, 253, 0.12);
@@ -97,7 +98,8 @@
       --accent-red-bg: rgba(249, 168, 212, 0.07);
       --accent-red-border: rgba(249, 168, 212, 0.16);
       --accent-blue: #67e8f9;
-      --accent-blue-bg: rgba(103, 232, 249, 0.07);
+      --accent-blue-bg: rgba(103, 232, 249, 0.12);
+      --accent-blue-border: rgba(103, 232, 249, 0.32);
       --accent-amber: #fde68a;
       --accent-purple: #d8b4fe;
       --accent-purple-bg: rgba(216, 180, 254, 0.12);
@@ -128,7 +130,8 @@
       --accent-red-bg: rgba(190, 18, 60, 0.06);
       --accent-red-border: rgba(190, 18, 60, 0.16);
       --accent-blue: #1d4ed8;
-      --accent-blue-bg: rgba(29, 78, 216, 0.06);
+      --accent-blue-bg: rgba(29, 78, 216, 0.08);
+      --accent-blue-border: rgba(29, 78, 216, 0.28);
       --accent-amber: #b45309;
       --accent-purple: #7c3aed;
       --accent-purple-bg: rgba(124, 58, 237, 0.10);
@@ -810,6 +813,20 @@
     .matrix-cell.highlight-purple .matrix-val,
     .val-purple {
       color: var(--accent-purple) !important;
+      font-weight: 700;
+    }
+    .hero-card.highlight-blue,
+    td.highlight-blue,
+    .matrix-cell.highlight-blue {
+      background: var(--accent-blue-bg) !important;
+      border-color: var(--accent-blue-border) !important;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+    .hero-card.highlight-blue .hero-val,
+    td.highlight-blue .matrix-val,
+    .matrix-cell.highlight-blue .matrix-val,
+    .val-blue {
+      color: var(--accent-blue) !important;
       font-weight: 700;
     }
     .hero-label {
@@ -1590,13 +1607,19 @@
       border-color: var(--border-subtle) !important;
       box-shadow: none !important;
     }
-    /* Turn off Row 3 purple background & border (keep text color purple) */
+    /* Turn off Row 3 purple & Final Balance blue background & border (keep text colors) */
     .no-cal-highlights .hero-card.highlight-purple,
     .no-cal-highlights td.highlight-purple,
     .no-cal-highlights .matrix-cell.highlight-purple,
     .no-highlights .hero-card.highlight-purple,
     .no-highlights td.highlight-purple,
-    .no-highlights .matrix-cell.highlight-purple {
+    .no-highlights .matrix-cell.highlight-purple,
+    .no-cal-highlights .hero-card.highlight-blue,
+    .no-cal-highlights td.highlight-blue,
+    .no-cal-highlights .matrix-cell.highlight-blue,
+    .no-highlights .hero-card.highlight-blue,
+    .no-highlights td.highlight-blue,
+    .no-highlights .matrix-cell.highlight-blue {
       background: var(--bg-base) !important;
       border-color: var(--border-subtle) !important;
       box-shadow: none !important;
@@ -2376,10 +2399,10 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>
+                  <td id="tdTopFinalBal" class="highlight-blue">
                     <div class="matrix-cell">
                       <div class="matrix-label">Final Balance</div>
-                      <div class="matrix-val" id="dispTopFinalBal">$2,217</div>
+                      <div class="matrix-val val-blue" id="dispTopFinalBal">$2,217</div>
                     </div>
                   </td>
                   <td>
@@ -2459,9 +2482,9 @@
               </div>
 
               <!-- Row 2: Final Balance | Max Win Streak | Profit Factor -->
-              <div class="hero-card">
+              <div class="hero-card highlight-blue" id="cardTileFinalBal">
                 <div class="hero-label">Final Balance</div>
-                <div class="hero-val" id="dispCardFinalBal">$2,217</div>
+                <div class="hero-val val-blue" id="dispCardFinalBal">$2,217</div>
               </div>
 
               <div class="hero-card">
